@@ -86,29 +86,54 @@ document.addEventListener('DOMContentLoaded', function () {
 
     removeBtn.addEventListener('click', () => {
       const bgImage = preview.style.backgroundImage;
-      const url = bgImage.slice(5, -2); // "url('...')" 제거
+      const url = bgImage.slice(5, -2);
       const index = attachedFiles.indexOf(url);
+      if (index !== -1) attachedFiles.splice(index, 1);
 
-      if (index !== -1) {
-        attachedFiles.splice(index, 1);
-      }
-
-      // 1. 현재 요소는 비워주기
-      fileItem.classList.remove('attached');
-      preview.style.backgroundImage = '';
-      attachBox.style.display = 'none';
-      li.querySelector('input').value = '';
-
-      // 2. 오른쪽 요소가 빈 btn_box일 경우 삭제
+      const allItems = Array.from(fileList.querySelectorAll('.list_item'));
+      const currentIndex = allItems.indexOf(li);
       const nextLi = li.nextElementSibling;
-      if (nextLi && !nextLi.querySelector('.file_item')?.classList.contains('attached')) {
-        fileList.removeChild(nextLi);
+      const lastLi = allItems[allItems.length - 1];
+
+      // 오른쪽에 빈 사진추가 div 있는지 체크
+      const hasRightEmptyDiv =
+        nextLi &&
+        !nextLi.querySelector('.file_item').classList.contains('attached');
+
+      // 맨 끝이 빈 사진 추가 div인지 체크
+      const lastIsEmpty =
+        lastLi &&
+        !lastLi.querySelector('.file_item').classList.contains('attached');
+
+      if (hasRightEmptyDiv) {
+        // 오른쪽에 빈 div 있으면 무조건 자기 삭제만
+        fileList.removeChild(li);
+      } else {
+        if (currentIndex === 0) {
+          // 첫 번째 div 삭제
+          fileList.removeChild(li);
+          // 맨 끝에 사진 추가 div 없으면 새로 추가
+          if (!lastIsEmpty && attachedFiles.length < MAX_FILES) {
+            fileList.appendChild(createBtnBox(false, ''));
+          }
+        } else if (currentIndex === 1) {
+          // 두 번째 div 삭제
+          fileList.removeChild(li);
+          // 오른쪽에 빈 div 없으면 맨 끝에 새로 추가
+          if (!hasRightEmptyDiv && attachedFiles.length < MAX_FILES) {
+            fileList.appendChild(createBtnBox(false, ''));
+          }
+        } else if (currentIndex === 2) {
+          // 세 번째 div: attached 제거, 내용 비우기
+          fileItem.classList.remove('attached');
+          preview.style.backgroundImage = '';
+          attachBox.style.display = 'none';
+          input.value = '';
+        }
       }
+
       updateAttachVal();
-
     });
-
-
     return li;
   }
 
