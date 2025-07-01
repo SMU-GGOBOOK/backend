@@ -127,10 +127,70 @@ textarea:focus-within,
 
 
 /* -----사진 첨부---- */
-
-
+.form_wrap .form_box .form_title {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.form_label {
+    display: inline-block;
+    color: #000;
+    font-size: 13px;
+    line-height: 19px;
+    letter-spacing: -0.01em;
+    font-weight: 500;
+    cursor: default;
+}
+.form_wrap.type_md .form_box .form_title .file_attach_val {
+    padding-top: 4px;
+}
+.file_attach_val {
+    display: inline-block;
+    font-size: 0;
+    vertical-align: top;
+    line-height: 1;
+    font-weight: 400;
+}
+.file_attach_val .val {
+    font-size: 14px;
+    letter-spacing: -0.01em;
+}
+.file_attach_val .total {
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    color: #767676;
+}
+.form_wrap.type_md .form_box .form_cont {
+    margin-top: 10px;
+}
+.form_wrap .form_box .form_cont {
+    margin-top: 8px;
+    color: #595959;
+}
 .file_list {
     font-size: 0;
+}
+.kbb-recent-contents ol, ul, menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 .file_list .list_item:last-child {
     margin-right: 0;
@@ -166,6 +226,8 @@ textarea:focus-within,
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+
 .file_list .file_item .btn_box label {
     display: block;
     width: 100%;
@@ -173,25 +235,199 @@ textarea:focus-within,
     font-size: 0 !important;
     border-radius: 7px;
     background-size: 16px 16px;
-    background-image: url(/static/images/plusBtn.png);
+    background-image: url(../images/plusBtn.png);
     background-position: center;
     background-repeat: no-repeat;
 }
 .file_list .file_item:not(.attached) .btn_remove_img {
     display: none;
 }
-
+button[class^=btn_], a[class^=btn_] {
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: top;
+}
 button {
     background-color: transparent;
 }
-.form_box .form_cont .file_list + .bul_item_asterisk{
+.form_wrap .form_box .form_cont .file_list + .bul_item_asterisk, .form_wrap .form_box .form_cont .file_list_box + .bul_item_asterisk {
     margin-top: 10px;
 }
 .form_wrap .form_box .form_cont [class^=bul_item_] {
     color: #767676;
 }
+[class^=bul_item_].font_size_xxs {
+    font-size: 15px;
+    line-height: 19px;
+    letter-spacing: -0.01em;
+}
+.file_list ~ .bul_item_asterisk {
+    margin-top: 10px;
+}
+.bul_item_asterisk {
+    color: #767676;
+    padding-left: 8px;
+}
+[class^=bul_item_] {
+    position: relative;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    color: #595959;
+    font-weight: 400;
+    text-align: left;
+}
+.bul_item_asterisk:before {
+    content: "*";
+    color: #474c98;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.simplebar-content:after, .simplebar-content:before {
+    content: ' ';
+    display: table;
+}
+.kbb-recent-contents :before, :after {
+    --tw-content: "";
+}
+
 
 /* -----사진 첨부 끝---- */
+
+/* 사진 추가 */
+.file_list .list_item:last-child {
+    margin-right: 0;
+}
+.file_list .list_item {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+}
+.file_list .file_item {
+    position: relative;
+    display: inline-block;
+}
+.file_list .file_item.attached.attached .attach_img_box {
+    display: inline-block;
+}
+.file_list .file_item.attached .attach_img_box {
+    display: inline-block; /* 기본 보이도록 변경 */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.file_list .file_item.attached .attach_img_box .attach_img_view {
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    font-size: 0 !important;
+    left: 0;
+    top: 0;
+}
+.file_list .file_item.attached .attach_img_box .btn_remove_img {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background-size: 8px 8px;
+    background-image: url(../images/plusBtn.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 0 6px;
+    font-size: 0 !important;
+    pointer-events: auto;
+    right: 0;
+    top: 0;
+}
+
+.file_list .file_item.attached .btn_box label {
+    background-image: none !important;
+}
+.file_list .file_item.attached.attached .attach_img_box {
+    display: inline-block;
+}
+
+.file_list .file_item.attached .attach_img_box {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.file_list .file_item.attached .attach_img_box .attach_img_view {
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    font-size: 0 !important;
+    left: 0;
+    top: 0;
+}
+.file_list .file_item.attached .attach_img_box .btn_remove_img {
+    all: unset;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background-size: 8px 8px;
+    background-image: url(../images/xBtn.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 0 6px;
+    font-size: 0 !important;
+    pointer-events: auto;
+    right: 0;
+    top: 0;
+}
+
+/*사진첨부 라벨 뒤 갯수 숫자*/
+
+.form_wrap.type_md .form_box .form_title .file_attach_val {
+    padding-top: 4px;
+}
+.file_attach_val {
+    display: inline-block;
+    font-size: 0;
+    vertical-align: top;
+    line-height: 1;
+    margin-top: 5px;
+}
+
+.file_attach_val .val {
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: #1a1a1a;
+    font-weight: 400;
+    margin:0;
+}
+.file_attach_val .total {
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: #636363;
+    font-weight: 400;
+    margin:0
+}
+
+/*-----사진 추가 끝-----*/
+
 
 
 .fig-main label {

@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 <head>
+  <script src="/static/js/photoadd.js"></script>
   <link rel="stylesheet" href="/static/css/inquiry.css" />
   <title>1:1문의</title>
 </head>
@@ -9,8 +10,8 @@
         <nav>
           <div class="left_side">
             <ul class="category">
-              <li class="icon"><i class="fa-solid fa-bullhorn"></i>공지사항</li>
-              <li class="icon checked"><i class="fa-solid fa-envelope"></i>1:1문의</li>
+              <li class="icon" onclick="location.href='{% url "cscenter:list" %}'"><i class="fa-solid fa-bullhorn"></i>공지사항</li>
+              <li class="icon checked" onclick="location.href='{% url "cscenter:inquiry" %}'"><i class="fa-solid fa-envelope"></i>1:1문의</li>
             </ul>
           </div>
         </nav>
@@ -53,30 +54,32 @@
                     <tr id="inq_end">
                       <th>
                         <label for="image_inq">사진 첨부</label>
+                        <span class="file_attach_val">
+                          <span class="val">0</span>
+                          <span class="total"> / 3</span>
+                        </span>
                       </th>
                       <td class="inputBoxdiv lastone">
-                        <div class="form_box">
-                          <div class="form_cont">
-                            <ul class="file_list">
+                        <div class="form_cont">
+                          <ul class="file_list">
                               <li class="list_item">
-                                <span class="file_item">
-                                  <span class="btn_box">
-                                      <input id="image_inq" type="file">
-                                      <label for="image_inq">
-                                        <span class="hidden">첨부파일 추가</span>
-                                      </label>
-                                      <span class="attach_img_box">
-                                        <span class="attach_img_view"></span>
-                                        <button class="btn_remove_img" type="button">
-                                          <span class="hidden">첨부파일 삭제</span>
-                                        </button>
-                                    </span>
+                                  <span class="file_item">
+                                      <span class="btn_box">
+                                          <input id="4ee05ca4-2afb-41c6-bd6c-e7df004c6402" type="file">
+                                          <label for="4ee05ca4-2afb-41c6-bd6c-e7df004c6402">
+                                              <span class="hidden">첨부파일 추가</span>
+                                          </label>
+                                          <span class="attach_img_box">
+                                              <span class="attach_img_view"></span>
+                                              <button class="btn_remove_img" type="button">
+                                                  <span class="hidden">첨부파일 삭제</span>
+                                              </button>
+                                          </span>
+                                      </span>
                                   </span>
-                                </span>
                               </li>
-                            </ul>
-                          </div>
-                        </div>
+                          </ul>
+                      </div>
                         </td>
                       </tr>
                   </table>

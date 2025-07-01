@@ -9,34 +9,24 @@
         <nav>
           <div class="left_side">
             <ul class="category">
-              <li class="icon checked"><i class="fa-solid fa-bullhorn"></i>공지사항</li>
-              <li class="icon"><i class="fa-solid fa-envelope"></i>1:1문의</li>
+              <li class="icon checked" onclick="location.href='{% url "cscenter:list" %}'"><i class="fa-solid fa-bullhorn"></i>공지사항</li>
+              <li class="icon" onclick="location.href='{% url "cscenter:inquiry" %}'"><i class="fa-solid fa-envelope"></i>1:1문의</li>
             </ul>
           </div>
         </nav>
         <div class="content-area">
           <div class="viewDivMt">
             <div class="viewHead">
-              <div class="subject">개인정보처리방침 개정 안내(6/30)</div>
+              <div class="subject">{{notice.ntitle}}</div>
               <div class="day">
-                <p class="txt">작성일<span>25.06.01</span></p>
+                <p class="txt">작성일<span>{{notice.ndate|date:'Y.m.d'}}</span></p>
               </div>
             </div>
 
             <div class="viewContents">
-              안녕하세요. 꼬북입니다. <br/><br/>
-              꼬북꼬북 서비스를 이용해 주시는 고객님께 감사 드립니다. <br/>
-              꼬북꼬북 개인정보 처리방침이 다음과 같이 일부 개정 될 예정으로 변경내용을 사전 공지하오니 서비스 이용에 참조하시기 바랍니다.<br/><br/><br/>
-              1. 개정 사유<br/>
-                가. 제3자 제공업체 추가<br/>
-                나. 위탁업체 추가<br/><br/><br/>
-              2. 개정 사항 <br/>
-                가. 제3자 제공업체 추가<br/>
-                    1. 이용자가 사전에 동의한 경우 <br/>
-                        - 회사 관계사간의 개인정보 결합을 통한 데이터 분석 및 활용을 위한 제공<br/>
-                        - 회사 관계사 마케팅을 위한 제공<br/><br/>
-
-              감사합니다.
+              {{notice.ncontent}}
+              <br>
+              {{notice.nfile}}
             </div>
           </div>
 
@@ -59,6 +49,11 @@
           <div class="buttonWrap">
             <button type="button" class="listBtn">공지사항 목록</button>
           </div>
+          <script>
+            $(".listBtn").click(function(){
+              
+            });//
+          </script>
         </div>
       </div>
 
