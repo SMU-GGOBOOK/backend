@@ -3,6 +3,9 @@
 {% block content %}
 <head>
   <link rel="stylesheet" href="/static/css/mainpage.css" />
+  <script src="/static/js/mainbanner.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
   <title>꼬북꼬북</title>
 </head>
 
@@ -53,7 +56,7 @@
       </div>
     </div>
 
-
+{% if not request.session.session_id %}
   <!--로그인 세션 없을때-->
   <div class="exchngreading">
     <!-- 참여중인 그룹 표시 -->
@@ -69,13 +72,10 @@
         <button type='button'>회원가입</button>
       </div>
     </div>
-
-    
   </div>
-
+  
+{% else %}
 <!--로그인 세션 있을때-->
-
-{% comment %} 
   <div class="exchngreading">
     <!-- 참여중인 그룹 표시 -->
     <div class="feed__join">
@@ -150,7 +150,7 @@
         </div>
     </div>
   </div> 
-{% endcomment %}
+{% endif %}
 
   
   <section class="ranking">
