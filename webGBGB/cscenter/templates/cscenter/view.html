@@ -35,12 +35,20 @@
           <div class="udBtn">
             <table>
               <tr>
-                <th><span>▲</span>이전글</th>
-                <td>멍멍왈왈으르렁컹컹듀...</td>
+                <th class="next"><span>▲</span>다음글</th>
+                {%if next_ntc %}
+                <td><a href="/cscenter/view/{{next_ntc.ntcno}}">{{next_ntc.ntitle}}</a></td>
+                {% else %}
+                <td>다음 글이 없습니다.</td>
+                {% endif %}
               </tr>
               <tr>
-                <th><span>▼</span>다음글</th>
-                <td>"꼬북꼬북 책읽기" 공모전 연기 안내</td>
+                <th class="pre"><span>▼</span>이전글</th>
+                {% if pre_ntc %}
+                <td><a href="/cscenter/view/{{pre_ntc.ntcno}}">{{pre_ntc.ntitle}}</a></td>
+                {% else %}
+                <td>이전 글이 없습니다.</td>
+                {% endif %}
               </tr>
             </table>
           </div>
@@ -51,8 +59,8 @@
           </div>
           <script>
             $(".listBtn").click(function(){
-              
-            });//
+              location.href='{% url "cscenter:list" %}';
+            });//listBtn
           </script>
         </div>
       </div>

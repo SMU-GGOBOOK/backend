@@ -21,8 +21,21 @@ def list(request):
     return render(request,'cscenter/list.html',context)
 
 def view(request,ntcno):
-    qs = Notice.objects.get(ntcno=ntcno)
-    context={'notice':qs}
+    qs = Notice.objects.filter(ntcno=ntcno)
+    
+    # 다음글: ntcno가 현재글보다 큰것 중 가장 작은거(역순정렬했을때 바로 위글)
+    next_qs = Notice.objects.filter(
+        ntcno__gt = qs[0].ntcno
+    ).order_by('ntcno').first()
+    
+    # 이전글: ntcno가 현재글보다 작은것 중 가장 큰거(역순정렬했을때 바로 아래글)
+    pre_qs = Notice.objects.filter(
+        ntcno__lt = qs[0].ntcno
+    ).order_by('-ntcno').first()
+    
+    
+    
+    context={'notice':qs[0],'next_ntc':next_qs,'pre_ntc':pre_qs}
     return render(request,'cscenter/view.html',context)
 
 def inquiry(request):

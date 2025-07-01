@@ -18,7 +18,8 @@
         <div class="content-area">
             <p class="big_title">1:1 문의</p>
             <div>
-                <form action="" name="inqFrm">
+                <form action="{% url 'cscenter:inquiry_submit' %}" method="post" name="inqFrm" id="inquiryForm" enctype="multipart/form-data">
+                  {% csrf_token %}
                   <table>
                     <tr>
                       <th>
