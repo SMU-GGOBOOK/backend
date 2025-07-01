@@ -1,8 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
   const fileList = document.querySelector('.file_list');
+  const hiddenFileContainer = document.getElementById('hiddenFileInputs');
   const MAX_FILES = 3;
 
   let attachedFiles = [];
+  let currentFileIndex = 0;
+
+
 
   function generateId() {
     return 'file_' + Math.random().toString(36).slice(2);
@@ -20,6 +24,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // 실제 파일을 hidden input으로 추가
+  function addHiddenFileInput(file) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.style.display = 'none';
+    input.name = `uploaded_file_${currentFileIndex++}`;
+    
+    // File 객체를 input에 할당
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    
+    hiddenFileContainer.appendChild(input);
+    return input;
+  }
+
+  // 파일 제거시 해당 hidden input도 제거
+  function removeHiddenFileInput(file) {
+    const inputs = hiddenFileContainer.querySelectorAll('input[type="file"]');
+    inputs.forEach(input => {
+      if (input.files.length > 0 && input.files[0] === file) {
+        hiddenFileContainer.removeChild(input);
+      }
+    });
+  }
 
 
   function createBtnBox(attached = false, imgSrc = '') {
@@ -58,10 +87,20 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
+
       const reader = new FileReader();
       reader.onload = (e) => {
         const imgUrl = e.target.result;
-        attachedFiles.push(imgUrl);
+
+        const fileData = {
+          file: file,
+          url: imgUrl
+        };
+        attachedFiles.push(fileData);
+        addHiddenFileInput(file);
+
+        // 파일 객체를 li 요소에 저장
+        li.fileData = fileData;
 
         // 1. 현재 btn_box를 attached로 변경
         fileItem.classList.add('attached');
@@ -78,17 +117,21 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         }
         updateAttachVal();
+        input.value = '';
       };
 
       reader.readAsDataURL(file);
-      input.value = '';
     });
 
     removeBtn.addEventListener('click', () => {
-      const bgImage = preview.style.backgroundImage;
-      const url = bgImage.slice(5, -2);
-      const index = attachedFiles.indexOf(url);
-      if (index !== -1) attachedFiles.splice(index, 1);
+        if (li.fileData) {
+        const fileIndex = attachedFiles.indexOf(li.fileData);
+        if (fileIndex !== -1) {
+          const removedFileData = attachedFiles[fileIndex];
+          attachedFiles.splice(fileIndex, 1);
+          removeHiddenFileInput(removedFileData.file);
+        }
+      }
 
       const allItems = Array.from(fileList.querySelectorAll('.list_item'));
       const currentIndex = allItems.indexOf(li);
@@ -140,4 +183,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // 초기 1개 빈 박스 생성
   fileList.innerHTML = '';
   fileList.appendChild(createBtnBox(false, ''));
+
 });
+
