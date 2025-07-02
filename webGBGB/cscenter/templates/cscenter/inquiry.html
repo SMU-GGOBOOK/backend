@@ -1,12 +1,10 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
+{% block title %}1:1문의{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/inquiry.css" />
+{% endblock %}
 {% block content %}
-<head>
-  <link rel="stylesheet" href="/static/css/inquiry.css" />
-  <script src="/static/js/photoadd.js"></script>
-  <script src="/static/js/form_confirm.js"></script>
-  <title>1:1문의</title>
-</head>
 <div class="mainWrap">
   <nav>
     <div class="left_side">
@@ -98,4 +96,8 @@
   </div>
 </div>
 
-{% endblock content %}
+{% endblock %}
+{% block extra_js %}
+  <script src="/static/js/photoadd.js"></script>
+  <script src="/static/js/form_confirm.js"></script>
+{% endblock %}

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}공지사항{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/ntc_list.css" />
+{% endblock %}
 {% block content %}
-<head>
-  <link rel="stylesheet" href="/static/css/ntc_list.css" />
-  <title>공지사항</title>
-</head>
       <div class="mainWrap">
         <nav>
           <div class="left_side">
@@ -21,10 +21,11 @@
             <div>
               <table>
                 <colgroup> 
-                  <col width="10%"/> 
+                  <col width="8%"/> 
                   <col width="*"/> 
-                  <col width="15%"/> 
-                  <col width="15%"/> 
+                  <col width="8%"/> 
+                  <col width="12%"/> 
+                  <col width="8%"/> 
               </colgroup>
                 <thead>
                   <tr>
@@ -32,6 +33,7 @@
                     <th>공지 제목</th>
                     <th>작성자</th>
                     <th>날짜</th>
+                    <th>조회수</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -41,6 +43,7 @@
                     <td class="ntc_title"><a href="/cscenter/view/{{n.ntcno}}/">{{n.ntitle}}</a></td>
                     <td>{{n.id}}</td>
                     <td>{{n.ndate|date:'Y-m-d'}}</td>
+                    <td>{{n.nhit}}</td>
                   </tr>
                   {% endfor %}
                   
@@ -127,4 +130,8 @@
       </div>
     </div>
 
-{% endblock content %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/example.js' %}"></script>
+{% endblock %}

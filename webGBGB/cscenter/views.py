@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
+from django.db.models import F
+import datetime
 from cscenter.models import Notice
 from cscenter.models import Inquiry
 from django.http import JsonResponse
@@ -15,9 +17,6 @@ def list(request):
     
     # 가져올 페이지 선택
     noticeList = paginator.get_page(page)
-    print('-----------------')
-    print(noticeList)
-    print('-----------------')
     
     # 게시글 10개, 현재페이지 보냄
     context = {'notice':qs,'list':noticeList,'page':page}
@@ -26,20 +25,45 @@ def list(request):
 def view(request,ntcno):
     qs = Notice.objects.filter(ntcno=ntcno)
     
+    # 1. 조회수 증가 확인
+    # qs.update(nhit=F('nhit')+1) # view페이지에서 보면 곧장 조회수 1 증가함(F함수 사용하면 데이터베이스에 직접 업데이트)
+    # print(f"조회수 증가됨: {qs[0].ntcno}")  프롬프트창에서 확인가능
+    
+    # 2. 중복 조회수 상승 방지(ip 기반, 쿠키 사용)
+    user_identifier = request.META.get('REMOTE_ADDR','anonymous')
+    cookie_name = f'notice_hit_{user_identifier}'
+    
+    # 하루 마지막 시간에 쿠키 만료
+    tomorrow = datetime.datetime.now().replace(hour=23,minute=59,second=59)
+    expires = tomorrow.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
+
+    # 쿠키 확인, 조회수 증가
+    if request.COOKIES.get(cookie_name) is not None:
+        cookies = request.COOKIES.get(cookie_name)
+        print(f"기존 쿠키: {cookies}")
+        cookies_list = cookies.split('|')
+        
+        if str(ntcno) not in cookies_list:
+            qs.update(nhit=F('nhit')+1)
+            qs[0].refresh_from_db()
+            new_cookie_val = cookies + f"|{ntcno}"
+        else: new_cookie_val = cookies
+    
+    else:
+        qs.update(nhit=F('nhit')+1)
+        qs[0].refresh_from_db()
+        new_cookie_val = str(ntcno)
+        
     # 다음글: ntcno가 현재글보다 큰것 중 가장 작은거(역순정렬했을때 바로 위글)
-    next_qs = Notice.objects.filter(
-        ntcno__gt = qs[0].ntcno
-    ).order_by('ntcno').first()
+    next_qs = Notice.objects.filter(ntcno__gt = qs[0].ntcno).order_by('ntcno').first()
     
     # 이전글: ntcno가 현재글보다 작은것 중 가장 큰거(역순정렬했을때 바로 아래글)
-    pre_qs = Notice.objects.filter(
-        ntcno__lt = qs[0].ntcno
-    ).order_by('-ntcno').first()
-    
-    
+    pre_qs = Notice.objects.filter(ntcno__lt = qs[0].ntcno).order_by('-ntcno').first()
     
     context={'notice':qs[0],'next_ntc':next_qs,'pre_ntc':pre_qs}
-    return render(request,'cscenter/view.html',context)
+    response = render(request,'cscenter/view.html',context)
+    response.set_cookie(cookie_name, new_cookie_val, expires=expires)
+    return response
 
 def inquiry(request):
     if request.method == 'GET':
