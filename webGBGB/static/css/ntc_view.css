@@ -109,7 +109,7 @@ font-size: 18px;}
 }
     
 .viewContents{
-    padding:30px 28px 40px;
+    padding:30px 28px 70px;
     border-bottom: 1px solid #1a1a1a;
     color:#1a1a1a;
 }
@@ -123,7 +123,7 @@ font-size: 18px;}
 
 .fig-main th,.fig-main td{
     border-bottom:1px solid #CCC;
-    height:60px;
+    height:65px;
 }
 
     
