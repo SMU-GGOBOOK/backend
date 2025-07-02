@@ -48,7 +48,7 @@
 }
 
 .swiper-pagination-bullet-active {
-    background: #2d7868;
+    background: #2d7868 !important;
     opacity: 1;
 }
 
@@ -80,7 +80,7 @@
 
 .listWrapper li {
     flex: 0 0 auto;
-    width: 220px;
+    width: 196px;
     text-align: center;
     font-size: 14px;
 }
@@ -115,6 +115,8 @@
     overflow: hidden;
     border-radius: 7px;
     box-shadow: 0 4px 4px #797e8480;
+    width: 196px;
+    height: 280px;
 }
 
 .book__cover{
