@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    $(".cancelBtn").on('click',function(){
+        location.href='/cscenter/list/';
+    });//cancelBtn
+
     $(".confirmBtn").on('click',function(){
         const form = $('#inquiryForm')[0];
         const formData = new FormData(form);

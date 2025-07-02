@@ -19,12 +19,12 @@
             <div class="viewHead">
               <div class="subject">{{notice.ntitle}}</div>
               <div class="day">
-                <p class="txt">작성일<span>{{notice.ndate|date:'Y.m.d'}}</span></p>
+                <p class="txt">작성일<span>{{notice.ndate|date:'Y.m.d'}}</span>조회수<span>{{notice.nhit}}</span></p>
               </div>
             </div>
 
             <div class="viewContents">
-              {{notice.ncontent}}
+              {{notice.ncontent|linebreaksbr}}
               <br>
               {{notice.nfile}}
             </div>
