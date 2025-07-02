@@ -72,7 +72,6 @@
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    gap: 20px;
     list-style: none;
     padding: 10px;
     margin: 0 auto;
@@ -81,7 +80,7 @@
 
 .listWrapper li {
     flex: 0 0 auto;
-    width: 196px;
+    width: 230px;
     text-align: center;
     font-size: 14px;
 }
@@ -121,8 +120,8 @@
     overflow: hidden;
     border-radius: 7px;
     box-shadow: 0 4px 4px #797e8480;
-    width: 196px;
-    height: 280px;
+    width: 230px;
+    height: 325px;
 }
 
 .book__cover{
