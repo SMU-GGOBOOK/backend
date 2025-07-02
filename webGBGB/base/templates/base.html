@@ -7,13 +7,18 @@
   <link rel="stylesheet" href="/static/css/base.css" />
 
   <meta charset="UTF-8">
+  <title>{% block title %}내 사이트{% endblock %}</title>
+  {% block extra_css %}
+  <!-- 각 페이지별 추가 CSS 들어오는 자리 -->
+  {% endblock %}
+
 </head>
 <body>
   <header class="fig-header">
     <nav class="fig-nav">
       <div class="fig-header-left">
-        <div class="fig-one" href="/" rel="noreferrer">
-          <h1 class="fig-logo"><a href='/'>꼬북꼬북</a></h1>
+        <div class="fig-one" rel="noreferrer">
+          <h1 class="fig-logo"><a href="/">꼬북꼬북</a></h1>
           <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
             xmlns="http://www.w3.org/2000/svg" class="fig-exchangeimage">
             <path d="M4.5 7h15M4.5 12h15M4.5 17h15" stroke="#2D7868" stroke-width="1.3"
@@ -48,9 +53,9 @@
   <hr class="fig-hr">
   <div class="fig-main">
 
-	{% block content %}
-	
-	{% endblock %}
+   {% block content %}
+   
+   {% endblock %}
 
   </div>
 
@@ -110,5 +115,8 @@
     </div>
     <!--리뷰수 아래부분-->
   </div>
+  {% block extra_js %}
+  <!-- 각 페이지별 JS 들어오는 자리 -->
+  {% endblock %}
 </body>
 </html>

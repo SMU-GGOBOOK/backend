@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-{% block content %}
-<head>
-  <link rel="stylesheet" href="/static/css/mainpage.css" />
-  <script src="/static/js/mainbanner.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <title>{% block title %}꼬북꼬북{% endblock %}</title>
+  {% block extra_css %}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
-  <title>꼬북꼬북</title>
-</head>
+  <link rel="stylesheet" href="/static/css/mainpage.css" />
+  {% endblock %}
+{% block content %}
 
     <div class="mainBanner">
       <div class="swiper myBannerSwiper">
@@ -378,3 +376,7 @@
   </section>
 
 {% endblock content %}
+{% block extra_js %}
+  <script src="/static/js/mainbanner.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+{% endblock %}
