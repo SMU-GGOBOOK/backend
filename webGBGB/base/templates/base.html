@@ -7,6 +7,13 @@
   <link rel="stylesheet" href="/static/css/base.css" />
 
   <meta charset="UTF-8">
+  <title>{% block title %}내 사이트{% endblock %}</title>
+
+  {% block extra_css %}
+  <!-- 각 페이지별 추가 CSS 들어오는 자리 -->
+  {% endblock %}
+ 
+
 </head>
 <body>
   <header class="fig-header">
@@ -110,5 +117,8 @@
     </div>
     <!--리뷰수 아래부분-->
   </div>
+  {% block extra_js %}
+  <!-- 각 페이지별 JS 들어오는 자리 -->
+  {% endblock %}
 </body>
 </html>
