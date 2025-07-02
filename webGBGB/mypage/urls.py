@@ -1,9 +1,11 @@
-from django.contrib import admin
 from django.urls import path,include
+from . import views
+
+app_name='mypage'
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('mypage/', include('mypage.urls')),
+    path('review/', views.review,name='review'),
+    path('Bmark/', views.Bmark,name='Bmark'),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
