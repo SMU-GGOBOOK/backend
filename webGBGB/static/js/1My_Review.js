@@ -41,6 +41,9 @@ $(document).ready(function () {
   });
 });
 
+
+
+/*
 // 모든 삭제 버튼에 클릭 이벤트 연결
 document.querySelectorAll('.deleteBtn').forEach(button => {
   button.addEventListener('click', function () {
@@ -54,4 +57,17 @@ document.querySelectorAll('.deleteBtn').forEach(button => {
       }
     }
   });
-});
+});*/
+
+
+//리뷰박스 삭제 요청 및 삭제 스크립트
+
+
+
+
+
+
+
+
+
+
