@@ -62,6 +62,12 @@ document.querySelectorAll('.deleteBtn').forEach(button => {
 
 //리뷰박스 삭제 요청 및 삭제 스크립트
 
+$(document).ready(function(){ //문서가 완전히 로딩되었을 때 안의 함수를 실행함
+
+
+
+
+})//jquery
 
 
 
