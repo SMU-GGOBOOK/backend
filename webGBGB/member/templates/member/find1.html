@@ -105,8 +105,8 @@ $(document).ready(function() {
         </div>
         <form method="post" name="findFrm">
             {% csrf_token %}
-            <div style="display: flex; justify-content: center;">
-                <div class="login-box" style="border:3px solid #2D7868; border-radius: 7px; width:500px;"><br><br>
+            <div class="qtqt">
+                <div class="login-box"><br><br>
                     <!-- 1. 이메일 입력 + 전송 버튼 -->
                     <div class="inmail">
                         <input type="email" id="emailInput" class="idpw" placeholder="이메일 입력" required>
@@ -122,16 +122,16 @@ $(document).ready(function() {
                     <hr>
                     
                     <!-- 3. 아이디 표시 영역 -->
-                    <div class="fid" id="foundIdSection" style="text-align:center; display: none;">
-                        <p style="color:#2D7868;"> 아이디 : <strong id="foundId"></strong> </p>
+                    <div class="fid" id="foundIdSection">
+                        <p> 아이디 : <strong id="foundId"></strong> </p>
                     </div>
 
                     <!-- 4. 로그인 버튼 -->
                     <br>
-                    <div style="text-align:center; font-size:15px;">
+                    <div class="qrqr">
                         <p></p>
                     </div><br>
-                    <div style="text-align: center; padding-bottom:50px;">
+                    <div class="qeqe">
                         <a href="/member/login/"><button type="button" class="login-btn">로그인</button></a>
                     </div>
                 </div>

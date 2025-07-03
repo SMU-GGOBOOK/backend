@@ -42,8 +42,8 @@
                             <span>*</span>
                         </th>
                         <td>
-                          <input type="text" name="id" class="id" value="{{ member.id }}" readonly style="background-color: #f5f5f5; color: #666;">
-                          <small style="color: #A0A0A0; margin-left: 10px;">아이디는 변경할 수 없습니다.</small>
+                          <input type="text" name="id" class="id readonly-input" value="{{ member.id }}" readonly>
+                          <small class="smafi">아이디는 변경할 수 없습니다.</small>
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +52,7 @@
                         </th>
                         <td>
                           <input type="password" name="pw" class="pw" placeholder="변경하려면 새 비밀번호를 입력하세요 (8자 이상)" >
-                          <small id="pw-default-message" style="color: #A0A0A0; display: block; margin-left:10px; margin-top: 5px;">비밀번호를 변경하지 않으려면 비워두세요.</small>
+                          <small id="pw-default-message">비밀번호를 변경하지 않으려면 비워두세요.</small>
                         </td>
                     </tr>
                     <tr>
@@ -67,10 +67,10 @@
                             <span>*</span>
                         </th>
                         <td>
-                          <input type="text" name="email1" class="email1" value="{{ email1 }}" style="width:200px;">
-                          <p style="margin:10px;">@</p>
-                          <input type="text" name="email2" class="email2" value="{{ email2 }}" style="width:200px;">
-                          <select class="email-select" style="margin-left:8px; width:200px; height:45px;">
+                          <input type="text" name="email1" class="email1" value="{{ email1 }}">
+                          <p class="rhfqoddl">@</p>
+                          <input type="text" name="email2" class="email2" value="{{ email2 }}">
+                          <select class="email-select">
                             <option>직접입력</option>
                             <option {% if email2 == 'gmail.com' %}selected{% endif %}>gmail.com</option>
                             <option {% if email2 == 'naver.com' %}selected{% endif %}>naver.com</option>
@@ -89,12 +89,12 @@
                         <label>성별</label>
                       </th>
                       <td>
-                        <div style="display: flex; align-items: flex-start; gap: 40px; margin-top: 2px;">
-                          <label style="display: flex; align-items: center; gap: 5px; font-weight: 400; color: #1a1a1a;">
+                        <div class="divgender">
+                          <label class="lagen">
                             <input type="radio" class="gra" name="gender" value="남자" {% if member.gender == '남자' %}checked{% endif %}>
                             남성
                           </label>
-                          <label style="display: flex; align-items: center; gap: 5px; font-weight: 400; color: #1a1a1a;">
+                          <label class="lagen">
                             <input type="radio" class="gra" name="gender" value="여자" {% if member.gender == '여자' %}checked{% endif %}>
                             여성
                           </label>
@@ -103,7 +103,7 @@
                     </tr>
                     
                     <tr>
-                        <th style="vertical-align: top;"><label>관심 분야</label></th>
+                        <th id="favo"><label>관심 분야</label></th>
                         <td>
                             <div class="group_keyword">
                                 <div class="group_keyword_input">

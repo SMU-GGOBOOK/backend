@@ -37,6 +37,7 @@
   .login-box {
     background-color:rgb(245, 245, 245);
     width:600px;
+    border:3px solid #2D7868; border-radius: 7px; width:500px;
     
   }
   .login-btn {
@@ -96,4 +97,49 @@
     padding-top: 40px;
     border-top: 1px solid #1a1a1a;
     
+  
+    
+}
+
+
+.qtqt {
+  display: flex;
+  justify-content: center;
+  
+}
+
+#foundIdSection {
+  text-align:center; display: none;
+}
+
+#foundIdSection p {
+  color:#2D7868;
+}
+
+.qrqr {
+  text-align:center; font-size:15px;
+}
+
+.qeqe {
+  text-align: center; padding-bottom:50px;
+}
+
+.inid {
+  margin-left:62px; margin-bottom:15px;
+}
+
+#passwordResetSection{
+  text-align:center; display: none;
+}
+
+#passwordResetSection p{
+  color:#2D7868;
+}
+
+.help {
+  text-align:center; font-size:15px;
+}
+
+.bbtbt {
+  text-align: center; padding-bottom:50px;
 }

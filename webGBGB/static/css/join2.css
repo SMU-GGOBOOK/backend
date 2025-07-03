@@ -70,3 +70,16 @@
     padding-top: 40px;
     border-top: 1px solid #1a1a1a;
     }
+
+
+    .yes p {
+      margin-right:25px;
+    }
+
+    .saveAgree {
+      margin: 0 2px 0 -2px
+    }
+
+    .afaf {
+      margin:0 auto; text-align:center
+    }

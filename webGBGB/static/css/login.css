@@ -74,6 +74,12 @@ form[name='loginFrm'] {
       
     }
 
+  .popo {
+    color:#1a1a1a; font-weight: 400;
+  }
+
+  
+
     
 
     .checkbox-container p {
@@ -133,9 +139,17 @@ form[name='loginFrm'] {
       gap : 15px;
     }
     
+    .forfind {
+      margin-left:155px; display:flex; gap:8px;
+    }
+
     .forfind p{
       color:#2D7868;
       font-weight: 400;
+    }
+
+    .forerror {
+      color: red; font-size: 14px; margin-left:20px;
     }
 
 

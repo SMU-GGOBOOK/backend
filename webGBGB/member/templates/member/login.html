@@ -32,8 +32,8 @@
       
       <div class="checkbox-container">
         <input type="checkbox" class="saveID" name="saveID" id="saveID">
-        <p style="color:#1a1a1a; font-weight: 400;">아이디 자동 완성</p>
-        <div class="forfind" style="margin-left:155px; display:flex; gap:8px;">
+        <p class="popo">아이디 자동 완성</p>
+        <div class="forfind">
           <a href="/member/find1/" ><p class="ffp">아이디 찾기</p></a>
           <p>|</p>
           <a href="/member/find2/"><p class="ffp">비밀번호 찾기</p></a>
@@ -43,7 +43,7 @@
       <button type="submit" class="login-btn" id="loginBtn">로그인</button>
 
       {% if error %}
-        <p style="color: red; font-size: 14px; margin-left:20px;">{{ error }}</p>
+        <p class="forerror">{{ error }}</p>
       
       {% endif %}
 
