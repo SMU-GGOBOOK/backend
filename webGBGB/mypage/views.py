@@ -19,6 +19,5 @@ def review_delete(request):
         return JsonResponse({"result":"success"})
 
 
-
     return JsonResponse({'result':'error','message':'invalid method'},status=400)
 
