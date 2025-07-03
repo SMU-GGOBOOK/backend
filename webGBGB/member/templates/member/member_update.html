@@ -1,0 +1,442 @@
+{% extends "member/sample.html" %}
+{% load static %}
+{% block link %}
+<script src="https://kit.fontawesome.com/955e8c2313.js" crossorigin="anonymous"></script>
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/join3.css' %} ">
+{% endblock %}
+{% block title %}회원정보수정{% endblock %}
+{% block js-block %}
+{% endblock %}
+{% block style-block %}{% endblock %}
+{% block content %}
+<div class="feed__content">
+    <!-- 메시지 표시 -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="feed__add">
+        <div class="feed__add_title">
+            <span>{{ user_id }}님 정보 수정</span>
+        </div>
+        <!-- form (updateFrm)-->
+        <form action="/member/update_process/" method="post" name="updateFrm">
+          {% csrf_token %}
+            <table class="group_table">
+                <tbody>
+                    <tr>
+                        <th>
+                            <label>이름</label>
+                            <span>*</span>
+                        </th>
+                        <td><input type="text" name="name" class="name" value="{{ member.name }}" required></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>아이디</label>
+                            <span>*</span>
+                        </th>
+                        <td>
+                          <input type="text" name="id" class="id" value="{{ member.id }}" readonly style="background-color: #f5f5f5; color: #666;">
+                          <small style="color: #A0A0A0; margin-left: 10px;">아이디는 변경할 수 없습니다.</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>비밀번호</label>
+                        </th>
+                        <td>
+                          <input type="password" name="pw" class="pw" placeholder="변경하려면 새 비밀번호를 입력하세요 (8자 이상)" >
+                          <small id="pw-default-message" style="color: #A0A0A0; display: block; margin-left:10px; margin-top: 5px;">비밀번호를 변경하지 않으려면 비워두세요.</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>비밀번호 확인</label>
+                        </th>
+                        <td><input type="password" name="pw2" class="pw2" placeholder="새 비밀번호 확인"></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>이메일</label>
+                            <span>*</span>
+                        </th>
+                        <td>
+                          <input type="text" name="email1" class="email1" value="{{ email1 }}" style="width:200px;">
+                          <p style="margin:10px;">@</p>
+                          <input type="text" name="email2" class="email2" value="{{ email2 }}" style="width:200px;">
+                          <select class="email-select" style="margin-left:8px; width:200px; height:45px;">
+                            <option>직접입력</option>
+                            <option {% if email2 == 'gmail.com' %}selected{% endif %}>gmail.com</option>
+                            <option {% if email2 == 'naver.com' %}selected{% endif %}>naver.com</option>
+                            <option {% if email2 == 'daum.net' %}selected{% endif %}>daum.net</option>
+                          </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>생년월일</label>
+                        </th>
+                        <td><input type="date" name="birth" value="{{ member.birth }}"></td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <label>성별</label>
+                      </th>
+                      <td>
+                        <div style="display: flex; align-items: flex-start; gap: 40px; margin-top: 2px;">
+                          <label style="display: flex; align-items: center; gap: 5px; font-weight: 400; color: #1a1a1a;">
+                            <input type="radio" class="gra" name="gender" value="남자" {% if member.gender == '남자' %}checked{% endif %}>
+                            남성
+                          </label>
+                          <label style="display: flex; align-items: center; gap: 5px; font-weight: 400; color: #1a1a1a;">
+                            <input type="radio" class="gra" name="gender" value="여자" {% if member.gender == '여자' %}checked{% endif %}>
+                            여성
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    <tr>
+                        <th style="vertical-align: top;"><label>관심 분야</label></th>
+                        <td>
+                            <div class="group_keyword">
+                                <div class="group_keyword_input">
+                                    <input type="text" name="group_keyword_input" placeholder="직접 입력">
+                                    <div class="add_tag_btn">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </div>
+                                </div>
+                                <div class="group_keyword_output">
+                                    <!-- 기존 태그들이 여기에 들어감 -->
+                                </div>
+                                <!-- 폼 제출용 hidden input -->
+                                <input type="hidden" name="group_keywords_hidden" id="group_keywords_hidden" value="{{ member.genres }}">
+                                <div class="tags">
+                                    <a href="#">#소설</a>
+                                    <a href="#">#시/에세이</a>
+                                    <a href="#">#인문</a>
+                                    <a href="#">#역사/문화</a>
+                                    <a href="#">#종교</a>
+                                    <a href="#">#가정/육아</a>
+                                    <a href="#">#요리</a>
+                                    <a href="#">#건강</a>
+                                    <a href="#">#취미/실용/스포츠</a>
+                                    <a href="#">#여행</a>
+                                    <a href="#">#자기계발</a>
+                                    <a href="#">#경제/경영</a>
+                                    <a href="#">#정치/사회</a>
+                                    <a href="#">#기술/공학</a>
+                                    <a href="#">#과학</a>
+                                    <a href="#">#외국어</a>
+                                    <a href="#">#컴퓨터/IT</a>
+                                    <a href="#">#취업/수험서</a>
+                                    <a href="#">#대학교재</a>
+                                    <a href="#">#유아(0~7세)</a>
+                                    <a href="#">#어린이(초등)</a>
+                                    <a href="#">#초등참고서</a>
+                                    <a href="#">#청소년</a>
+                                    <a href="#">#중/고등참고서</a>
+                                    <a href="#">#예술/대중문화</a>
+                                    <a href="#">#잡지</a>
+                                    <a href="#">#만화</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+            <div class="group_button">
+              <button type="button" id="group_button_1">취소</button>
+              <button type="button" id="group_button_2">수정 완료</button>
+            </div>
+          </form>
+    </div>
+
+</div>
+{% endblock %}
+{% block last %}
+
+<!--                           script                          -->
+<!-- 해시태그 기능 -->
+<script>
+  const input = document.querySelector("input[name='group_keyword_input']");
+  const addBtn = document.querySelector(".add_tag_btn");
+  const outputArea = document.querySelector(".group_keyword_output");
+  const hiddenInput = document.querySelector("#group_keywords_hidden");
+  const tagLinks = document.querySelectorAll(".tags a");
+  const addedTags = new Set();
+
+  // 페이지 로드 시 기존 태그 표시
+  function loadExistingTags() {
+    const existingTags = hiddenInput.value;
+    if (existingTags) {
+      const tags = existingTags.split(",");
+      tags.forEach(tag => {
+        if (tag.trim()) {
+          addedTags.add(tag.trim());
+          displayTag(tag.trim());
+          
+          // 해당 태그가 있으면 클릭 상태로 만들기
+          tagLinks.forEach(link => {
+            if (link.textContent.trim() === tag.trim()) {
+              link.classList.add("clicked");
+            }
+          });
+        }
+      });
+    }
+  }
+
+  // 태그 화면에 표시
+  function displayTag(tagText) {
+    const tag = document.createElement("div");
+    tag.className = "added-tag";
+    tag.textContent = tagText;
+
+    const delBtn = document.createElement("span");
+    delBtn.className = "tag-delete";
+    delBtn.innerHTML = "&times;";
+
+    delBtn.onclick = () => {
+      addedTags.delete(tagText);
+      tag.remove();
+      updateHiddenInput();
+
+      tagLinks.forEach(link => {
+        if (link.textContent.trim() === tagText) {
+          link.classList.remove("clicked");
+        }
+      });
+    };
+
+    tag.appendChild(delBtn);
+    outputArea.appendChild(tag);
+  }
+
+  // hidden input에 저장
+  function updateHiddenInput() {
+    hiddenInput.value = Array.from(addedTags).join(",");
+  }
+
+  // 태그 추가 함수
+  function addTag(tagText) {
+    if (!tagText || addedTags.has(tagText)) return;
+
+    addedTags.add(tagText);
+    displayTag(tagText);
+    updateHiddenInput();
+  }
+
+  // 인풋 기반 추가
+  function addTagFromInput() {
+    const value = input.value.trim();
+    const tagText = `#${value}`;
+    if (!value) return;
+    addTag(tagText);
+    input.value = "";
+  }
+
+  // Enter 키로 입력
+  input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addTagFromInput();
+    }
+  });
+
+  // + 버튼 클릭
+  addBtn.addEventListener("click", addTagFromInput);
+
+  // 아래 해시태그 클릭 시 추가
+  tagLinks.forEach(link => {
+    link.addEventListener("click", function(e) {
+      e.preventDefault();
+      const tagText = this.textContent.trim();
+      addTag(tagText);
+      this.classList.add("clicked");
+    });
+  });
+
+  // 페이지 로드 시 기존 태그 로드
+  loadExistingTags();
+</script>
+
+<!-- 비밀번호 검증 (수정 버전) -->
+<script>
+  const pwInput = document.querySelector("input[name='pw']");
+  const pw2Input = document.querySelector("input[name='pw2']");
+  const defaultMessage = document.querySelector("#pw-default-message");
+
+  const pwWarning = document.createElement("div");
+  pwWarning.style.color = "red";
+  pwWarning.style.fontSize = "15px";
+  pwWarning.style.marginTop = "20px";
+  pwWarning.style.marginLeft = "15px";
+  pwWarning.textContent = "8자 이상 입력하셔야 합니다.";
+
+  const matchMessage = document.createElement("div");
+  matchMessage.style.fontSize = "15px";
+  matchMessage.style.marginTop = "20px";
+  matchMessage.style.marginLeft = "15px";
+
+  function hideDefaultMessage() {
+    if (defaultMessage) {
+      defaultMessage.style.display = "none";
+    }
+  }
+
+  function showDefaultMessage() {
+    if (defaultMessage) {
+      defaultMessage.style.display = "block";
+    }
+  }
+
+  function validatePwLength() {
+    const pw = pwInput.value.trim();
+    if (pw.length > 0 && pw.length < 8) {
+      pwInput.style.border = "1.5px solid red";
+      hideDefaultMessage();
+      if (!pwInput.parentNode.contains(pwWarning)) {
+        pwInput.parentNode.appendChild(pwWarning);
+      }
+      return false;
+    } else {
+      pwInput.style.border = "";
+      if (pwInput.parentNode.contains(pwWarning)) {
+        pwInput.parentNode.removeChild(pwWarning);
+      }
+      if (pw.length === 0) {
+        showDefaultMessage();
+      }
+      return true;
+    }
+  }
+
+  pwInput.addEventListener("input", function() {
+    const pw = pwInput.value.trim();
+    if (pw.length > 0) {
+      hideDefaultMessage();
+    } else {
+      showDefaultMessage();
+    }
+  });
+
+  pwInput.addEventListener("blur", validatePwLength);
+
+  pw2Input.addEventListener("keyup", function () {
+    const pw = pwInput.value.trim();
+    const pw2 = pw2Input.value.trim();
+
+    // 비밀번호가 입력되지 않은 경우 검증 안함
+    if (pw.length === 0) {
+      pw2Input.style.border = "";
+      if (pw2Input.parentNode.contains(matchMessage)) {
+        pw2Input.parentNode.removeChild(matchMessage);
+      }
+      return;
+    }
+
+    // 비밀번호가 8자 미만인 경우
+    if (pw.length < 8) {
+      pw2Input.style.border = "";
+      if (pw2Input.parentNode.contains(matchMessage)) {
+        pw2Input.parentNode.removeChild(matchMessage);
+      }
+      return;
+    }
+
+    // pw2 비교
+    if (pw2 === "") {
+      pw2Input.style.border = "";
+      if (pw2Input.parentNode.contains(matchMessage)) {
+        pw2Input.parentNode.removeChild(matchMessage);
+      }
+    } else if (pw === pw2) {
+      pw2Input.style.border = "1.5px solid green";
+      matchMessage.textContent = "비밀번호가 일치합니다.";
+      matchMessage.style.color = "green";
+      if (!pw2Input.parentNode.contains(matchMessage)) {
+        pw2Input.parentNode.appendChild(matchMessage);
+      }
+    } else {
+      pw2Input.style.border = "1.5px solid red";
+      matchMessage.textContent = "비밀번호가 일치하지 않습니다.";
+      matchMessage.style.color = "red";
+      if (!pw2Input.parentNode.contains(matchMessage)) {
+        pw2Input.parentNode.appendChild(matchMessage);
+      }
+    }
+  });
+</script>
+
+<!-- 취소 버튼 클릭 시 뒤로가기 -->
+<script>
+  document.querySelector("#group_button_1").addEventListener("click", function () {
+    if (confirm("수정을 취소하시겠습니까? 변경사항이 저장되지 않습니다.")) {
+      window.history.back();
+    }
+  });
+</script>
+
+<!-- 수정 완료 버튼 -->
+<script>
+  document.querySelector("#group_button_2").addEventListener("click", function () {
+    const name = document.querySelector("input[name='name']").value.trim();
+    const email1 = document.querySelector("input[name='email1']").value.trim();
+    const email2 = document.querySelector("input[name='email2']").value.trim();
+    const pw = document.querySelector("input[name='pw']").value.trim();
+    const pw2 = document.querySelector("input[name='pw2']").value.trim();
+
+    // 필수 항목 검사
+    if (!name || !email1 || !email2) {
+      alert("이름과 이메일은 필수 항목입니다.");
+      return;
+    }
+
+    // 비밀번호 검증 (입력된 경우만)
+    if (pw.length > 0) {
+      if (pw.length < 8) {
+        alert("비밀번호는 8자 이상이어야 합니다.");
+        return;
+      }
+
+      if (pw !== pw2) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+      }
+    }
+
+    // 폼 제출
+    document.updateFrm.submit();
+  });
+</script>
+
+<!-- email 선택시 자동입력 및 수정 불가-->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const emailSelect = document.querySelector(".email-select");
+    const email2Input = document.querySelector(".email2");
+
+    emailSelect.addEventListener("change", function () {
+      const selected = this.value;
+
+      if (selected === "직접입력") {
+        email2Input.value = "";
+        email2Input.readOnly = false;
+        email2Input.focus();
+      } else {
+        email2Input.value = selected;
+        email2Input.readOnly = true;
+      }
+    });
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,144 @@
+form[name='loginFrm'] {
+    margin-top: 20px;
+    padding-top: 40px;
+    border-top: 1px solid #1a1a1a;
+}
+
+.modal_right {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .full {
+    width:100%;
+    height:100%;
+    
+  }
+  .full h2{
+    color:#2D7868;
+    text-align:center;
+  }
+
+  .menu-box {
+    margin:50px;
+  }
+
+ 
+
+  /* .menu-box li:hover {
+    background-color : #2D7868;
+  } */
+
+  .login-box {
+    background-color:rgb(245, 245, 245);
+    width:600px;
+    margin:0 auto;
+    border:3px solid #2D7868;
+    border-radius: 7px;
+    width:500px;
+    height:350px;
+    margin-top:15px;
+    
+  }
+  .login-box .idpw {
+    width:450px; height:45px; margin-bottom:20px; border: 1px solid #ccc; border-radius:7px;
+    font-size:15px; font-weight: 400; margin:20px; background-color:#fafafa; letter-spacing:5px; padding: 15px;
+  }
+  .idpw:focus {
+  outline: 1.5px solid gray;
+}
+
+  .login-btn {
+    margin: 20px;
+    width:450px;
+    height:50px;
+    background: #2D7868;
+    color: #fafafa;
+    border: none;
+    font-weight: bold;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 15px;
+    
+  }
+
+  
+
+  .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+      padding-left:20px;
+      
+    }
+
+    
+
+    .checkbox-container p {
+      margin: 0;
+      font-weight: normal;
+      font-size: 14px;
+      
+    }
+
+  .saveID {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: none;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      position: relative;
+      border-radius: 7px;
+      appearance: checkbox;
+      accent-color: #2D7868;
+    }
+
+    
+    
+
+    .pages {
+      
+      align-items: center;
+      text-align:center;
+      gap: 5px;
+      font-size: 12px;
+      margin-top: 10px;
+      padding-top:30px;
+    }
+    
+    .pages p{
+      color:#1a1a1a;
+    }
+
+    .pages a {
+      color: #333;
+      text-decoration: none;
+      
+    }
+
+    .pages .findId {
+      background: #2D7868;
+      color: #fafafa;
+      font-weight: bold;
+      border-radius: 7px;
+      border:none;
+      cursor: pointer;
+      font-size: 15px;
+      width:180px;
+      height:50px;
+      gap : 15px;
+    }
+    
+    .forfind p{
+      color:#2D7868;
+      font-weight: 400;
+    }
+
+
+    .ffp:hover{
+      font-weight: 1000;
+    }

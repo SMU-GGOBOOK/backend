@@ -1,0 +1,36 @@
+{% extends "member/sample.html" %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/fin.css'%}">
+{% endblock %}
+{% block title %}회원가입완료{% endblock %}
+{% block js-block %}
+{% endblock %}
+{% block style-block %}{% endblock %}
+{% block content %}
+<div class="full">
+      
+      <div class="modal_right">
+        
+        <div class="right" style="width:100%;">
+          <div class="righttop">
+            <h2 style="margin-top:200px;"><strong style="font-size:50px;">가입 완료</strong></h2>
+            <br>
+            <p style="text-align:center; font-size:20px; font-weight:5px; color:#1a1a1a;">{{ signup_name }}님, 가입해주셔서 감사합니다.</p>
+          </div>
+            
+        
+        
+          <div style="display:flex; justify-content: center; gap:8px; margin-top:150px;">
+            <a href="/member/login"><button class="login-btn" id="loginBtn">로그인</button></a>
+            <a href="/"><button class="home-btn" id="home">홈으로</button></a>
+            <br><br><br><br>
+          </div>
+        
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block last %}
+{% endblock %}
+
