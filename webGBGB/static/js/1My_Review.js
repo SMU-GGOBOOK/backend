@@ -61,13 +61,31 @@ document.querySelectorAll('.deleteBtn').forEach(button => {
 
 
 //리뷰박스 삭제 요청 및 삭제 스크립트
+$(document).on('click', '.deleteBtn', function() {
+  const $commentItem = $(this).closest('.comment_item');
+  const reviewId = $commentItem.data('id'); // HTML에서 data-id로 지정된 값
+  const cToken = $('meta[name="csrf-token"]').attr('content');
 
-$(document).ready(function(){ //문서가 완전히 로딩되었을 때 안의 함수를 실행함
+  if (!confirm('정말 삭제하시겠습니까?')) return;
 
+  $.ajax({
+    url: '/ajaxData/review_delete/',  // 백엔드 URL에 맞게 수정
+    type: 'post',
+    headers: { 'X-CSRFToken': cToken },
+    data: { 'review_id': reviewId },
+    success: function(data) {
+      if (data.result === 'success') {
+        $commentItem.remove(); // DOM에서 제거
+      } else {
+        alert('삭제 실패: ' + data.message);
+      }
+    },
+    error: function() {
+      alert('서버 오류');
+    }
+  });
+});
 
-
-
-})//jquery
 
 
 
