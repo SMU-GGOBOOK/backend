@@ -179,8 +179,8 @@ hr {
     position: relative;
 }
 
-.fig-signup,
-.fig-login {
+.fig-right1,
+.fig-right2 {
     padding: 11px 12px;
     font-weight: 600;
     font-size: 16px;
@@ -276,6 +276,10 @@ hr {
     justify-content: space-between;
 }
 
+.logos img{
+    cursor: pointer;
+}
+
 .infoWrap{
     margin-bottom: 20px;
     display: flex;
@@ -299,7 +303,7 @@ hr {
     justify-content: space-between;
 }
 
-.csWrap > button{
+.csWrap button{
     cursor: pointer;
     width:180px;
     height:40px;

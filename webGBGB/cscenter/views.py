@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
 from django.db.models import F
@@ -67,7 +68,8 @@ def view(request,ntcno):
 
 def inquiry(request):
     if request.method == 'GET':
-        return render(request,'cscenter/inquiry.html')
+        return render(request, 'cscenter/inquiry.html')
+
     elif request.method == 'POST':
         return redirect('/cscenter/notice/')
     

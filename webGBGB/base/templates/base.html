@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <form role="search" class="fig-searchform et3830u0">
+      <form action='/booksearch/list/' method='get' role="search" class="fig-searchform et3830u0">
         <div tabindex="-1" class="fig-tabindex">
           <div class="fig-q3rd3s et3830u1">
             <label class="fig-formlabel">
@@ -43,10 +43,20 @@
         </div>
       </form>
 
+      {% if not request.session.session_id %}
       <div class="fig-join">
-        <a href="" class="fig-signup">회원가입</a>
-        <a href="" class="fig-login">로그인</a>
+        <a href="/member/join01/" class="fig-right1">회원가입</a>
+        <a href="/member/login/" class="fig-right2">로그인</a>
       </div>
+
+      {% else %}
+
+      <div class="fig-join">
+        <a href="/mypage/review/" class="fig-right1">마이페이지</a>
+        <a href="/member/logout/" class="fig-right2">로그아웃</a>
+      </div>
+
+      {% endif %}
 
     </nav>
   </header> 
@@ -82,17 +92,23 @@
           <p>© 2025 꼬북꼬북 All rights reserved</p>
         </div>
         <div class="logos">
-          <img src="/static/images/logos_notion.png" style="width:30px;">
-          <img src="/static/images/logos_github.png" style="width:30px;">
-          <img src="/static/images/logos_youtube.png" style="width:30px;">
+          <a href="https://www.notion.so/2159caa5c33a8085bceacd5e9ed02374">
+            <img src="/static/images/logos_notion.png" id='notionLogo' style="width:30px;">
+          </a>
+          <a href="https://github.com/SMU-GGOBOOK">
+            <img src="/static/images/logos_github.png" id='githubLogo' style="width:30px;">
+          </a>
+          <a href="https://youtu.be/lArqN_zu5tw?si=CgSsYu4Qq4qDtb5-">
+            <img src="/static/images/logos_youtube.png" id='youtubeLogo' style="width:30px;">
+          </a>
         </div>
       </div>
 
       <div class="footer-right">
         <p>고객센터 1234-5678 (발신자 부담)</p>
         <div class="csWrap">
-          <button class="ntcBtn">공지사항</button>
-          <button class="inqBtn">1:1문의</button>
+          <a href="/cscenter/list/"><button class="ntcBtn">공지사항</button></a>
+          <a href="/cscenter/inquiry/"><button class="inqBtn">1:1문의</button></a>
         </div>
         <table class="gitIds">
           <tbody>

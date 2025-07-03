@@ -96,6 +96,13 @@
   </div>
 </div>
 
+<script>
+  if('{{request.session.session_id}}' == ''){
+    alert("로그인 후 1:1문의 작성이 가능합니다.")
+    history.back();
+  }
+</script>
+
 {% endblock %}
 {% block extra_js %}
   <script src="/static/js/photoadd.js"></script>
