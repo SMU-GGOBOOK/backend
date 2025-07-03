@@ -6,3 +6,6 @@ def review(request):
 
 def Bmark(request):
     return render(request,'mypage/Bmark.html')
+
+def mygroup(request):
+    return render(request,'mypage/mygroup.html')
