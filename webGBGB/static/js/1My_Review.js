@@ -41,3 +41,17 @@ $(document).ready(function () {
   });
 });
 
+// 모든 삭제 버튼에 클릭 이벤트 연결
+document.querySelectorAll('.deleteBtn').forEach(button => {
+  button.addEventListener('click', function () {
+    const comment_item = this.closest('.comment_item');
+
+    // 리뷰박스에서 삭제버튼 클릭하면 삭제
+    if (comment_item) {
+      const shouldDelete = confirm("리뷰를 삭제하시겠습니까?");
+      if (shouldDelete) {
+        comment_item.remove();
+      }
+    }
+  });
+});

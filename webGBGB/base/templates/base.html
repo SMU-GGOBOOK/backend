@@ -5,19 +5,21 @@
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="https://kit.fontawesome.com/e1869b8eb9.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="/static/css/base.css" />
+
   <meta charset="UTF-8">
   <title>{% block title %}내 사이트{% endblock %}</title>
-  <!--내 헤더 -->
+
   {% block extra_css %}
+  <!-- 각 페이지별 추가 CSS 들어오는 자리 -->
   {% endblock %}
-  <!--내 헤더 끝-->
+ 
 
 </head>
 <body>
   <header class="fig-header">
     <nav class="fig-nav">
       <div class="fig-header-left">
-        <div class="fig-one" rel="noreferrer">
+        <div class="fig-one" href="/" rel="noreferrer">
           <h1 class="fig-logo"><a href="/">꼬북꼬북</a></h1>
           <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
             xmlns="http://www.w3.org/2000/svg" class="fig-exchangeimage">
@@ -115,5 +117,8 @@
     </div>
     <!--리뷰수 아래부분-->
   </div>
+  {% block extra_js %}
+  <!-- 각 페이지별 JS 들어오는 자리 -->
+  {% endblock %}
 </body>
 </html>
