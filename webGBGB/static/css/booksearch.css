@@ -81,7 +81,7 @@
 }
 
 /* 책 */
-.sui-book__box {
+.book--box {
     width: 100%;
     --sui-book-bg-box-width: 270px;
     --sui-book-bg-box-height: 465px;
@@ -189,7 +189,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 10px;
+    gap: 5px;
     padding: 10px 15px;
     height: 145px;
     width: 100%;
@@ -214,7 +214,7 @@ sui-book-author {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
 }
 sui-book-genre, sui-book-rating {
     font-size: 14px;
