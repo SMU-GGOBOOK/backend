@@ -188,9 +188,9 @@
 .sui-book__inform-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     gap: 10px;
-    padding: 8px;
+    padding: 10px 15px;
     height: 145px;
     width: 100%;
     margin: 0 10px;

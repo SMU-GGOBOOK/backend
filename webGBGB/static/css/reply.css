@@ -236,7 +236,7 @@ button[class^=btn_] .text, a[class^=btn_] .text {
     left: 20px;
     width: 8px;
     height: 9px;
-    background: url(/static/images/booksearch/arw_reply@2x.png) 0% 0% no-repeat;
+    background: url(../images/arw_reply@2x.png) 0% 0% no-repeat;
     background-size: 8px 9px;
 }
 /* 답글의 답글 헤더 부분*/
@@ -273,7 +273,7 @@ button[class^=btn_], a[class^=btn_] {
 }
 
 .btn_more_body {
-    color: #767676;
+    color: #636363;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;
@@ -298,6 +298,7 @@ button[class^=btn_] [class^=ico_], a[class^=btn_] [class^=ico_] {
 
 .btn_more_body .ico_arw {
     height: 20px;
+    color: #636363;
     background-size: 20px 20px;
 }
 .btn_more_body [class^=ico_] {

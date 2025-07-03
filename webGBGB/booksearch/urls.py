@@ -3,7 +3,7 @@ from . import views
 
 app_name='booksearch'
 urlpatterns = [
-    path('booksearch/', views.booksearch, name='booksearch'), # list 페이지 연결
+    path('search/', views.search, name='search'), # list 페이지 연결
     path('detail/', views.detail, name='detail'), # list 페이지 연결
 ]
 
