@@ -42,7 +42,7 @@
         {% if books %}
         {% for b in books %}
         <div class="book--box ng-star-inserted">
-          <sui-book>
+          <sui-book class="{{b.title}}">
             <div class="sui-book__box">
               <div class="sui-book__cover-box">
                 <button class="bookmarkBtn" onclick="toggleBookmark(this)">
