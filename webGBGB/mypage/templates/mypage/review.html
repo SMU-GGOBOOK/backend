@@ -38,28 +38,30 @@
                     </div> 
                 </div>
               </div>
-                <!--리뷰박스1-->
-                <div class="comment_wrap">
-                    <div class="comment_list">
-                        <div class="comment_item" data-id="{{ review.id }}">
+              <div class="comment_wrap">
+                <div class="comment_list">
+                      <!--리뷰박스1-->
+                      <!--여기에 북디테일 html 연결-->
+                      {% comment %} <a href="{% url '' review.book.id %}" class="comment_link"> {% endcomment %}
+                        <div class="comment_item" data-id="{{ review.id }}" data-book-id="{{ review.book.id }}">
                             <div class="comment_all">
-                              <div class="comment_header">
+                              <div class="comment_header">1
                                 <div class="left_area">
                                     <div class="user_info_box">
-                                    <span class="badge_box">
-                                        <span class="badge_sm badge_pill badge_kyobo">
-                                          <span class="text">책이름</span>
-                                        </span>
-                                    </span>
-                                    <span class="info_item">내 닉네임</span>
-                                    <span class="review_gap"> | </span>
-                                    <span class="info_item">2020.06.08</span>
-                                    <span class="review_gap"> | </span>
-                                    <span class="info_item">
-                                        <button class="btn_comment_util" type="button" data-role="report">
-                                            <span class="text deleteBtn">삭제</span>
-                                        </button>
-                                    </span>
+                                      <span class="badge_box">
+                                          <span class="badge_sm badge_pill badge_kyobo">
+                                            <span class="text">책이름</span>
+                                          </span>
+                                      </span>
+                                      <span class="info_item">내 닉네임</span>
+                                      <span class="review_gap"> | </span>
+                                      <span class="info_item">2020.06.08</span>
+                                      <span class="review_gap"> | </span>
+                                      <span class="info_item">
+                                          <button class="btn_comment_util" type="button" data-role="report">
+                                              <span class="text deleteBtn">삭제</span>
+                                          </button>
+                                      </span>
                                     </div>
                                 </div>
                                 <div class="right_area">
@@ -111,8 +113,8 @@
                                         </div>
                                 </div>
                               </div>
-                            </div>
-
+                        </div>
+                      {% comment %} </a> {% endcomment %}
                             <div class="comment_contents">
                             <div class="comment_text">
                                 아들이 사업을 하면서 어려움을 많이 겪고 있습니다. 심리적으로 위축된 모습을 보는 게 마음이 아프네요. 
@@ -145,6 +147,7 @@
                             </div>
                           </div>
                       </div>
+                      </a>
                   </div>
                 <!--리뷰박스2-->
                 <div class="comment_wrap">
