@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <form role="search" class="fig-searchform et3830u0">
+      <form action='/booksearch/list/' name='keyword' role="search" class="fig-searchform et3830u0">
         <div tabindex="-1" class="fig-tabindex">
           <div class="fig-q3rd3s et3830u1">
             <label class="fig-formlabel">
@@ -45,10 +45,17 @@
         </div>
       </form>
 
-      <div class="fig-join">
-        <a href="" class="fig-signup">회원가입</a>
-        <a href="" class="fig-login">로그인</a>
+      {% if not request.session.session_id %}
+      <div class="fig-right">
+        <a href="" class="fig-r1">회원가입</a>
+        <a href="" class="fig-r2">로그인</a>
       </div>
+      {% else %}
+      <div class="fig-right">
+        <a href="" class="fig-r1">마이페이지</a>
+        <a href="" class="fig-r2">로그아웃</a>
+      </div>
+      {% endif %}
 
     </nav>
   </header> 
