@@ -5,7 +5,6 @@ app_name='booksearch'
 urlpatterns = [
     path('search/', views.search, name='search'), # list 페이지 연결
     path('detail/<str:title>/<str:author>/', views.detail, name='detail'), # list 페이지 연결
-
 ]
 
 # urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

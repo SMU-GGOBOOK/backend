@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'base',
     'dummyhome',
     'member',
+    'booksearch',
+    'review',
 
 ]
 

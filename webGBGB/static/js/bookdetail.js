@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById("rating-value-review");
   const valSpan = document.querySelector(".caption-review .val"); // 오타 반영
   const textSpan = document.querySelector(".caption-review-badge span > span:first-child");
+  const visibleRatingInput = document.querySelector(".form_rating.rating-input"); // 🔹 추가된 라인
 
   let currentValue = parseInt(input.value || "0");
 
@@ -75,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (input) input.value = value;
+    if (visibleRatingInput) visibleRatingInput.value = value; // 🔹 여기에 추가!
     if (valSpan) valSpan.textContent = value;
     if (textSpan) textSpan.textContent = `5점 중 ${value}점`;
 
@@ -374,8 +376,15 @@ document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(tag => {
     const alreadyActive = tag.classList.contains('active');
     document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(t => t.classList.remove('active'));
     if (!alreadyActive) tag.classList.add('active');
+
+    const emotionInput = document.getElementById('selected-emotion');
+    if (emotionInput) {
+      const selectedText = tag.querySelector('.text')?.textContent.trim();
+      emotionInput.value = selectedText || "";
+    }
   });
 });
+
 
 
 /* 모달 팝업 등록 버튼 & 초기화 */

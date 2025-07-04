@@ -265,19 +265,10 @@
           <div class="right_area">
             <button type="button"
             id="openReviewBtn"
-            data-kbbfn-type="002"
-            data-kbbfn-role="post"
-            data-kbbfn-title="리뷰 작성"
-            data-kbbfn-list-for="ReviewList1"
             class="btn_sm btn_primary"
-            data-role="btn-dialog"
-            data-target="#ReviewList1_60eed5c5-b66a-4625-93ba-1769488af271_post"
-            data-kbbfn="ui-review-form"
-            data-kbbfn-prod-age="0"
-            data-kbbfn-prod-code="KOR"
-            data-kbbfn-prod-title="돈의 속성(400쇄 리커버에디션)"
-            data-kbbfn-prod-bid="9791188331796"
-            data-kbbfn-prod-pid="S000001913217">
+            data-book-id="{{ book.id }}"
+            data-member-id="{{ request.user.id }}"
+            >
             <span class="ico_review">
               <i class="fa-solid fa-pen-to-square" style="color: #fafafa;"></i>
             </span>
@@ -1152,6 +1143,10 @@
                           <div class="simplebar-wrapper" style="margin: 0px -18px 0px 0px;"> 
                               <div class="simplebar-mask">
                                   <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                    {% if book %}
+                                    
+                                    <form method="POST" enctype="multipart/form-data">
+                                      {% csrf_token %}
                                       <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
                                           <div class="simplebar-content" style="padding: 0px 18px 0px 0px;">
                                               <div class="custom_scroll_inner" tabindex="0">
@@ -1160,18 +1155,15 @@
                                                           <div class="prod_thumb_box size_xs">
                                                               <a class="prod_link" href="https://product.kyobobook.co.kr/detail/S000001913217">
                                                                   <span class="img_box">
-                                                                      <img data-kbbfn="s3-image" loading="lazy" alt="S000001913217" src="https://contents.kyobobook.co.kr/sih/fit-in/100x0/pdt/9791188331796.jpg" data-src="https://contents.kyobobook.co.kr/sih/fit-in/100x0/pdt/9791188331796.jpg">
+                                                                      <img data-kbbfn="s3-image" loading="lazy" alt="S000001913217" src="{{book.cover}}">
                                                                   </span>
                                                               </a>
                                                           </div>
                                                           <div class="prod_info_box size_sm">
                                                               <a class="prod_info" href="#">
-                                                                  <span class="prod_name">돈의 속성(400쇄 리커버에디션)</span>
+                                                                  <span class="prod_name">{{book.title}}</span>
                                                               </a>
                                                               <div class="rating-container theme-krajee-gly rating-lg rating-animate has_caption">
-                                                                  <div class="clear-rating clear-rating-active" title="초기화">
-                                                                      <i class="glyphicon glyphicon-minus-sign"></i>
-                                                                  </div>
                                                                   <div class="rating-container has_caption">
                                                                     <div class="rating-stars-review" id="rating">
                                                                       <span class="star" data-value="1"></span>
@@ -1180,7 +1172,8 @@
                                                                       <span class="star" data-value="4"></span>
                                                                       <span class="star" data-value="5"></span>
                                                                     </div>
-                                                                    <input type="number" id="rating-value-review" hidden>
+                                                                    <input type="hidden" name="rating" id="rating-value-review" value="5">
+
                                                                     <div class="caption-review">
                                                                       <span class="caption-review-badge">
                                                                         <span>
@@ -1192,7 +1185,7 @@
                                                                     </div>
                                                                   </div>
                                                               </div>
-                                                              <input class="form_rating rating-input" type="number" title="평가점수 선택" value="10" data-caption="" data-size="lg" tabindex="-1">
+                                                              <input name="rating" class="form_rating rating-input" type="number" title="평가점수 선택" value="5" data-caption="" data-size="lg" tabindex="-1">
                                                           </div>
                                                       </div>
                                                   </div>
@@ -1225,6 +1218,8 @@
                                                               </button>
                                                           </div>
                                                       </div>
+                                                      <input type="hidden" name="tag" id="selected-emotion" value="">
+
                                                   </div>
                                               <div class="form_box">
                                                   <div class="form_title">
@@ -1234,7 +1229,7 @@
                                                   </div>
                                                   <div class="form_cont">
                                                       <div class="byte_check_wrap">
-                                                          <textarea class="form_textarea" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_reviewText" name="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_reviewText" placeholder="내용을 10자 이상 입력해 주세요. 주제와 무관한 댓글, 악플 등의 비방 글은 임의 삭제될 수 있습니다." maxlength="3000" style="height: 70px;"></textarea>
+                                                          <textarea class="form_textarea" id="comments" name="reviewText" placeholder="내용을 10자 이상 입력해 주세요. 주제와 무관한 댓글, 악플 등의 비방 글은 임의 삭제될 수 있습니다." maxlength="3000" style="height: 70px;"></textarea>
                                                           <div class="byte_check byte_check_footer">
                                                               <span class="count">0</span>
                                                               <span class="total">3000</span>
@@ -1274,9 +1269,13 @@
                                                       <p class="bul_item_asterisk font_size_xxs">JPG, PNG, GIF 파일만 최대 3장 업로드 가능합니다.</p>
                                                   </div>
                                               </div>
+                                              <input name="review_image" type="file" multiple>
                                               </div>
                                           </div>
                                       </div>
+                                    </form>
+                                    
+                                    {% endif %}
                                   </div>
                               </div>
                           </div>
