@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css" rel="stylesheet">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="https://kit.fontawesome.com/e1869b8eb9.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="/static/css/base.css" />
@@ -28,7 +29,7 @@
         </div>
       </div>
 
-      <form action='/booksearch/list/' method='get' role="search" class="fig-searchform et3830u0">
+      <form action='/booksearch/search/' method='get' name='keyword' role="search" class="fig-searchform et3830u0">
         <div tabindex="-1" class="fig-tabindex">
           <div class="fig-q3rd3s et3830u1">
             <label class="fig-formlabel">
@@ -44,16 +45,16 @@
       </form>
 
       {% if not request.session.session_id %}
-      <div class="fig-join">
-        <a href="/member/join01/" class="fig-right1">회원가입</a>
-        <a href="/member/login/" class="fig-right2">로그인</a>
+      <div class="fig-right">
+        <a href="/member/join01/" class="fig-r1">회원가입</a>
+        <a href="/member/login/" class="fig-r2">로그인</a>
       </div>
 
       {% else %}
 
-      <div class="fig-join">
-        <a href="/mypage/review/" class="fig-right1">마이페이지</a>
-        <a href="/member/logout/" class="fig-right2">로그아웃</a>
+      <div class="fig-right">
+        <a href="/mypage/review/" class="fig-r1">마이페이지</a>
+        <a href="/member/logout/" class="fig-r2">로그아웃</a>
       </div>
 
       {% endif %}
