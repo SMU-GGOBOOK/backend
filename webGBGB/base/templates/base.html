@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css" rel="stylesheet">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="https://kit.fontawesome.com/e1869b8eb9.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="/static/css/base.css" />
@@ -42,11 +43,17 @@
           </div>
         </div>
       </form>
-
-      <div class="fig-join">
-        <a href="" class="fig-signup">회원가입</a>
-        <a href="" class="fig-login">로그인</a>
+      {% if not request.session.session_id %}
+      <div class="fig-right">
+        <a href="" class="fig-r1">회원가입</a>
+        <a href="" class="fig-r2">로그인</a>
       </div>
+      {% else %}
+      <div class="fig-right">
+        <a href="" class="fig-r1">마이페이지</a>
+        <a href="" class="fig-r2">로그아웃</a>
+      </div>
+      {% endif %}
 
     </nav>
   </header> 
