@@ -89,16 +89,16 @@ $(document).on('click', '.deleteBtn', function() {
 
 // 리뷰박스 클릭시 상세페이지 
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.comment_item').forEach(item => {
-    // e는 이벤트가 발생했을때 브라우저가 자동으로 전달해주는 객체
-    item.addEventListener('click', function (e) {
-      // 버튼 클릭은 제외
-      if (e.target.closest('button')) return;
-
-      const bookId = this.dataset.bookId;
-      if (bookId) {
-        window.location.href = `/books/${bookId}/`; // URL 구조에 맞게 수정
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.comment_item').forEach(function (element) {
+    element.addEventListener("click", function (e) {
+      // 버튼 클릭이면 무시
+      if (e.target.closest("button")) return; // 삭제 버튼 같은 건 제외
+      
+      // 페이지 이동
+      const reviewId = this.dataset.reviewId;
+      if (reviewId) {
+        window.location.href = `/books/${reviewId}/`; // ← 여길 실제 경로에 맞게
       }
     });
   });

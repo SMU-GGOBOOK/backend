@@ -165,6 +165,11 @@ padding: 20px 0;
     height: 110%;
     margin: 0px 0px 20px;
     width: 100%;
+    cursor: pointer;
+}
+.comment_item:hover {
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease;
 }
 
 .comment_header {
