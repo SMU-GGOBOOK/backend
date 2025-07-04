@@ -230,7 +230,7 @@ review_ {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 18px 18px;
-    background-image: url(../images/ico_star_nonecilck.svg);
+    background-image: url(/static/images/booksearch/ico_star_nonecilck.svg);
 }
 
 /* filled-stars */
@@ -256,7 +256,7 @@ review_ {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 18px 18px;
-    background-image: url(../images/ico_star_cilck.svg);
+    background-image: url(/static/images/booksearch/ico_star_cilck.svg);
 }
 /* rating-input */
 .rating-input {
@@ -655,7 +655,7 @@ input, button, select, textarea {
     width: 4px;
     height: 8px;
     margin: 6px 6px 0;
-    background: url(../images/ico_slash@2x.png) 0% 0% no-repeat;
+    background: url(/static/images/booksearch/ico_slash@2x.png) 0% 0% no-repeat;
     background-size: 4px 8px;
     vertical-align: top;
 }
@@ -830,7 +830,7 @@ input, button, select, textarea {
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.3);
     background-size: 44px 44px;
-    background-image: url(../images/common/ink/btn_swiper_arr_white@2x.png);
+    background-image: url(/static/images/booksearch/common/ink/btn_swiper_arr_white@2x.png);
     transition: opacity 0.23s;
     border-radius: 100%;
     z-index: 2;
@@ -867,7 +867,7 @@ input, button, select, textarea {
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.3);
     background-size: 44px 44px;
-    background-image: url(../images/common/ink/btn_swiper_arr_white@2x.png);
+    background-image: url(/static/images/booksearch/common/ink/btn_swiper_arr_white@2x.png);
     transition: opacity 0.23s;
     border-radius: 100%;
     z-index: 2;

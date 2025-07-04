@@ -16,4 +16,3 @@ function toggleBookmark(button) {
     icon.classList.remove('fading-out');
     }, 100); // 전체 duration 이후
 }
-

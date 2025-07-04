@@ -1,15 +1,15 @@
 from django.shortcuts import render
 import requests
 from .models import Book
-from bs4 import BeautifulSoup
-from django.core.paginator import Paginator
+import urllib.parse
 
 
 def search(request):
-    query = request.GET.get('query', '').strip() or '행복'
+    query = request.GET.get('query', '').strip() or '아름다운'
     query_lower = query.lower()
     books = []
     apipage = 1
+    total_count = 0
 
     if query:
         headers = {
@@ -31,26 +31,30 @@ def search(request):
                 break
 
             data = response.json()
+                        
             documents = data.get('documents', [])
 
             for doc in documents:
                 title = doc.get('title', '')
                 author = ", ".join(doc.get('authors', []))
                 publisher = doc.get('publisher', '')
-                cover = doc.get('thumbnail', '')
+                thumbnail_url = doc.get('thumbnail', '')
                 book_url = doc.get('url', '')
 
-                # 날짜 정제: 2017-01-10T00:00:00.000+09:00 → 2017-01-10
+                # 고화질 이미지 추출
+                if 'fname=' in thumbnail_url:
+                    cover = urllib.parse.unquote(thumbnail_url.split("fname=")[-1])
+                else:
+                    cover = thumbnail_url
+
                 pub_date_raw = doc.get('datetime', '')
                 pub_date = pub_date_raw[:10] if pub_date_raw else None
 
-                # ISBN 정제: 978로 시작하는 13자리만 저장
                 isbn_raw = doc.get('isbn', '')
                 isbn = isbn_raw.split()[-1] if isbn_raw else None
 
-                # 검색 키워드 포함 확인
+                # 대소문자 구분 없이 정확히 title 또는 author 안에 query 포함 여부 확인
                 if query_lower in title.lower() or query_lower in author.lower():
-                    # 중복 저장 방지
                     if not Book.objects.filter(title=title, publisher=publisher).exists():
                         Book.objects.create(
                             title=title,
@@ -67,22 +71,30 @@ def search(request):
                         'cover': cover,
                         'book_url': book_url
                     })
+                    total_count += 1
+
 
             if data.get('meta', {}).get('is_end'):
                 break
 
             apipage += 1
 
-    # ✅ 페이지네이션 적용
-    page = int(request.GET.get('page', 1))
-    qs = Book.objects.all().order_by('title')
-    paginator = Paginator(qs, 20)
-    list = paginator.get_page(page)
+    # total_count 정리 (천 단위 쉼표 추가)
+    filtered_total_count = f"{total_count:,}"
 
-    block_size = 5  # 5개씩 묶음
-    block_num = (page - 1) // block_size  # 현재 몇 번째 블록?
+    page = int(request.GET.get('page', 1))
+        # page 변수는 이미 있음
+    per_page = 20
+    start = (page - 1) * per_page
+    end = start + per_page
+    list = books[start:end]  # API 원본 필터링 리스트에서 페이징
+    
+    total_pages = (total_count + per_page - 1) // per_page
+
+    block_size = 5
+    block_num = (page - 1) // block_size
     block_start = block_num * block_size + 1
-    block_end = min(block_start + block_size - 1, paginator.num_pages)
+    block_end = min(block_start + block_size - 1, total_pages)
 
     page_range = range(block_start, block_end + 1)
 
@@ -93,14 +105,20 @@ def search(request):
         'block_start': block_start,
         'block_end': block_end,
         'has_prev_block': block_start > 1,
-        'has_next_block': block_end < paginator.num_pages,
+        'has_next_block': block_end < total_pages,
         'prev_block_page': block_start - 1,
         'next_block_page': block_end + 1,
+        'total_count': filtered_total_count,
     }
 
 
     return render(request, 'booksearch/booksearch.html', context)
 
-def detail(request):
-    return render(request, 'booksearch/bookdetail.html')
-    
+def detail(request, title, author):
+    print("넘어온 데이터 : ", title, author)
+    try:
+        book = Book.objects.get(title=title, author=author)
+    except Book.DoesNotExist:
+        return render(request, 'booksearch/404.html', status=404)
+
+    return render(request, 'booksearch/bookdetail.html', {'book': book,})

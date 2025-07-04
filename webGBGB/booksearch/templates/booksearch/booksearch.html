@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load static%}
 
@@ -24,7 +25,7 @@
           <li class="rigrid-1yictku">
             <div class="rigrid-1x2e8r3">
               <a href="/search?q=%ED%96%89%EB%B3%B5&amp;adult_exclude=n" class="rigrid-g1be25">
-                <span class="rigrid-vq4mjc">전체 (개수) </span>
+                <span class="rigrid-vq4mjc">전체 ({{total_count}})</span>
               </a>
             </div>
           </li>
@@ -41,26 +42,30 @@
         {% if books %}
         {% for b in books %}
         <div class="book--box ng-star-inserted">
-          <sui-book _nghost-ng-c1655548388="">
+          <sui-book>
             <div class="sui-book__box">
               <div class="sui-book__cover-box">
                 <button class="bookmarkBtn" onclick="toggleBookmark(this)">
                   <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
                 </button>
                 <div class="sui-book__cover-container">
-                  <img sui-book-cover="" class="sui-book-cover" tabindex="0" src="{{b.cover}}" alt="{{b.title}}"><!----></div>
-                  <div class="sui-book__tags"><!----></div>
-                  <div class="sui-book__tail-tags"><!----><!---->
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="sui-book__tail-tags-tail">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M16 16L-6.99382e-07 16L0 0C-3.86258e-07 8.83656 7.16344 16 16 16Z" fill="white"></path>
-                    </svg>
-                  </div><!---->
+                  <a href="/booksearch/detail/{{b.title}}/{{b.author}}/">
+                    <img sui-book-cover="" class="sui-book-cover" tabindex="0" src="{{b.cover}}" alt="{{b.title}}"><!----></div>
+                    <div class="sui-book__tags"><!----></div>
+                    <div class="sui-book__tail-tags"><!----><!---->
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="sui-book__tail-tags-tail">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M16 16L-6.99382e-07 16L0 0C-3.86258e-07 8.83656 7.16344 16 16 16Z" fill="white"></path>
+                      </svg>
+                    </div><!---->
+                  </a>
                 </div>
                 <div class="sui-book__inform-container">
-                  <sui-book-title tabindex="0">{{b.title}}</sui-book-title>
-                  <sui-book-author tabindex="0">{{b.author}}</sui-book-author>
-                  <sui-book-genre tabindex="0">{{b.publisher}}</sui-book-genre>
-                  <sui-book-rating tabindex="0">별점 4.9</sui-book-rating>
+                  <a href="/booksearch/detail/{{b.title}}/{{b.author}}/">
+                    <sui-book-title tabindex="0">{{b.title}}</sui-book-title>
+                    <sui-book-author tabindex="0">{{b.author}}</sui-book-author>
+                    <sui-book-genre tabindex="0">{{b.publisher}}</sui-book-genre>
+                    <sui-book-rating tabindex="0">별점 4.9</sui-book-rating>
+                  </a>
                 </div>
               </div>
             </sui-book>
@@ -137,7 +142,7 @@
               <div class="pg-numbers">
                 {% for i in page_range %}
                   {% if i == books.number %}
-                    <a>{{ i }}</a>
+                    <a class="active">{{ i }}</a>
                   {% else %}
                     <a href="?query={{ query }}&page={{ i }}">{{ i }}</a>
                   {% endif %}

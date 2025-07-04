@@ -236,7 +236,7 @@ button[class^=btn_] .text, a[class^=btn_] .text {
     left: 20px;
     width: 8px;
     height: 9px;
-    background: url(../images/arw_reply@2x.png) 0% 0% no-repeat;
+    background: url(/static/images/booksearch/arw_reply@2x.png) 0% 0% no-repeat;
     background-size: 8px 9px;
 }
 /* 답글의 답글 헤더 부분*/

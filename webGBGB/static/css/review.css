@@ -465,7 +465,7 @@ html:not(.ios) body.dialog_open .dialog_wrapper.open {
     width: 22px;
     height: 22px;
     display: inline-block;
-    background-image: url('../images/ico_star_nonecilck.svg');
+    background-image: url('/static/images/booksearch/ico_star_nonecilck.svg');
     background-size: cover;
     cursor: pointer;
     transition: background-image 0.3s ease, opacity 0.3s ease;
@@ -473,7 +473,7 @@ html:not(.ios) body.dialog_open .dialog_wrapper.open {
 }
 
 .modal .rating-stars-review .star.active {
-    background-image: url('../images/ico_star_cilck.svg');
+    background-image: url('/static/images/booksearch/ico_star_cilck.svg');
 }
 
 .modal .rating-stars-review .star i.fading-out {
@@ -881,7 +881,7 @@ border-color: transparent !important;
     font-size: 0 !important;
     border-radius: 7px;
     background-size: 16px 16px;
-    background-image: url(../images/btn_attached_add@2x.png);
+    background-image: url(/static/images/booksearch/btn_attached_add@2x.png);
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -1052,7 +1052,7 @@ a[disabled], a[aria-disabled=true], a.disabled, button[disabled], button[aria-di
     width: 22px;
     height: 22px;
     background-size: 8px 8px;
-    background-image: url(../images/btn_attached_remove@2x.png);
+    background-image: url(/static/images/booksearch/btn_attached_remove@2x.png);
     background-position: center;
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.6);
