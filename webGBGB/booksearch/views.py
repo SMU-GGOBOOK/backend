@@ -2,6 +2,7 @@ from django.shortcuts import render
 import requests
 from booksearch.models import Book
 from review.models import Review
+from review.models import ReviewImage
 import urllib.parse
 
 
@@ -121,6 +122,6 @@ def detail(request, title, author):
     except Book.DoesNotExist:
         return render(request, 'booksearch/404.html', status=404)
     
-    reviews = Review.objects.filter(book_id=book)  # 해당 책 리뷰만 필터링
+    reviews = Review.objects.filter(book_id=book).prefetch_related('images')
 
     return render(request, 'booksearch/bookdetail.html', {'book': book, 'reviews': reviews})

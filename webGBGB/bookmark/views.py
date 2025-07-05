@@ -5,9 +5,8 @@ from member.models import Member
 from booksearch.models import Book
 from django.contrib import messages
 
-
 # Create your views here.
-def review_create(request):
+def bookmark_create(request):
     if request.method == 'POST':
         member_id = request.session.get('user_id')
         if not member_id:
@@ -42,14 +41,5 @@ def review_create(request):
 
         print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments)
         
-        images = request.FILES.getlist('review_image', '')  # 단일 이미지 (ImageField 단일)
-        for i, img in enumerate(images):
-            if i>=3:
-                break
-            ReviewImage.objects.create(review_id=review, image=img)
-
-        print("FILES:", request.FILES)
-        print("IMAGES:", request.FILES.getlist('review_image'))
-
-        # 리뷰 저장 후
-        return redirect(f'/booksearch/detail/{book.title}/{book.author}/')
+    # 리뷰 저장 후
+    return redirect('/booksearch/search/')

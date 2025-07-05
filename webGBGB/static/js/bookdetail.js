@@ -223,6 +223,22 @@ $(document).on('click', '.btn_reply', function () {
   $commentItem.find('.reply_wrap').first().toggle();
 });
 
+
+/* 태그 */
+document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    const alreadyActive = tag.classList.contains('active');
+    document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(t => t.classList.remove('active'));
+    if (!alreadyActive) tag.classList.add('active');
+
+    const emotionInput = document.getElementById('selected-emotion');
+    if (emotionInput) {
+      const selectedText = tag.querySelector('.text')?.textContent.trim();
+      emotionInput.value = selectedText || "";
+    }
+  });
+});
+
 // 모달 팝업 내 사진 추가
 document.addEventListener('DOMContentLoaded', function () {
   const fileList = document.querySelector('.file_list');
@@ -253,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function () {
     li.innerHTML = `
       <span class="file_item ${attached ? 'attached' : ''}">
         <span class="btn_box">
-          <input id="${id}" type="file" accept="image/*" />
+          <input id="${id}" type="file" name="review_image" multiple/>
           <label for="${id}"><span class="hidden">첨부파일 추가</span></label>
           <span class="attach_img_box" style="display:${attached ? 'inline-block' : 'none'};">
             <span class="attach_img_view" style="background-image: url('${imgSrc}');"></span>
@@ -304,7 +320,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateAttachVal();
       };
       reader.readAsDataURL(file);
-      input.value = '';
     });
 
     removeBtn.addEventListener('click', () => {
@@ -370,20 +385,6 @@ document.addEventListener('DOMContentLoaded', function () {
   updateAttachVal();
 });
 
-/* 태그 */
-document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(tag => {
-  tag.addEventListener('click', () => {
-    const alreadyActive = tag.classList.contains('active');
-    document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(t => t.classList.remove('active'));
-    if (!alreadyActive) tag.classList.add('active');
-
-    const emotionInput = document.getElementById('selected-emotion');
-    if (emotionInput) {
-      const selectedText = tag.querySelector('.text')?.textContent.trim();
-      emotionInput.value = selectedText || "";
-    }
-  });
-});
 
 /* 모달 팝업 등록 버튼 & 초기화 */
 document.addEventListener("DOMContentLoaded", () => {
