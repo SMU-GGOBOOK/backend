@@ -16,5 +16,5 @@ class Review(models.Model):
     comments = models.PositiveIntegerField(default=0)     # 댓글 수
 
     def __str__(self):
-        return f"{self.Member.member_id}, {self.Book.title}"
+        return f"{self.member_id}, {self.content}"
     

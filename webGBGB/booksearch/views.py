@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import requests
-from .models import Book
+from booksearch.models import Book
+from review.models import Review
 import urllib.parse
 
 
@@ -115,10 +116,11 @@ def search(request):
     return render(request, 'booksearch/booksearch.html', context)
 
 def detail(request, title, author):
-    print("넘어온 데이터 : ", title, author)
     try:
         book = Book.objects.get(title=title, author=author)
     except Book.DoesNotExist:
         return render(request, 'booksearch/404.html', status=404)
+    
+    reviews = Review.objects.filter(book_id=book)  # 해당 책 리뷰만 필터링
 
-    return render(request, 'booksearch/bookdetail.html', {'book': book,})
+    return render(request, 'booksearch/bookdetail.html', {'book': book, 'reviews': reviews})

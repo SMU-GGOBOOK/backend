@@ -282,6 +282,8 @@
     <div class="tab_content">
       <div class="comment_wrap">
         <div class="comment_list" style>
+          {% if reviews %}
+          {% for r in reviews %}
           <div class="comment_item" data-id="5212265">
             <div class="comment_all">
               <div class="comment_header">
@@ -289,17 +291,17 @@
                   <div class="user_info_box">
                     <span class="badge_box">
                       <span class="badge_sm badge_pill badge_kyobo">
-                        <span class="text">책이름</span>
+                        <span class="text">{{r.book_id.title}}</span>
                       </span>
                     </span>
-                    <span class="info_item">bh*****</span>
+                    <span class="info_item">{{r.member_id.name}}</span>
                     <span class="gap"> | </span>
-                    <span class="info_item">2020.06.08</span>
+                    <span class="info_item">{{ r.created_at|date:"Y.m.d H:i" }}</span>
                     <span class="gap"> | </span>
                     <span class="info_item">
-                      <button class="btn_comment_util" type="button" data-role="report">
+                      {% comment %} <button class="btn_comment_util" type="button" data-role="report">
                         <span class="text">신고</span>
-                      </button>
+                      </button> {% endcomment %}
                     </span>
                   </div>
                 </div>
@@ -347,20 +349,16 @@
                         </span>
                       </div>
                     </div>
-                    <input class="form_rating rating-input" type="number" value="10" title="평가점수 선택"
+                    <input class="form_rating rating-input" type="number" value="{{r.rating}}" title="평가점수 선택"
                     readonly data-size="sm" tabindex="-1">
                     <span class="gap">/</span>
-                    <span class="review_quotes_text">도움돼요</span>
+                    <span class="review_quotes_text">{{reviw.tag}}</span>
                   </div>
                 </div>
               </div>
               
               <div class="comment_contents">
-                <div class="comment_text">
-                  아들이 사업을 하면서 어려움을 많이 겪고 있습니다. 심리적으로 위축된 모습을 보는 게 마음이 아프네요.
-                  이 책을 아들에게 선물하는데, 이 책이 아들에게 조금이나마 힘과 위로를 주었으면 합니다.
-                  제가 부족해 돈에 대해 잘 말하지 못하는 부분들을 잘 전달할 수 있을거라고 봅니다.
-                </div>
+                <div class="comment_text">{{r.content}}</div>
               </div>
               
               <div class="comment_footer">
@@ -374,11 +372,11 @@
                   <div class="right_area">
                     <button class="btn_like" type="button">
                       <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
-                      <span class="text">0</span>
+                      <span class="text">{{r.likes}}</span>
                     </button>
                     <button class="btn_reply" type="button">
                         <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
-                        <span class="count">3</span>
+                        <span class="count">{{r.comments}}</span>
                     </button>
                   </div>
                 </div>
@@ -584,6 +582,10 @@
               </div>
             </div>
           </div>
+          
+          {% endfor %}
+
+          {% endif %}
           <div class="comment_item overflow" data-id="5212249">
             <div class="comment_all">
               <div class="comment_header">
@@ -1138,15 +1140,14 @@
                           <span class="hidden">닫기</span>
                       </button>
                   </div>
-                  <div class="dialog_contents">
+                  {% if book %}                  
+                  <form method="POST" action="/review/create/" id="reviewForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="dialog_contents">
                       <div class="scroll_wrap active" data-simplebar="init">
                           <div class="simplebar-wrapper" style="margin: 0px -18px 0px 0px;"> 
                               <div class="simplebar-mask">
                                   <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                    {% if book %}
-                                    
-                                    <form method="POST" enctype="multipart/form-data">
-                                      {% csrf_token %}
                                       <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
                                           <div class="simplebar-content" style="padding: 0px 18px 0px 0px;">
                                               <div class="custom_scroll_inner" tabindex="0">
@@ -1163,7 +1164,8 @@
                                                               <a class="prod_info" href="#">
                                                                   <span class="prod_name">{{book.title}}</span>
                                                               </a>
-                                                              <div class="rating-container theme-krajee-gly rating-lg rating-animate has_caption">
+                                                              <input type="hidden" name="book_id" value="{{ book.book_id }}">
+                                                              <div class="rating-container theme-krajee-gly rating-lg rating-animate has_caption" style="margin-top:16px">
                                                                   <div class="rating-container has_caption">
                                                                     <div class="rating-stars-review" id="rating">
                                                                       <span class="star" data-value="1"></span>
@@ -1185,7 +1187,6 @@
                                                                     </div>
                                                                   </div>
                                                               </div>
-                                                              <input name="rating" class="form_rating rating-input" type="number" title="평가점수 선택" value="5" data-caption="" data-size="lg" tabindex="-1">
                                                           </div>
                                                       </div>
                                                   </div>
@@ -1252,8 +1253,8 @@
                                                           <li class="list_item">
                                                               <span class="file_item">
                                                                   <span class="btn_box">
-                                                                      <input id="4ee05ca4-2afb-41c6-bd6c-e7df004c6402" type="file">
-                                                                      <label for="4ee05ca4-2afb-41c6-bd6c-e7df004c6402">
+                                                                      <input id="{{book.book_id}}_img" type="file" name="review_image">
+                                                                      <label for="{{book.book_id}}_img">
                                                                           <span class="hidden">첨부파일 추가</span>
                                                                       </label>
                                                                       <span class="attach_img_box">
@@ -1269,31 +1270,31 @@
                                                       <p class="bul_item_asterisk font_size_xxs">JPG, PNG, GIF 파일만 최대 3장 업로드 가능합니다.</p>
                                                   </div>
                                               </div>
-                                              <input name="review_image" type="file" multiple>
                                               </div>
                                           </div>
                                       </div>
-                                    </form>
-                                    
-                                    {% endif %}
+                                    </div>
                                   </div>
+                                </div>
+                                <div class="simplebar-placeholder" style="width: auto; height: 610px;"></div>
                               </div>
+                            </div>
+                            <div class="dialog_footer">
+                                <button class="btn_md btn_primary" id="modal_btn" type="submit" disabled="">
+                                <span class="text">등록</span>
+                              </button>
+                            </div>
                           </div>
-                          <div class="simplebar-placeholder" style="width: auto; height: 610px;"></div>
+                        </div>
                       </div>
-                  </div>
-                      <div class="dialog_footer">
-                          <button class="btn_md btn_primary" id="modal_btn" type="button" disabled="">
-                              <span class="text">등록</span>
-                          </button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-        </div>
+                    </div>
+                  </form>
+                  
+                  {% endif %}
       </div>
     </div>
-  </div>{% endblock %}
+  </div>
+  {% endblock %}
 
 {% block extra_js %}
 <script src="/static/js/bookdetail.js"></script>
