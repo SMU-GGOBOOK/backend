@@ -7,3 +7,6 @@ class Bookmark(models.Model):
     book_id = models.ForeignKey(Book, on_delete=models.DO_NOTHING)
     member_id = models.ForeignKey(Member, on_delete=models.DO_NOTHING)
     marked_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.bookmark_id}, {self.marked_date}"

@@ -32,11 +32,14 @@
                     <div class="right">
                       <div class="meta">
                         <!-- 도서 제목 -->
+                        <p>{{is_bookmarked}}</p>
                         <div class="title">
                           <h1>{{book.title}}</h1>
-                          <button onclick="toggleBookmark(this)" class="bookmarkBtn">
-                            <i class="fa-regular fa-bookmark"></i>
+                          <button onclick="toggleBookmark(this)" 
+                            class="bookmarkBtn{% if is_bookmarked %} active{% endif %}" data-book-id="{{ book.book_id }}">
+                            <i class="fa-{% if is_bookmarked %}solid{% else %}regular{% endif %} fa-bookmark"></i>
                           </button>
+
                           <hr>
                         </div>
                         <!-- 도서 상세정보 -->

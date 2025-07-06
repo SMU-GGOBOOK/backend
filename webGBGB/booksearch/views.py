@@ -3,6 +3,7 @@ import requests
 from booksearch.models import Book
 from review.models import Review
 from review.models import ReviewImage
+from member.models import Member
 import urllib.parse
 
 
@@ -12,6 +13,18 @@ def search(request):
     books = []
     apipage = 1
     total_count = 0
+
+    member_id = request.session.get('user_id')
+    member = Member.objects.get(id=member_id)
+
+    bookmarks = set()
+    if member:
+        from bookmark.models import Bookmark
+        bookmarks = set(
+            Bookmark.objects.filter(member_id=member.member_id)
+            .values_list('book_id', flat=True)
+        )
+
 
     if query:
         headers = {
@@ -58,7 +71,7 @@ def search(request):
                 # 대소문자 구분 없이 정확히 title 또는 author 안에 query 포함 여부 확인
                 if query_lower in title.lower() or query_lower in author.lower():
                     if not Book.objects.filter(title=title, publisher=publisher).exists():
-                        Book.objects.create(
+                        book_obj = Book.objects.create(
                             title=title,
                             author=author,
                             publisher=publisher,
@@ -66,12 +79,16 @@ def search(request):
                             pub_date=pub_date,
                             ISBN=isbn
                         )
+                    else:
+                        book_obj = Book.objects.get(title=title, publisher=publisher)
                     books.append({
                         'title': title,
                         'author': author,
                         'publisher': publisher,
                         'cover': cover,
-                        'book_url': book_url
+                        'book_url': book_url,
+                        'book_id': book_obj.pk,
+                        'is_bookmarked': book_obj.pk in bookmarks
                     })
                     total_count += 1
 
@@ -124,4 +141,13 @@ def detail(request, title, author):
     
     reviews = Review.objects.filter(book_id=book).prefetch_related('images')
 
-    return render(request, 'booksearch/bookdetail.html', {'book': book, 'reviews': reviews})
+    # 북마크 여부 확인
+    is_bookmarked = False
+    member_id = request.session.get('user_id')
+    member = Member.objects.get(id=member_id)
+    if member:
+        from bookmark.models import Bookmark
+        is_bookmarked = Bookmark.objects.filter(book_id=book, member_id=member.member_id).exists()
+
+
+    return render(request, 'booksearch/bookdetail.html', {'book': book, 'reviews': reviews, 'is_bookmarked':is_bookmarked})

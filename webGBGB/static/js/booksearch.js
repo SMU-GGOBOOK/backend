@@ -1,18 +1,31 @@
 function toggleBookmark(button) {
+    const bookId = button.getAttribute('data-book-id');
+    let cToken = $('meta[name="csrf-token"]').attr('content');
     const icon = button.querySelector('i');
-    const isSolid = icon.classList.contains('fa-solid');
+    if (!icon) {
+        console.warn('아이콘 없음');
+        return;
+    }
 
-    // 1. 아이콘을 서서히 투명하게
+    $.ajax({
+        url: '/bookmark/create/',
+        type: 'post',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': cToken },
+        data: JSON.stringify({ book_id: bookId }),
+        success: function(data) {
+            if (data.bookmarked !== undefined) {
+                icon.classList.remove('fa-solid', 'fa-regular');
+                icon.classList.add(data.bookmarked ? 'fa-solid' : 'fa-regular');
+                button.classList.toggle('active', data.bookmarked);
+            }
+        },
+        error: function() {
+        }
+    });
+
+    // 애니메이션 효과는 성공 후에 처리하는 게 더 자연스러울 수 있습니다.
     icon.classList.add('fading-out');
-
-    // 2. fade-out 후 아이콘 교체
     setTimeout(() => {
-    icon.classList.remove('fa-solid', 'fa-regular');
-    icon.classList.add(isSolid ? 'fa-regular' : 'fa-solid');
-    }, 50); // opacity transition 절반 정도 시점에 교체
-
-    // 3. 다시 서서히 나타나기
-    setTimeout(() => {
-    icon.classList.remove('fading-out');
-    }, 100); // 전체 duration 이후
+        icon.classList.remove('fading-out');
+    }, 100);
 }

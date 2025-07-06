@@ -1,45 +1,44 @@
-from django.shortcuts import render, redirect
-from review.models import Review
-from review.models import ReviewImage
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from member.models import Member
 from booksearch.models import Book
-from django.contrib import messages
+from bookmark.models import Bookmark
+import json
 
-# Create your views here.
+@csrf_exempt  # 실제 서비스에서는 csrf_exempt 대신 CSRF 처리 권장!
+@require_POST
 def bookmark_create(request):
-    if request.method == 'POST':
-        member_id = request.session.get('user_id')
-        if not member_id:
-            messages.error(request, "로그인이 필요합니다.")
-            return redirect('/member/login/')
-        
-        try:
-            member = Member.objects.get(id=member_id)  # Member 객체 가져오기
-        except Member.DoesNotExist:
-            messages.error(request, "회원 정보가 없습니다.")
-            return redirect('/member/login/')
+    # 1. 로그인 체크
+    member_id = request.session.get('user_id')
+    if not member_id:
+        return JsonResponse({'error': '로그인이 필요합니다.'}, status=401)
+    
+    try:
+        member = Member.objects.get(id=member_id)
+    except Member.DoesNotExist:
+        return JsonResponse({'error': '회원 정보가 없습니다.'}, status=404)
 
+    # 2. JSON 데이터 파싱
+    try:
+        data = json.loads(request.body)
+        book_id = data.get('book_id')
+    except Exception:
+        return JsonResponse({'error': '잘못된 요청 데이터입니다.'}, status=400)
 
-        book_id = request.POST.get('book_id')
-        try:
-            book = Book.objects.get(book_id=book_id)  # Book 객체 가져오기
-        except Book.DoesNotExist:
-            messages.error(request, "책 정보가 없습니다.")
-            return redirect('/')
+    # 3. Book 객체 가져오기
+    try:
+        book = Book.objects.get(pk=book_id)
+    except Book.DoesNotExist:
+        return JsonResponse({'error': '책 정보가 없습니다.'}, status=404)
 
-        rating = int(request.POST.get('rating', 0))
-        tag = request.POST.get('tag', '')
-        comments = request.POST.get('reviewText', '')
+    # 4. 북마크 토글 (있으면 삭제, 없으면 생성)
+    bookmark, created = Bookmark.objects.get_or_create(member_id=member, book_id=book)
+    if not created:
+        bookmark.delete()
+        bookmarked = False
+    else:
+        bookmarked = True
 
-        review = Review.objects.create(
-            member_id=member,
-            book_id=book,
-            rating=rating,
-            tag=tag,
-            content=comments,
-        )
-
-        print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments)
-        
-    # 리뷰 저장 후
-    return redirect('/booksearch/search/')
+    # 5. 결과를 JSON으로 반환
+    return JsonResponse({'bookmarked': bookmarked})
