@@ -745,9 +745,9 @@ input, button, select, textarea {
     background-position: center;
     background-repeat: no-repeat;
 }
-.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box .comment_thumb_view img {
+/* .comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box .comment_thumb_view img {
     display: none;
-}
+} */
 .comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box img {
     width: 100%;
 }

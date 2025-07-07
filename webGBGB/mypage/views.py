@@ -32,7 +32,7 @@ def review(request):
     paginated_reviews = paginator.get_page(page)
 
     context = {
-        'list': paginated_reviews,
+        'reviews': paginated_reviews,
         'page': int(page),
     }
 

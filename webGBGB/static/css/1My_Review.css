@@ -94,13 +94,6 @@ font-size: 18px;
     margin: 82px 0 36px;
     
 }
-/* .user_info hr{
- margin-bottom: 3px;
- color: #A0A0A0; 
-}*/
-/* .profile_name{
-    border: 1px solid red;
-} */
 .nickname{
     font-weight: 700;
     width: 100%; 
@@ -140,6 +133,12 @@ gap: 24px;
 padding: 20px 0;
 } */
 
+
+
+
+
+
+
 .comment_wrap {
     display: block;
     word-break: break-all;
@@ -173,10 +172,9 @@ padding: 20px 0;
 }
 
 .comment_header {
-        display: -webkit-box;
+    display: -webkit-box;
     display: -ms-flexbox;
-    display: flex
-;
+    display: flex;
     display: -webkit-flex;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
@@ -233,9 +231,193 @@ padding: 20px 0;
  .badge_kyobo {
     background-color: #2d7868;
     color: #fafafa;
-    width: 49.19px;
-    height: 23.19px;
+    /* width: 49.19px; */
+    /* height: 23.19px; */
 }
+
+/* 리뷰 헤더 - right area*/
+.comment_wrap .comment_list .comment_item .comment_header .right_area {
+    flex: 0 auto;
+}
+.review_summary_wrap {
+    display: block;
+    font-size: 0;
+}
+.review_summary_wrap .rating-container.rating-sm {
+    margin-top: 3px;
+}
+.review_summary_wrap .gap {
+    display: inline-block;
+    width: 4px;
+    height: 8px;
+    margin: 6px 6px 0;
+    background: url(/static/images/booksearch/ico_slash@2x.png) 0% 0% no-repeat;
+    background-size: 4px 8px;
+    vertical-align: top;
+}
+.review_quotes_text {
+    display: inline-block;
+    position: relative;
+    color: #2D7868;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    font-weight: 500;
+    vertical-align: top;
+    margin-right: 1px;
+}
+
+
+/* 리뷰 + 사진 */
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_view_wrap {
+    display: -webkit-flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: start;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+
+/* 리뷰 사진 부분 */
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_swiper_wrap .swiper-container .swiper-wrapper .swiper-slide .comment_img_box img {
+    display: none;
+}
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box {
+    display: block;
+    position: relative;
+    flex: 0 auto;
+    overflow: hidden;
+    width: 64px;
+    height: 64px;
+    margin-left: 60px;
+    border-radius: 7px;
+}
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box .comment_thumb_view {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box .comment_thumb_view img {
+    display: none;
+}
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box img {
+    width: 100%;
+}
+
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_view_wrap .comment_text_box {
+    display: block;
+    flex: 1;
+    width: 100%;
+}
+
+.comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box .thumb_count {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: -0.01em;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.85);
+    text-align: center;
+    border-radius: 6px 0 0 0;
+    box-sizing: border-box;
+}
+img {
+    vertical-align: middle;
+    border-radius: 7px;
+    box-shadow: 0 4px 4px #797e8480;
+}
+img, fieldset {
+    border: 0;
+}
+/* 클릭했을 때 */
+
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_swiper_wrap {
+    display: block;
+    position: relative;
+    margin-top: 16px;
+    box-sizing: border-box;
+}
+.swiper-container {
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+}
+.swiper-container-android .swiper-slide, .swiper-wrapper {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+.swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    transition-property: transform, -webkit-transform;
+    box-sizing: content-box;
+}
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_swiper_wrap .swiper-container .swiper-wrapper .swiper-slide:last-child {
+    margin-right: 0;
+}
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_swiper_wrap .swiper-container .swiper-wrapper .swiper-slide {
+    width: 300px;
+    height: 300px;
+    margin-right: 20px;
+}
+.swiper-slide {
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    position: relative;
+    transition-property: transform, -webkit-transform;
+}
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_swiper_wrap .swiper-container .swiper-wrapper .swiper-slide .comment_img_box {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.comment_wrap .comment_list .comment_item .comment_contents .comment_contents_inner .comment_swiper_wrap .swiper-container .swiper-wrapper .swiper-slide .comment_img_box .btn_view_img {
+    display: block;
+    /* width: 100%;
+    height: 100%; */
+}
+
+input, button, select, textarea {
+    vertical-align: middle;
+    font: inherit;
+    color: inherit;
+}
+
+
+
+
+
+
+
+
+
+
 /*
 .badge_line_gray {
 border: 1px solid #767676;
@@ -630,3 +812,9 @@ button[class^=btn_], a[class^=btn_] {
     margin-right: 2px;
 
 }
+
+
+
+
+
+
