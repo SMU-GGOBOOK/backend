@@ -42,17 +42,16 @@
         {% if books %}
         {% for b in books %}
         <div class="book--box ng-star-inserted">
-          <p>{{b.is_bookmarked}}</p>
           <sui-book class="{{b.title}}">
             <div class="sui-book__box">
               <div class="sui-book__cover-box">
               <button onclick="toggleBookmark(this)" 
-                      class="bookmarkBtn {% if b.is_bookmarked %} active{% endif %}" 
+                      class="bookmarkBtn {% if b.book_id in bookmarks %} active{% endif %}" 
                       data-book-id="{{ b.book_id }}">
-                <i class="fa-{% if b.is_bookmarked %}solid{% else %}regular{% endif %} fa-bookmark"></i>
+                <i class="fa-{% if b.book_id in bookmarks %}solid{% else %}regular{% endif %} fa-bookmark"></i>
               </button>
-                <div class="sui-book__cover-container">
-                  <a href="/booksearch/detail/{{b.title}}/{{b.author}}/">
+                <div class="GBGB">
+                  <a href="/booksearch/detail/{{b.book_id}}/" class ="sui-book__cover-container">
                     <img sui-book-cover="" class="sui-book-cover" tabindex="0" src="{{b.cover}}" alt="{{b.title}}"><!----></div>
                     <div class="sui-book__tags"><!----></div>
                     <div class="sui-book__tail-tags"><!----><!---->
@@ -63,7 +62,7 @@
                   </a>
                 </div>
                 <div class="sui-book__inform-container">
-                  <a href="/booksearch/detail/{{b.title}}/{{b.author}}/" class="sui-book__inform-container">
+                  <a href="/booksearch/detail/{{b.book_id}}/" class="sui-book__inform-container">
                     <sui-book-title tabindex="0">{{b.title}}</sui-book-title>
                     <sui-book-author tabindex="0">{{b.author}}</sui-book-author>
                     <sui-book-genre tabindex="0">{{b.publisher}}</sui-book-genre>
