@@ -14,6 +14,7 @@ urlpatterns = [
     path('booksearch/', include('booksearch.urls')),
     path('review/', include('review.urls')),
     path('bookmark/', include('bookmark.urls')),
+    path('mypage/', include('mypage.urls')),
     path('', include('dummyhome.urls')),
     
 ]

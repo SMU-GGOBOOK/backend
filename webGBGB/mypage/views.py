@@ -2,10 +2,10 @@ from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db.models import F,Q
-# from review.models import Review
-# from django.contrib.auth.decorators import login_required
+from review.models import Review
+from member.models import Member
 
-# @login_required
+
 
 ## list : 현재 페이지의 리뷰 목록
 #list.paginator.num_pages : 전체 페이지 수
@@ -15,21 +15,29 @@ from django.db.models import F,Q
 
 ## 리뷰,멤버만 있으면 가능
 def review(request):
-    # page = request.GET.get('page',1)
-    # # 현재 로그인한 유저의 리뷰만 가져오기
-    # qs = Review.objects.filter(id=request.id).order_by('-created_at')
-    
-    # # 페이지네이션
-    # paginator = Paginator(qs, 5)  # 5개씩 자르기
-    # paginated_reviews = paginator.get_page(page)  # 현재 페이지에 해당하는 리뷰 가져오기
+    user_id = request.session.get('user_id')  # 로그인된 유저의 ID
 
-    # context = {
-    #     'list': paginated_reviews,  # 💡 list로 넘겨줘서 템플릿에서 {% for review in list %} 가능
-    #     'page': int(page),          # 현재 페이지 번호 넘겨주기
-    # }
+    if not user_id:
+        return redirect(f'/member/login/?next={request.path}')  # 로그인 안 되어있으면 로그인 페이지로
 
-    # return render(request, 'mypage/review.html', context)
-    return render(request, 'mypage/review.html')
+    try:
+        member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
+    except Member.DoesNotExist:
+        return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
+
+    page = request.GET.get('page', 1)
+    qs = Review.objects.filter(member_id=member).order_by('-created_at')  # member_id는 FK니까 객체로 필터
+
+    paginator = Paginator(qs, 5)
+    paginated_reviews = paginator.get_page(page)
+
+    context = {
+        'list': paginated_reviews,
+        'page': int(page),
+    }
+
+    return render(request, 'mypage/review.html', context)
+
 
 def Bmark(request):
     return render(request,'mypage/Bmark.html')

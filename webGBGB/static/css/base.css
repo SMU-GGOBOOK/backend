@@ -62,23 +62,19 @@ hr {
     padding: 16px 18px 8px 30px;
 }
 
-/* 로고 + 교환독서 탭 */
+/* 헤더 왼쪽 ------- 로고 + 교환독서 탭 */
 .fig-header-left {
     display: flex;
     align-items: center; 
     gap: 12px; 
 }
 .fig-one{
-    display: inline-flex;
-    width: fit-content;
     display: flex; 
     align-items: center; 
     gap: 0.5rem;
 }
 
-
-/*---------헤더 로고 글씨체----------*/
-
+/*로고 글씨체*/
 @font-face {
     font-family: 'HakgyoansimDunggeunmisoTTF-B';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimDunggeunmisoTTF-B.woff2') format('woff2');
@@ -89,10 +85,7 @@ hr {
 
 .fig-logo{
     font-family: 'HakgyoansimDunggeunmisoTTF-B';
-    height: 25px;
     display: flex;
-    align-items: center;
-    justify-content: center;
     color: #2D7868;
     margin: 0; 
     font-size: 30px; 
@@ -100,19 +93,13 @@ hr {
 
 
 .fig-exchangeimage {
-    height: 20px; 
     margin-left: 20px; 
-    position: relative;
 }
 
 
 .fig-exchange-book{
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: #2D7868;
-    margin: 0; 
+    font-family: 'NanumSquareAcb';
     font-size: 17px; 
 }
 
@@ -173,17 +160,18 @@ hr {
 }
 
 /* 로그인 회원가입 */
-.fig-join {
+.fig-right {
     display: flex;
     align-items: center;
     position: relative;
+    font-family: 'NanumSquareAcb';
 }
 
-.fig-signup,
-.fig-login {
-    padding: 11px 12px;
-    font-weight: 600;
+.fig-r1,
+.fig-r2 {
+    padding: 12px;
     font-size: 16px;
+    font-weight:600;
     line-height: 18px;
     text-align: center;
     color: #2D7868;
@@ -299,10 +287,12 @@ hr {
     justify-content: space-between;
 }
 
-.csWrap > button{
+.csWrap button{
     cursor: pointer;
     width:180px;
     height:40px;
+    font-size:13px;
+    font-weight:400;
     color:#f0f0f0;
     background:#333;
     border:1px solid #f0f0f0;
