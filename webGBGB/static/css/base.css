@@ -56,17 +56,15 @@ hr {
 }
 
 .fig-nav{
-    display: grid; 
-    grid-template-columns: 1fr auto auto; 
+    display:flex;
+    justify-content: space-between;
     align-items: center; 
     padding: 16px 18px 8px 30px;
 }
 
 /* 헤더 왼쪽 ------- 로고 + 교환독서 탭 */
 .fig-header-left {
-    display: flex;
     align-items: center; 
-    gap: 12px; 
 }
 .fig-one{
     display: flex; 
@@ -106,8 +104,6 @@ hr {
 
 /* 검색바 */
 .fig-searchform {
-    position: absolute;
-    left: 700px;
     width: 500px;
     display: flex;
     align-items: flex-start;
@@ -163,8 +159,9 @@ hr {
 .fig-right {
     display: flex;
     align-items: center;
-    position: relative;
     font-family: 'NanumSquareAcb';
+    width:222.73px;
+    justify-content: end;
 }
 
 .fig-r1,
@@ -291,8 +288,6 @@ hr {
     cursor: pointer;
     width:180px;
     height:40px;
-    font-size:13px;
-    font-weight:400;
     color:#f0f0f0;
     background:#333;
     border:1px solid #f0f0f0;
