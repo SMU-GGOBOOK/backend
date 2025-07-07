@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css" rel="stylesheet">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="https://kit.fontawesome.com/e1869b8eb9.js" crossorigin="anonymous"></script>
+  <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/base.css" />
 
   <meta charset="UTF-8">
@@ -25,7 +25,7 @@
             <path d="M4.5 7h15M4.5 12h15M4.5 17h15" stroke="#2D7868" stroke-width="1.3"
             stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
-          <h4 class="fig-exchange-book">교환 독서</h4>
+          <h4 class="fig-exchange-book"><a href="/sharereading/list/">교환 독서</a></h4>
         </div>
       </div>
 
@@ -64,9 +64,9 @@
   <hr class="fig-hr">
   <div class="fig-main">
 
-   {% block content %}
-   
-   {% endblock %}
+  {% block content %}
+
+  {% endblock %}
 
   </div>
 

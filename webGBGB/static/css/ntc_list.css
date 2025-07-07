@@ -95,11 +95,12 @@ font-size: 18px;}
 }
 
 
-.content-area>div>table{
+.content-area table{
     width: 1137px;
 }
 
-.content-area>div>table>thead>tr>th{
+
+.content-area th{
     height:54px;
     text-align: center;
     border-top:1px solid black; 
@@ -110,7 +111,7 @@ font-size: 18px;}
     background-color: #f0f0f0;
 }
 
-.content-area>div>table>tbody>tr>td{
+.content-area td{
     height:60px;
     text-align: center;
     font-size: 15px;
@@ -119,7 +120,7 @@ font-size: 18px;}
     border-bottom:1px solid #ddd;
 }
 
-.content-area>div>table>tbody>tr>td:first-child{
+.content-area td:first-child{
     font-weight:500;
 }
 
@@ -129,7 +130,25 @@ font-size: 18px;}
 }
 
 .ntc_count{
-    margin: 30px 0 10px;font-size: 18px;
+    margin: 10px 0;font-size: 18px;
+}
+
+/* ------------검색박스----------- */
+
+.searchWrap{
+    margin-top:20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.fig-main form{
+    width:300px;
+}
+
+.fig-main .fig-formlabel{
+    border: 1px solid #ccc;
+    background-color: white;
+    min-height:32px;
 }
 
 

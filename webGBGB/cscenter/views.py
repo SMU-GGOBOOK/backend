@@ -1,8 +1,7 @@
 from django.shortcuts import render,redirect
-from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
-from django.db.models import F
+from django.db.models import F,Q
 import datetime
 from cscenter.models import Notice
 from cscenter.models import Inquiry
@@ -11,17 +10,29 @@ from django.http import JsonResponse
 def list(request):
     # 요청하는 page번호 가져오기, str타입 -> int타입
     page = int(request.GET.get('page',1))
-    # db에서 데이터 가져오기
-    qs = Notice.objects.all().order_by('-ntcno')
-    # 10개단위로 qs로 분리시킴
-    paginator = Paginator(qs,10)
-    
-    # 가져올 페이지 선택
-    noticeList = paginator.get_page(page)
-    
-    # 게시글 10개, 현재페이지 보냄
-    context = {'notice':qs,'list':noticeList,'page':page}
-    return render(request,'cscenter/list.html',context)
+    # search
+    search = request.GET.get('search','')
+    print('검색 데이터: ',search)
+
+    if search == '':   # 일반리스트로 넘어온 경우
+        # 게시글 전체 가져오기
+        qs = Notice.objects.order_by('-ntcno')
+        # 페이지 분기
+        paginator = Paginator(qs,10) # 100->10개씩 쪼개서 전달해줌
+        noticeList = paginator.get_page(page)  # 현재페이지에 해당되는 게시글 전달
+        context = {'notice':qs,'list':noticeList,'page':page}
+        return render(request, 'cscenter/list.html', context)
+    else:   # 검색으로 넘어온 경우
+        # 게시글 전체 가져오기  and:& or:| not:~
+        qs = Notice.objects.filter(
+            Q(ntitle__contains=search) | Q(ncontent__contains=search)).order_by('-ntcno')
+        
+        # 페이지 분기
+        paginator = Paginator(qs,10)
+        noticeList = paginator.get_page(page)
+       # 게시글 10개, 현재페이지 보냄
+        context = {'notice':qs,'list':noticeList,'page':page}
+        return render(request,'cscenter/list.html',context)
 
 def view(request,ntcno):
     qs = Notice.objects.filter(ntcno=ntcno)
