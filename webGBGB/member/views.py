@@ -107,16 +107,17 @@ def send_password_reset_code(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id', '').strip()
         email = request.POST.get('email', '').strip()
+        name = request.POST.get('name', '').strip()
         
-        if not user_id or not email:
+        if not user_id or not email or not name:
             return JsonResponse({
                 'success': False, 
-                'message': '아이디와 이메일을 모두 입력해주세요.'
+                'message': '아이디, 이메일, 이름을 모두 입력해주세요.'
             })
         
         try:
             # 아이디와 이메일이 모두 일치하는 회원 조회
-            member = Member.objects.get(id=user_id, email=email)
+            member = Member.objects.get(id=user_id, email=email,name=name)
             
             print(f"비밀번호 찾기 - 회원 확인: ID={member.id}, Email={member.email}")
             
@@ -277,16 +278,17 @@ def generate_verification_code():
 def send_verification_code(request):
     if request.method == 'POST':
         email = request.POST.get('email', '').strip()
+        name = request.POST.get('name', '').strip()
         
-        if not email:
+        if not email or not name:
             return JsonResponse({
                 'success': False, 
-                'message': '이메일을 입력해주세요.'
+                'message': '이름과 이메일을 모두 입력해주세요.'
             })
         
         try:
             # 해당 이메일로 가입된 회원들을 조회 (복수 가능)
-            members = Member.objects.filter(email=email)
+            members = Member.objects.filter(email=email, name=name)
             
             if not members.exists():
                 return JsonResponse({
@@ -362,7 +364,7 @@ def verify_code_and_find_id(request):
         session_code = request.session.get('verification_code')
         verification_time = request.session.get('verification_time')
         verification_email = request.session.get('verification_email')
-        found_member_id = request.session.get('found_member_id')  # 추가
+        found_member_id = request.session.get('found_member_id')
         
         if not all([session_code, verification_time, verification_email, found_member_id]):
             return JsonResponse({

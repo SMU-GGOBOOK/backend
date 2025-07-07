@@ -1,7 +1,7 @@
 form[name='loginFrm'] {
     margin-top: 20px;
     padding-top: 40px;
-    border-top: 1px solid #1a1a1a;
+    /* border-top: 1px solid #1a1a1a; */
 }
 
 .modal_right {
@@ -31,54 +31,80 @@ form[name='loginFrm'] {
   } */
 
   .login-box {
-    background-color:rgb(245, 245, 245);
+    text-align:center;
     width:600px;
     margin:0 auto;
-    border:3px solid #2D7868;
-    border-radius: 7px;
+    
+    
+    
     width:500px;
-    height:350px;
-    margin-top:15px;
+    margin-top:50px;
+    margin-bottom:70px;
     
   }
   .login-box .idpw {
-    width:450px; height:45px; margin-bottom:20px; border: 1px solid #ccc; border-radius:7px;
-    font-size:15px; font-weight: 400; margin:20px; background-color:#fafafa; letter-spacing:5px; padding: 15px;
-  }
+    width: 450px;
+    height: 55px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 400;
+    
+    background-color: #fafafa;
+    letter-spacing: 5px;
+    padding: 15px;}
+    
+    .idpw::placeholder{
+      letter-spacing: 0px;
+    }
+
+
   .idpw:focus {
   outline: 1.5px solid gray;
 }
 
   .login-btn {
-    margin: 20px;
+    margin-top: 20px;
+    
     width:450px;
-    height:50px;
+    height:60px;
     background: #2D7868;
     color: #fafafa;
     border: none;
     font-weight: bold;
     border-radius: 7px;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 18px;
+  }
+
+  .mbtn {
+    margin-top: 20px;
+    
+    width:450px;
+    height:60px;
+    background: #2D7868;
+    color: #fafafa;
+    border: none;
+    font-weight: bold;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 18px;
     
   }
 
   
 
   .checkbox-container {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 10px;
-      padding-left:20px;
-      
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 20px;
+    margin-bottom:30px;
+    
+    
     }
-
-  .popo {
-    color:#1a1a1a; font-weight: 400;
-  }
-
-  
 
     
 
@@ -110,14 +136,10 @@ form[name='loginFrm'] {
       
       align-items: center;
       text-align:center;
-      gap: 5px;
+      gap: 15px;
       font-size: 12px;
       margin-top: 10px;
       padding-top:30px;
-    }
-    
-    .pages p{
-      color:#1a1a1a;
     }
 
     .pages a {
@@ -138,21 +160,41 @@ form[name='loginFrm'] {
       height:50px;
       gap : 15px;
     }
+
     
-    .forfind {
-      margin-left:155px; display:flex; gap:8px;
-    }
+.feed__add_title {
+  text-align:center;
+}
 
-    .forfind p{
-      color:#2D7868;
-      font-weight: 400;
-    }
+#chp {
+  color:#1a1a1a; font-weight: 400;
+}
 
-    .forerror {
-      color: red; font-size: 14px; margin-left:20px;
-    }
+.forfind {
+  margin-left:155px; display:flex; gap:8px; align-items:center;
+  
+}
 
 
-    .ffp:hover{
-      font-weight: 1000;
-    }
+.forfind p{
+  color:#2D7868;
+  font-weight: 400;
+}
+
+.forerror {
+  color: red; font-size: 14px; margin-left:20px;
+}
+
+
+
+.ffp:hover{
+  font-weight: 1000;
+}
+
+#mbtn {
+  background-color:rgb(150, 150, 150);
+}
+
+.popo {
+  color:#1a1a1a;
+}

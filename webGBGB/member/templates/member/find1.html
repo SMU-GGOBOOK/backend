@@ -15,7 +15,14 @@ $(document).ready(function() {
     $('#sendEmailBtn').click(function(e) {
         e.preventDefault();
         
+        const name = $('#nameInput').val().trim();
         const email = $('#emailInput').val().trim();
+
+        if (!name) {
+            alert('이름을 입력해주세요.');
+            return;
+        }
+
         if (!email) {
             alert('이메일을 입력해주세요.');
             return;
@@ -35,6 +42,7 @@ $(document).ready(function() {
             url: '/member/send-verification/',
             type: 'POST',
             data: {
+                'name': name,
                 'email': email,
                 'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val()
             },
@@ -105,21 +113,28 @@ $(document).ready(function() {
         </div>
         <form method="post" name="findFrm">
             {% csrf_token %}
-            <div class="qtqt">
-                <div class="login-box"><br><br>
-                    <!-- 1. 이메일 입력 + 전송 버튼 -->
-                    <div class="inmail">
-                        <input type="email" id="emailInput" class="idpw" placeholder="이메일 입력" required>
-                        <button type="button" id="sendEmailBtn" class="login-btn">전송</button>
-                    </div><br>
+            <div class="qrqr">
+                <div class="login-box">
+                    <!-- 1. 이름/이메일 입력 + 전송 버튼 -->
+                    <div class="inname">
+                        <p>이름</p>
+                        <input type="name" id="nameInput" class="idpw" placeholder="이름 입력" required>
+                        <p>이메일</p>
+                        <div class="qeqe">
+                          <input type="email" id="emailInput" class="idpw" placeholder="이메일 입력" required>
+                          <button type="button" id="sendEmailBtn" class="login-btn">전송</button>
+                        </div>
+                      </div>
+
                     
                     <!-- 2. 인증코드 입력 + 인증 버튼 -->
                     <div class="innum" id="verificationSection">
+                        <p>인증번호</p>
                         <input type="text" id="verificationInput" class="idpw" placeholder="인증번호 입력" maxlength="10">
                         <button type="button" id="verifyBtn" class="login-btn">인증</button>
                     </div><br><br>
                     
-                    <hr>
+                    
                     
                     <!-- 3. 아이디 표시 영역 -->
                     <div class="fid" id="foundIdSection">
@@ -128,11 +143,10 @@ $(document).ready(function() {
 
                     <!-- 4. 로그인 버튼 -->
                     <br>
-                    <div class="qrqr">
-                        <p></p>
-                    </div><br>
-                    <div class="qeqe">
-                        <a href="/member/login/"><button type="button" class="login-btn">로그인</button></a>
+                    <br>
+                    <div id="qwqw">
+                        <a href="/member/find2/"><button type="button" id="fffff" class="login-btn">비밀번호 찾기</button></a>
+                        <a href="/member/login/"><button type="button" id="ffff" class="login-btn">로그인</button></a>
                     </div>
                 </div>
             </div>

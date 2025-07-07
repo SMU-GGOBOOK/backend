@@ -1,7 +1,7 @@
 {% extends "member/sample.html" %}
 {% load static %}
 {% block link %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/find.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/find2.css'%}">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}
 {% block title %}비밀번호 찾기{% endblock %}
@@ -17,9 +17,16 @@ $(document).ready(function() {
         
         const userId = $('#userIdInput').val().trim();
         const email = $('#emailInput').val().trim();
+        const name = $('#nameInput').val().trim();
+        
         
         if (!userId) {
             alert('아이디를 입력해주세요.');
+            return;
+        }
+        
+        if (!name) {
+            alert('이름을 입력해주세요.');
             return;
         }
         
@@ -43,6 +50,7 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                 'user_id': userId,
+                'name': name,
                 'email': email,
                 'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val()
             },
@@ -109,29 +117,37 @@ $(document).ready(function() {
     <div class="feed__add">
         <div class="feed__add_title">
             <span>비밀번호 찾기</span>
-        </div>
+        </div><br><br>
         <form method="post" name="findFrm">
             {% csrf_token %}
-            <div class="qtqt">
-                <div class="login-box"><br><br>
+            <div class="qrqr">
+                <div class="login-box">
                     <!-- 1. 아이디 입력 -->
                     <div class="inid">
+                      <p>아이디</p>
                         <input type="text" id="userIdInput" class="idpw" placeholder="아이디 입력" required>
+                    </div><br>
+
+                    <div class="inname">
+                      <p>이름</p>
+                        <input type="text" id="nameInput" class="idpw" placeholder="이름 입력" required>
                     </div><br>
                     
                     <!-- 2. 이메일 입력 + 전송 버튼 -->
                     <div class="inmail">
+                      <p>이메일</p>
                         <input type="email" id="emailInput" class="idpw" placeholder="이메일 입력" required>
                         <button type="button" id="sendEmailBtn" class="login-btn">전송</button>
                     </div><br>
                     
                     <!-- 3. 인증코드 입력 + 인증 버튼 -->
                     <div class="innum">
+                      <p>인증번호</p>
                         <input type="text" id="verificationInput" class="idpw" placeholder="인증번호 입력" maxlength="10">
                         <button type="button" id="verifyBtn" class="login-btn">인증</button>
                     </div><br><br>
                     
-                    <hr>
+                    
                     
                     <!-- 4. 비밀번호 재설정 완료 메시지 -->
                     <div class="fid" id="passwordResetSection">
@@ -143,7 +159,7 @@ $(document).ready(function() {
                     <div class="help">
                         <p>로그인 하신 후 비밀번호를 변경해주세요.</p>
                     </div><br>
-                    <div class="bbtbt" >
+                    <div class="forbtn">
                         <a href="/member/login/"><button type="button" class="login-btn">로그인</button></a>
                     </div>
                 </div>
