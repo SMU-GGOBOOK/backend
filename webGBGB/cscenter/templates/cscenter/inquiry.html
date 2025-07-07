@@ -97,7 +97,7 @@
 </div>
 
 <script>
-  if('{{request.session.session_id}}' == ''){
+  if('{{request.session.user_id}}' == ''){
     alert("로그인 후 1:1문의 작성이 가능합니다.")
     history.back();
   }

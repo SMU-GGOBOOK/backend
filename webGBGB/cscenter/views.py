@@ -3,8 +3,8 @@ from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
 from django.db.models import F,Q
 import datetime
-from cscenter.models import Notice
-from cscenter.models import Inquiry
+from cscenter.models import Notice,Inquiry
+from member.models import Member
 from django.http import JsonResponse
 
 def list(request):
@@ -100,12 +100,13 @@ def submit(request):
                 uploaded_files.append(file)
         
         # 모델에 저장 (파일 필드가 어떻게 정의되어 있는지에 따라 다름)
+        id=request.session['user_id']
+        
         inquiry = Inquiry.objects.create(
             ictgr=category,
             ititle=title,
             icontent=content,
-            id='aaa',
-            # user=request.session['session_id'],
+            member=Member.objects.get(id=id),
         )
         
         # 파일들을 별도로 저장 (파일 개수에 상관없이)

@@ -235,7 +235,7 @@ textarea:focus-within,
     font-size: 0 !important;
     border-radius: 7px;
     background-size: 16px 16px;
-    background-image: url(../images/plusBtn.png);
+    background-image: url(../images/cscenter/plusBtn.png);
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -339,7 +339,7 @@ button {
     width: 22px;
     height: 22px;
     background-size: 8px 8px;
-    background-image: url(../images/plusBtn.png);
+    background-image: url(../images/cscenter/plusBtn.png);
     background-position: center;
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.6);
@@ -387,7 +387,7 @@ button {
     width: 22px;
     height: 22px;
     background-size: 8px 8px;
-    background-image: url(../images/xBtn.png);
+    background-image: url(../images/cscenter/xBtn.png);
     background-position: center;
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.6);

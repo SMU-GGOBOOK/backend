@@ -1,4 +1,5 @@
 from django.db import models
+from member.models import Member
 
 class Notice(models.Model):
     ntcno = models.AutoField(primary_key=True)  # 기본키 등록
@@ -17,7 +18,8 @@ class Notice(models.Model):
 
 class Inquiry(models.Model):
     inqno = models.AutoField(primary_key=True)  # 기본키 등록
-    id = models.CharField(max_length=100)     # 작성자
+    # id = models.CharField(max_length=100)     # 작성자
+    member = models.ForeignKey(Member, on_delete=models.CASCADE,default=1)
     ictgr = models.CharField(max_length=100)  # 카테고리
     ititle = models.CharField(max_length=1000) # 제목
     icontent = models.TextField()              # 내용

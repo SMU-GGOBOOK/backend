@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'cscenter',
     'home',
     'booksearch',
+    'member',
 
 ]
 

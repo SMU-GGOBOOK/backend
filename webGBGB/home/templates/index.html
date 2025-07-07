@@ -54,7 +54,7 @@
       </div>
     </div>
 
-{% if not request.session.session_id %}
+{% if not request.session.user_id %}
   <!--로그인 세션 없을때-->
   <div class="exchngreading">
     <!-- 참여중인 그룹 표시 -->
@@ -67,7 +67,7 @@
           <p>“따뜻한 독서 커뮤니티 플랫폼”, 꼬북꼬북입니다.</p>
           <p>당신의 감상을 들려주세요!</p>
         </div>
-        <a href='/member/login/'><button type='button'>회원가입</button></a>
+        <a href='/member/join1/'><button type='button'>회원가입</button></a>
       </div>
     </div>
   </div>
