@@ -130,7 +130,7 @@ def detail(request, book_id):
     except Book.DoesNotExist:
         return render(request, 'booksearch/404.html', status=404)
     
-    reviews = Review.objects.filter(book_id=book).prefetch_related('images')
+    reviews = Review.objects.filter(book_id=book).prefetch_related('images').order_by('-created_at')
 
     # 북마크 여부 확인
     is_bookmarked = False

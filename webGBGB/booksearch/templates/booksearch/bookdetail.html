@@ -321,7 +321,7 @@
                         <span class="gap"> | </span>
                         <span class="info_item">수정</span>
                         <span class="gap"> | </span>
-                        <span class="info_item">삭제</span>
+                        <a href="/review/delete/{{r.review_id}}/" class="info_item">삭제</a>
                         <span class="gap"> | </span>
                       </div>
                     </div>
@@ -350,7 +350,7 @@
                                 <i class="glyphicon glyphicon-star-empty"></i>
                               </span>
                             </span>
-                            <span class="filled-stars" style="width: 100%;">
+                            <span class="filled-stars" style="width: {{{{r.rating}}*20}}%;">
                               <span class="star" title="One Star">
                                 <i class="glyphicon glyphicon-star"></i>
                               </span>
@@ -439,6 +439,13 @@
                       </div>
                     </div>
                   </div>
+
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="alert">{{ message }}</div>
+                    {% endfor %}
+                  {% endif %}
+
                   <!-- 답글달기 -->
                   <div class="reply_wrap" style="display: none;">
                     <div class="reply_write_area active">
