@@ -9,10 +9,12 @@
 
   <meta charset="UTF-8">
   <title>{% block title %}내 사이트{% endblock %}</title>
+
   {% block extra_css %}
   <!-- 각 페이지별 추가 CSS 들어오는 자리 -->
   {% endblock %}
-  
+ 
+
 </head>
 <body>
   <header class="fig-header">
@@ -49,14 +51,11 @@
         <a href="/member/join01/" class="fig-r1">회원가입</a>
         <a href="/member/login/" class="fig-r2">로그인</a>
       </div>
-
       {% else %}
-
       <div class="fig-right">
         <a href="/mypage/review/" class="fig-r1">마이페이지</a>
         <a href="/member/logout/" class="fig-r2">로그아웃</a>
       </div>
-
       {% endif %}
 
     </nav>
@@ -108,8 +107,8 @@
       <div class="footer-right">
         <p>고객센터 1234-5678 (발신자 부담)</p>
         <div class="csWrap">
-          <a href="/cscenter/list/"><button class="ntcBtn">공지사항</button></a>
-          <a href="/cscenter/inquiry/"><button class="inqBtn">1:1문의</button></a>
+          <a href='/cscenter/list/'><button class="ntcBtn">공지사항</button></a>
+          <a href='/cscenter/inquiry/'><button class="inqBtn">1:1문의</button></a>
         </div>
         <table class="gitIds">
           <tbody>

@@ -4,7 +4,6 @@ body, input, select, textarea, button {
   font-family: 'Noto Sans KR', sans-serif !important;
 }
 
-
 * {margin: 0; padding: 0; box-sizing: border-box; -moz-osx-font-smoothing: grayscale; -webkit-font-smoothing: antialiased;
     text-decoration: none; list-style: none;
 }
@@ -57,14 +56,14 @@ hr {
 }
 
 .fig-nav{
+    display:flex;
+    justify-content: space-between;
     align-items: center; 
     padding: 16px 18px 8px 30px;
-    justify-content: space-between;
 }
 
 /* 헤더 왼쪽 ------- 로고 + 교환독서 탭 */
 .fig-header-left {
-    display: flex;
     align-items: center; 
 }
 .fig-one{
@@ -105,7 +104,6 @@ hr {
 
 /* 검색바 */
 .fig-searchform {
-
     width: 500px;
     display: flex;
     align-items: flex-start;
@@ -161,8 +159,9 @@ hr {
 .fig-right {
     display: flex;
     align-items: center;
-    position: relative;
     font-family: 'NanumSquareAcb';
+    width:222.73px;
+    justify-content: end;
 }
 
 .fig-r1,
@@ -218,8 +217,8 @@ hr {
 .totalReview>p{
     color:#fafafa;
     padding: 11px 0;
+    border-bottom:2px solid #333;
     font-size:22px;
-    border-bottom: 2px solid #333;
 }
 
 .totalReview>p>span{
@@ -245,7 +244,7 @@ hr {
 
 .infoWrap > ul{
     display:flex;
-    margin-bottom: 5px;
+    margin-bottom:5px;
 }
 
 .infoWrap > ul > li:not(:last-child)::after{
@@ -263,10 +262,10 @@ hr {
 }
 
 .infoWrap{
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    margin-bottom: 20px;
 }
 
 
