@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="/static/css/base.css" />
 
   <meta charset="UTF-8">
+  <meta name='csrf-token' content={{ csrf_token }} />
+
   <title>{% block title %}내 사이트{% endblock %}</title>
 
   {% block extra_css %}
@@ -46,8 +48,8 @@
       </form>
 
       <div class="fig-join">
-        <a href="" class="fig-signup">회원가입</a>
-        <a href="" class="fig-login">로그인</a>
+        <a href="/member/signup/" class="fig-signup">회원가입</a>
+        <a href="/member/login/" class="fig-login">로그인</a>
       </div>
 
     </nav>

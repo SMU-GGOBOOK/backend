@@ -433,7 +433,7 @@ def login(request):
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
                 messages.success(request, '로그인 되었습니다.')
-                return redirect('/')
+                return redirect('/booksearch/search/')
             else:
                 return render(request, 'member/login.html', {
                     'error': '비밀번호가 틀렸습니다.'
