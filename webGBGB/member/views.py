@@ -293,7 +293,7 @@ def send_verification_code(request):
             if not members.exists():
                 return JsonResponse({
                     'success': False,
-                    'message': '가입되지 않은 이메일입니다.'
+                    'message': '이름과 이메일을 다시 확인해주세요.'
                 })
             
             # 여러 회원이 있는 경우 첫 번째 회원 선택 (또는 가장 최근 가입자)

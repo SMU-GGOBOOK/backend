@@ -1,85 +1,119 @@
-.login-btn {
-    
-    width:180px;
-    height:50px;
-    background: #2D7868;
-    color:#fafafa;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 15px;
-    margin:0 auto;
-    font-weight: bold;
-
-    
-  }
-
-  .saveAgree {
-      vertical-align: middle;
-      display: inline-block;
-      margin-top:-2px;
-      width: 16px;
-      height: 16px;
-      border: 1px solid #ccc;
-      background-color: #fafafa;
-      
-      cursor: pointer;
-      position: relative;
-      appearance: checkbox;
-      border-radius:7px;
-      accent-color: #2D7868;
-    }
-
-    
-
-    .contract {
-    width: 1137px;
-    margin: 20px auto 80px;
-    padding: 30px 40px 35px;
-    border-radius: 7px;
-    background-color: #f5f5f5;
-    /* border: 1px solid #2D7868; */
-    box-shadow: 0 1px 4px #ccc;
-    }
-    .contract h1 {
-    text-align: center;
-    color: #1a1a1a;
-    margin-bottom: 30px;
-    font-size: 25px;
-    font-weight: 700;
-    }
-    .contract .text {
-    width: 95%;
-    height: 230px;
-    background-color: #fafafa;
-    padding: 10px 45px;
-    white-space: pre-line;
-    overflow-y: scroll;
-    margin: 0 auto 30px;
-    box-shadow: 0 2px 8px #A0A0A0;
-    line-height: 1.8;
-    }
-    .contract .text p {text-align:left;}
-    .contract p {text-align: right; color: #1a1a1a;}
-    .contract .box {width: 100px; height: 40px;  padding: 8px; margin: 0 3px;}
 
 
-
-    form[name='agreeFrm'] {
+form[name='infoFrm'] {
     margin-top: 20px;
     padding-top: 40px;
     border-top: 1px solid #1a1a1a;
-    }
+}
+
+form[name='updateFrm'] {
+    margin-top: 20px;
+    padding-top: 40px;
+    border-top: 1px solid #1a1a1a;
+}
 
 
-    .yes p {
-      margin-right:25px;
+
+
+.name, .id, .pw, .pw2 {
+      resize: none;            /* 더 못 늘림 */
+      width: 73%;              /* form 안에 꽉 차게 */
+      box-sizing: border-box;  /* padding, border 포함한 전체 너비 */
     }
 
-    .saveAgree {
-      margin: 0 2px 0 -2px
-    }
+.pw::placeholder,
+.pw2::placeholder
+{
+    letter-spacing:normal;
+}
+.pw, .pw2 {
+    letter-spacing: 15px;
+}
 
-    .afaf {
-      margin:0 auto; text-align:center
-    }
+.idch {
+    display: flex;
+    justify-content: center;    /* 수평 중앙 */
+    align-items: center;        /* 수직 중앙 */
+    background-color: #2D7868; 
+    border: none;               /* border-style: hidden → none 권장 */
+    width: 160px;
+    height: 45px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fafafa;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-left:10px;
+    line-height: 1;             /* ✅ 텍스트 줄간격 줄이기 */
+    padding: 0;                 /* ✅ 내부 여백 제거 */
+}
+
+
+.group_table th {
+     vertical-align: middle;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 예외 설정 */
+input[type="radio"],
+input[type="checkbox"] {
+    appearance: revert;
+}
+
+
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+    appearance: revert;
+    outline: none;
+}
+
+.email1, .email2 {
+    width:200px;
+}
+
+.rhfqoddl {
+    margin:10px;
+}
+
+.email-select{
+    margin-left:8px; width:200px; height:45px;
+}
+
+.divgender{
+    display: flex;
+    align-items: flex-start;
+    gap: 40px; margin-top: 2px;
+
+}
+
+.lagen{
+    display: flex; align-items: center; gap: 5px; font-weight: 400; color: #1a1a1a;
+}
+
+#favo {
+    vertical-align: top;
+}
+
+.readonly-input {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.smafi{
+    color: #A0A0A0; margin-left: 10px;
+}
+
+#pw-default-message{
+    color: #A0A0A0; display: block; margin-left:10px; margin-top: 5px;
+}

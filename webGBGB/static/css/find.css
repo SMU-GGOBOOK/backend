@@ -159,13 +159,10 @@ input::placeholder{
   display:none;
 }
 
-.qrqr {
+.qrqr,.qeqe {
   display: flex; justify-content: center;
 }
 
-.qeqe {
-  display:flex; justify-content: center;
-}
 
 .fid p {
   color:#2D7868;
@@ -176,10 +173,3 @@ input::placeholder{
   text-align: center; padding-bottom:50px;
 }
 
-.help {
-  text-align:center; font-size:15px;
-}
-
-.help p {
-  color:#1a1a1a;
-}
