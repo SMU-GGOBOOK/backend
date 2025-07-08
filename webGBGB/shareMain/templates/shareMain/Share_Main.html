@@ -102,6 +102,14 @@
         </div>
         <div class="feed__list">
             <div class="feed__preview">
+                <ul>
+                    {% for group in groups %}
+                        <li>{{ group.name }} - 최대 {{ group.member_count }}명</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="feed__preview">
                 <div class="feed__preview_text">
                     <div class="feed__preview_tags">
                         <span class="feed__preview_tags_tag">#소설</span>
@@ -212,7 +220,7 @@
                     <img src="https://image.aladin.co.kr/product/35978/40/cover150/k122037904_1.jpg" alt="냉전 - 우리 시대를 만든 냉전의 세계사">
                 </div>
             </div>
-                                <div class="feed__preview">
+            <div class="feed__preview">
                 <div class="feed__preview_text">
                     <div class="feed__preview_tags">
                         <span class="feed__preview_tags_tag">#소설</span>
