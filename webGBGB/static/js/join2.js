@@ -217,10 +217,10 @@ $(document).ready(function() {
   });
 });
 
-// 취소 버튼 클릭 시 뒤로가기
+// 취소 버튼 클릭 시 홈으로
 document.querySelector("#group_button_1").addEventListener("click", function () {
   if (confirm("회원가입을 취소하시겠습니까? 입력한 정보가 모두 사라집니다.")) {
-    window.history.back();
+    window.location.href = '/';
   }
 });
 
