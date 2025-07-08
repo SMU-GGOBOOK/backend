@@ -140,14 +140,18 @@ body, input, select, textarea, button {
     display: flex;
     flex-direction: column;           /* 세로 방향으로 정렬 */
 }
-.feed__preview_tags{
+.feed__preview_tags_tag{
+    margin-right: 3px;
+    padding: 5px 10px;
     font-size: 15px;
     font-weight: 400;
+    background-color: #2f81ed1c;
     color: #2F80ED;
+    border-radius: 7px;
     cursor: pointer;
 }
 .group_name{
-    padding: 8px 0 30px;
+    padding: 20px 0 25px;
     font-size: 22px;
     font-weight: 700;
     color: #1a1a1a;

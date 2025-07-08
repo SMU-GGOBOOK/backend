@@ -7,5 +7,3 @@ urlpatterns = [
     path('Share_AddGroup/', views.Share_AddGroup, name='Share_AddGroup'),
 
 ]
-
-# urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
