@@ -133,7 +133,7 @@ def detail(request, book_id):
     reviews = Review.objects.filter(book_id=book).prefetch_related('images').order_by('-created_at')
     for r in reviews:
         r.rating_percent = r.rating * 20
-        r.reply_list = Reply.objects.filter(review_id=r)
+        r.reply_list = Reply.objects.filter(review_id=r).order_by('created_at')
 
 
     # 북마크 여부 확인

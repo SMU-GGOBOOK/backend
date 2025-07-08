@@ -23,7 +23,7 @@ def reply_create(request):
         try:
             review = Review.objects.get(review_id=review_id)  # review 객체 가져오기
         except Review.DoesNotExist:
-            messages.error(request, "책 정보가 없습니다.")
+            messages.error(request, "리뷰 정보가 없습니다.")
             return redirect('/')
         
         try:
@@ -39,6 +39,8 @@ def reply_create(request):
             review_id=review,
             content=comments
         )
+        review.comments = Review.objects.filter(pk=review.pk).values_list('comments',flat=True)[0]+1
+        review.save()
         
         print("넘어온 데이터 : ", member_id, comments)
         

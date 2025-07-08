@@ -465,47 +465,45 @@
                     </form>
                     <div class="reply_list_area">
                       <div class="reply_list">
-                        {% if reply %}
-                          {% for reply in r.reply_list %}
-                            <div class="reply_item" id="{{r.reply_id}}">
-                              <div class="reply_header">
-                                <div class="user_info_box">
-                                    <span class="info_item">{{reply.member_id.id}}<span>
-                                    <span class="gap"> | </span>
-                                    <span class="info_item">{{reply.created_at}}</span>
-                                    <span class="gap"> | </span>
-                                    <span class="info_item">
-                                    <button class="btn_comment_util report_item" type="button" data-role="report">
-                                        <span class="text">신고/차단</span>
-                                    </button>
-                                    </span>
-                                </div>
-                              </div>
-                              <div class="reply_contents">
-                                <div class="reply_text">{{reply.content}}</div>
-                                <div class="reply_write_area">
-                                    <div class="byte_check_wrap">
-                                    <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                                    <div class="byte_check_footer">
-                                        <div class="byte_check">
-                                        <span class="count">0</span>
-                                        <span class="total">1000</span>
-                                        </div>
-                                        <div class="btn_wrap">
-                                        <button class="btn_xs btn_light_gray" type="button">
-                                            <span class="text">취소</span>
-                                        </button>
-                                        <button class="btn_xs btn_primary disabled" type="button">
-                                            <span class="text">등록</span>
-                                        </button>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
+                        {% for reply in r.reply_list %}
+                          <div class="reply_item" id="{{reply.reply_id}}">
+                            <div class="reply_header">
+                              <div class="user_info_box">
+                                  <span class="info_item">{{reply.member_id.id}}<span>
+                                  <span class="gap"> | </span>
+                                  <span class="info_item">{{reply.created_at}}</span>
+                                  <span class="gap"> | </span>
+                                  <span class="info_item">
+                                  <button class="btn_comment_util report_item" type="button" data-role="report">
+                                      <span class="text">신고/차단</span>
+                                  </button>
+                                  </span>
                               </div>
                             </div>
-                          {% endfor %}
-                        {% endif %}
+                            <div class="reply_contents">
+                              <div class="reply_text">{{reply.content}}</div>
+                              <div class="reply_write_area">
+                                  <div class="byte_check_wrap">
+                                  <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                                  <div class="byte_check_footer">
+                                      <div class="byte_check">
+                                      <span class="count">0</span>
+                                      <span class="total">1000</span>
+                                      </div>
+                                      <div class="btn_wrap">
+                                      <button class="btn_xs btn_light_gray" type="button">
+                                          <span class="text">취소</span>
+                                      </button>
+                                      <button class="btn_xs btn_primary disabled" type="button">
+                                          <span class="text">등록</span>
+                                      </button>
+                                      </div>
+                                  </div>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
                       </div>
                     </div> 
                   </div>
