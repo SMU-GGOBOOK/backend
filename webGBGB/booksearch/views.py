@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from booksearch.models import Book
 from review.models import Review
-from review.models import ReviewImage
+from reply.models import Reply
 from member.models import Member
 import urllib.parse
 from selenium import webdriver
@@ -133,6 +133,8 @@ def detail(request, book_id):
     reviews = Review.objects.filter(book_id=book).prefetch_related('images').order_by('-created_at')
     for r in reviews:
         r.rating_percent = r.rating * 20
+        r.reply_list = Reply.objects.filter(review_id=r)
+
 
     # 북마크 여부 확인
     is_bookmarked = False

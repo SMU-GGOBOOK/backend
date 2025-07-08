@@ -439,19 +439,16 @@
                     </div>
                   </div>
 
-                  {% if messages %}
-                    {% for message in messages %}
-                      <div class="alert">{{ message }}</div>
-                    {% endfor %}
-                  {% endif %}
-
                   <!-- 답글달기 -->
                   <div class="reply_wrap" style="display: none;">
-                    <div class="reply_write_area active">
+                    <form method="post" action="/reply/create/" class="replyForm" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <input type="hidden" name="review_id" value="{{r.review_id }}">
+                      <div class="reply_write_area active">
                         <div class="byte_check_wrap">
-                          <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                          <textarea class="form_textarea reply_comments" name="replyText" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
                         <div class="byte_check_footer">
-                            <div class="byte_check">
+                            <div class="reply_byte_check">
                               <span class="count">0</span>
                               <span class="total">1000</span>
                             </div>
@@ -459,140 +456,58 @@
                         </div>
                         <div class="btn_wrap_home">
                           <div class="btn_wrap">
-                            <button class="btn_xs btn_primary disabled" type="button">
+                            <button class="btn_xs btn_primary reply_btn" type="submit" disabled="">
                               <span class="text" style="font-weight: 500;">등록</span>
                             </button>
                           </div>
                         </div>
                       </div>
+                    </form>
                     <div class="reply_list_area">
-                        <div class="reply_list">
-                        <div class="reply_item" id="cmnt_num_1054923">
-                            <div class="reply_header">
-                            <div class="user_info_box">
-                                <span class="info_item">ch*****</span>
-                                <span class="gap"> | </span>
-                                <span class="info_item">2021.01.17</span>
-                                <span class="gap"> | </span>
-                                <span class="info_item">
-                                <button class="btn_comment_util report_item" type="button" data-role="report">
-                                    <span class="text">신고/차단</span>
-                                </button>
-                                </span>
-                            </div>
-                            </div>
-                            <div class="reply_contents">
-                            <div class="reply_text">우와,,, 축하드립니다^^ 부럽네요. 저는 "돈의속성" 책이 너무 좋아서 회장님의 다른 저서"김밥파는 CEO"도 찾아서 뒤늦게 읽어봤어요. 거기서도 소원 100번 말하기 있던데 지금 실천중입니다..</div>
-                            <div class="reply_write_area">
-                                <div class="byte_check_wrap">
-                                <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                                <div class="byte_check_footer">
-                                    <div class="byte_check">
-                                    <span class="count">0</span>
-                                    <span class="total">1000</span>
-                                    </div>
-                                    <div class="btn_wrap">
-                                    <button class="btn_xs btn_light_gray" type="button">
-                                        <span class="text">취소</span>
+                      <div class="reply_list">
+                        {% if reply %}
+                          {% for reply in r.reply_list %}
+                            <div class="reply_item" id="{{r.reply_id}}">
+                              <div class="reply_header">
+                                <div class="user_info_box">
+                                    <span class="info_item">{{reply.member_id.id}}<span>
+                                    <span class="gap"> | </span>
+                                    <span class="info_item">{{reply.created_at}}</span>
+                                    <span class="gap"> | </span>
+                                    <span class="info_item">
+                                    <button class="btn_comment_util report_item" type="button" data-role="report">
+                                        <span class="text">신고/차단</span>
                                     </button>
-                                    <button class="btn_xs btn_primary disabled" type="button">
-                                        <span class="text">등록</span>
-                                    </button>
-                                    </div>
+                                    </span>
                                 </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="reply_item" id="cmnt_num_1054924">
-                            <div class="reply_header">
-                            <div class="user_info_box">
-                                <span class="info_item">닉네임</span>
-                                <span class="gap"> | </span>
-                                <span class="info_item">2020.08.23</span>
-                                <span class="gap"> | </span>
-                                <span class="info_item">
-                                <button class="btn_comment_util report_item" type="button" data-role="report">
-                                    <span class="text">신고/차단</span>
-                                </button>
-                                </span>
-                            </div>
-                            </div>
-                            <div class="reply_contents">
-                            <div class="reply_text">돈에 대한 속성을 넘 잘 쉽게 설명해주셔서 감사합니다</div>
-                            <div class="reply_write_area">
-                                <div class="byte_check_wrap">
-                                <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                                <div class="byte_check_footer">
-                                    <div class="byte_check">
-                                    <span class="count">0</span>
-                                    <span class="total">1000</span>
+                              </div>
+                              <div class="reply_contents">
+                                <div class="reply_text">{{reply.content}}</div>
+                                <div class="reply_write_area">
+                                    <div class="byte_check_wrap">
+                                    <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                                    <div class="byte_check_footer">
+                                        <div class="byte_check">
+                                        <span class="count">0</span>
+                                        <span class="total">1000</span>
+                                        </div>
+                                        <div class="btn_wrap">
+                                        <button class="btn_xs btn_light_gray" type="button">
+                                            <span class="text">취소</span>
+                                        </button>
+                                        <button class="btn_xs btn_primary disabled" type="button">
+                                            <span class="text">등록</span>
+                                        </button>
+                                        </div>
                                     </div>
-                                    <div class="btn_wrap">
-                                    <button class="btn_xs btn_light_gray" type="button">
-                                        <span class="text">취소</span>
-                                    </button>
-                                    <button class="btn_xs btn_primary disabled" type="button">
-                                        <span class="text">등록</span>
-                                    </button>
                                     </div>
                                 </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="reply_item" id="cmnt_num_1054925">
-                            <div class="reply_header">
-                            <div class="user_info_box">
-                                <span class="info_item">닉네임</span>
-                                <span class="gap"> | </span>
-                                <span class="info_item">2020.06.08</span>
-                                <span class="gap"> | </span>
-                                <span class="info_item">
-                                <button class="btn_comment_util report_item" type="button" data-role="report">
-                                    <span class="text">신고/차단</span>
-                                </button>
-                                </span>
-                            </div>
-                            </div>
-                            <div class="reply_contents">
-                              <div class="reply_text">저는 일년 전 생각의 비밀, 알면서알지못하는 것들 이렇게 두 권을 읽었습니다.</div>
-                              <div class="reply_write_area">
-                                  <div class="byte_check_wrap">
-                                      <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                                  <div class="byte_check_footer">
-                                      <div class="byte_check">
-                                          <span class="count">0</span>
-                                          <span class="total">1000</span>
-                                      </div>
-                                      <div class="btn_wrap">
-                                          <button class="btn_xs btn_light_gray" type="button">
-                                              <span class="text">취소</span>
-                                          </button>
-                                          <button class="btn_xs btn_primary disabled" type="button">
-                                              <span class="text">등록</span>
-                                          </button>
-                                      </div>
-                                  </div>
-                                  </div>
                               </div>
                             </div>
-                        </div>
-                        </div>
-                        <div class="auto_overflow_wrap">
-                          <div class="auto_overflow_contents">
-                              <div class="auto_overflow_inner">
-                                  <div class="reply_list"></div>
-                              </div>
-                          </div>
-                          <div class="auto_overflow_footer">
-                              <button class="btn_more_body" type="button">
-                                  <span class="text">답글 더보기</span>
-                                  <span class="ico_arw"></span>
-                              </button>
-                          </div>
-                        </div>
-                    </div>
+                          {% endfor %}
+                        {% endif %}
+                      </div>
+                    </div> 
                   </div>
                       
                   <div class="reply_wrap" style="display: none;">
@@ -605,231 +520,12 @@
                         </button>
                       </div>
                     </div>
-
-                    <div class="reply_write_area">
-                      <div class="byte_check_wrap">
-                        <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요."
-                          maxlength="1000"></textarea>
-                        <div class="byte_check_footer">
-                          <div class="byte_check">
-                            <span class="count">0</span>
-                            <span class="total">1000</span>
-                          </div>
-                          <div class="btn_wrap">
-                            <button class="btn_xs btn_light_gray" type="button">
-                              <span class="text">취소</span>
-                            </button>
-                            <button class="btn_xs btn_primary disabled" type="button">
-                              <span class="text">등록</span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="reply_list_area">
-                      <div class="reply_list"></div>
-                      <div class="auto_overflow_wrap">
-                        <div class="auto_overflow_contents">
-                          <div class="auto_overflow_inner">
-                            <div class="reply_list"></div>
-                          </div>
-                        </div>
-                        <div class="auto_overflow_footer">
-                          <button class="btn_more_body" type="button">
-                            <span class="text">답글 더보기</span>
-                            <span class="ico_arw"></span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
             {% endfor %}
           {% endif %}
 
-          <div class="comment_item overflow" data-id="5211749">
-            <div class="comment_header">
-              <div class="left_area">
-                <div class="user_info_box">
-                  <span class="badge_box">
-                    <span class="badge_sm badge_pill badge_kyobo">
-                      <span class="text">책이름</span>
-                    </span>
-                  </span>
-                  <span class="info_item">닉네임</span>
-                  <span class="gap"> | </span>
-                  <span class="info_item">2020.06.28</span>
-                  <span class="gap"> | </span>
-                  <span class="info_item">
-                    <button class="btn_comment_util" type="button" data-role="report">
-                      <span class="text">신고</span>
-                    </button>
-                  </span>
-                </div>
-              </div>
-              <div class="right_area">
-                <div class="review_summary_wrap">
-                  <div class="rating-container theme-krajee-gly rating-sm rating-animate rating-disabled">
-                    <div class="clear-rating" title="초기화">
-                      <i class="glyphicon glyphicon-minus-sign"></i>
-                    </div>
-                    <div class="rating-stars" tabindex="0">
-                      <span class="empty-stars">
-                        <span class="star" title="One Star">
-                          <i class="glyphicon glyphicon-star-empty"></i>
-                        </span>
-                        <span class="star" title="Two Stars">
-                          <i class="glyphicon glyphicon-star-empty"></i>
-                        </span>
-                        <span class="star" title="Three Stars">
-                          <i class="glyphicon glyphicon-star-empty"></i>
-                        </span>
-                        <span class="star" title="Four Stars">
-                          <i class="glyphicon glyphicon-star-empty"></i>
-                        </span>
-                        <span class="star" title="Five Stars">
-                          <i class="glyphicon glyphicon-star-empty"></i>
-                        </span>
-                      </span>
-                      <span class="filled-stars" style="width: 100%;">
-                        <span class="star" title="One Star">
-                          <i class="glyphicon glyphicon-star"></i>
-                        </span>
-                        <span class="star" title="Two Stars">
-                          <i class="glyphicon glyphicon-star"></i>
-                        </span>
-                        <span class="star" title="Three Stars">
-                          <i class="glyphicon glyphicon-star"></i>
-                        </span>
-                        <span class="star" title="Four Stars">
-                          <i class="glyphicon glyphicon-star"></i>
-                        </span>
-                        <span class="star" title="Five Stars">
-                          <i class="glyphicon glyphicon-star"></i>
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                  <input class="form_rating rating-input" type="number" value="10" title="평가점수 선택"
-                    readonly data-size="sm" tabindex="-1">
-                  <span class="gap">/</span>
-                  <span class="review_quotes_text">추천해요</span>
-                </div>
-              </div>
-            </div>
-            <div class="comment_contents">
-              <div class="comment_contents_inner">
-                <div class="comment_view_wrap">
-                  <div class="comment_text_box">
-                    <div class="comment_text">
-                      매일 시간을 들여 아껴 읽고 있습니다. 혼자만 읽고 싶을 정도로 엄청난 이야기가 담긴 책입니다.
-                      사랑하는 분들과 함께 읽고 꼭 실천하셔서 대한민국 모두 경제적 자유를 이루었으면 좋겠습니다.
-                      책 속의 말처럼, 가난은 생각보다 잔인하니까요.
-                    </div>
-                  </div>
-                  <div class="comment_thumb_box">
-                    <span class="comment_thumb_view"
-                      style="background-image: url('https://contents.kyobobook.co.kr/dtl/Klover/202006/20200628091354478.jpg')">
-                      <img
-                        src="https://contents.kyobobook.co.kr/dtl/Klover/202006/20200628091354478.jpg"
-                        alt="리뷰 썸네일">
-                    </span>
-                  </div>
-                </div>
-                <div class="comment_swiper_wrap" style="display: none;">
-                  <div class="swiper-container">
-                    <ul class="swiper-wrapper">
-                      <li class="swiper-slide">
-                        <div class="comment_img_box"
-                          style="background-image: url('https://contents.kyobobook.co.kr/dtl/Klover/202006/20200628091354478.jpg');">
-                          <button class="btn_view_img" type="button">
-                            <img
-                              src="https://contents.kyobobook.co.kr/dtl/Klover/202006/20200628091354478.jpg">
-                          </button>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="swiper-button-next" style="display: none;">
-                    <span class="hidden">다음</span>
-                  </div>
-                  <div class="swiper-button-prev" style="display: none;">
-                    <span class="hidden">이전</span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div class="comment_footer">
-              <div class="comment_util_box">
-                  <button class="btn_more_body" type="button" data-btn-toggle="">
-                    <span class="text">펼치기</span>
-                    <span class="ico_arw">
-                      <i class="fa-solid fa-circle-arrow-down"></i>
-                    </span>
-                  </button>
-                <div class="right_area">
-                  <button class="btn_like" type="button">
-                    <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
-                    <span class="text">0</span>
-                  </button>
-                  <button class="btn_reply" type="button">
-                      <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
-                      <span class="count">0</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="reply_wrap" style="display: none;">
-              <div class="comment_status_box">
-                <div class="login"></div>
-                <div class="comment_status_text">
-                  답글 등록은 로그인 후 이용할 수 있습니다.
-                  <button class="btn_xxs btn_line_gray" type="button">
-                    <span class="text">로그인</span>
-                  </button>
-                </div>
-              </div>
-              <div class="reply_write_area">
-                <div class="byte_check_wrap">
-                  <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요."
-                    maxlength="1000"></textarea>
-                  <div class="byte_check_footer">
-                    <div class="byte_check">
-                      <span class="count">0</span>
-                      <span class="total">1000</span>
-                    </div>
-                    <div class="btn_wrap">
-                      <button class="btn_xs btn_light_gray" type="button">
-                        <span class="text">취소</span>
-                      </button>
-                      <button class="btn_xs btn_primary disabled" type="button">
-                        <span class="text">등록</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="reply_list_area">
-                <div class="reply_list"></div>
-                <div class="auto_overflow_wrap">
-                  <div class="auto_overflow_contents">
-                    <div class="auto_overflow_inner">
-                      <div class="reply_list"></div>
-                    </div>
-                  </div>
-                  <div class="auto_overflow_footer">
-                    <button class="btn_more_body" type="button">
-                      <span class="text">답글 더보기</span>
-                      <span class="ico_arw"></span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <!-- paginator -->
         <div class="pg-container">
@@ -983,7 +679,7 @@
                                                   </div>
                                                   <div class="form_cont">
                                                       <div class="byte_check_wrap">
-                                                          <textarea class="form_textarea" id="comments" name="reviewText" placeholder="내용을 10자 이상 입력해 주세요. 주제와 무관한 댓글, 악플 등의 비방 글은 임의 삭제될 수 있습니다." maxlength="3000" style="height: 70px;"></textarea>
+                                                          <textarea class="form_textarea" id="review_comments" name="reviewText" placeholder="내용을 10자 이상 입력해 주세요. 주제와 무관한 댓글, 악플 등의 비방 글은 임의 삭제될 수 있습니다." maxlength="3000" style="height: 70px;"></textarea>
                                                           <div class="byte_check byte_check_footer">
                                                               <span class="count">0</span>
                                                               <span class="total">3000</span>

@@ -144,62 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  /* 댓글 작성 */
-  document.querySelectorAll('.reply_write_area').forEach(area => {
-    const textarea = area.querySelector('.form_textarea');
-    const btn = area.querySelector('.btn_primary');
-    const countSpan = area.querySelector('.byte_check .count');
-
-    if (textarea && btn) {
-      textarea.addEventListener('input', () => {
-        const length = textarea.value.length;
-        countSpan.textContent = length;
-        btn.classList.toggle('disabled', length === 0);
-      });
-
-      btn.addEventListener('click', () => {
-        if (btn.classList.contains('disabled')) return;
-
-        const commentItem = btn.closest('.comment_item');
-        const replyList = commentItem?.querySelector('.reply_list');
-        const replyCount = commentItem?.querySelector('.btn_reply .count');
-
-        const text = textarea.value.trim();
-        if (!text) return;
-
-        const now = new Date();
-        const date = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
-
-        const newReply = document.createElement('div');
-        newReply.className = 'reply_item';
-        newReply.innerHTML = `
-          <div class="reply_header">
-            <div class="user_info_box">
-              <span class="info_item">닉네임</span>
-              <span class="gap"> | </span>
-              <span class="info_item">${date}</span>
-              <span class="gap"> | </span>
-              <span class="info_item">
-                <button class="btn_comment_util report_item" type="button" data-role="report">
-                  <span class="text">신고/차단</span>
-                </button>
-              </span>
-            </div>
-          </div>
-          <div class="reply_contents">
-            <div class="reply_text">${text}</div>
-          </div>`;
-
-        if (replyList) replyList.prepend(newReply);
-        if (replyCount) replyCount.textContent = (parseInt(replyCount.textContent) || 0) + 1;
-
-        textarea.value = '';
-        countSpan.textContent = '0';
-        btn.classList.add('disabled');
-      });
-    }
-  });
-
   /* 모달 */
   const modal = document.getElementById("reviewModal");
   document.getElementById("openReviewBtn")?.addEventListener('click', () => modal?.classList.add('active'));
@@ -232,7 +176,6 @@ $(document).on('click', '.btn_reply', function () {
   const $commentItem = $(this).closest('.comment_item');
   $commentItem.find('.reply_wrap').first().toggle();
 });
-
 
 /* 태그 */
 document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(tag => {
@@ -395,12 +338,11 @@ document.addEventListener('DOMContentLoaded', function () {
   updateAttachVal();
 });
 
-
 /* 모달 팝업 등록 버튼 & 초기화 */
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("reviewModal");
   const modalBtn = document.getElementById("modal_btn");
-  const textarea = document.getElementById("comments");
+  const textarea = document.getElementById("review_comments");
   const ratingInput = document.getElementById("rating-value-review");
 
   console.log("초기 DOM 상태 확인:");
@@ -517,3 +459,51 @@ document.addEventListener("DOMContentLoaded", () => {
   checkFormValid();
 });
 
+
+/* 리뷰 답글 작성 */
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.reply_wrap').forEach(area => {
+    const replyBtn = area.querySelector(".reply_btn");
+    const textarea = area.querySelector(".reply_comments");
+    const countSpan = area.querySelector('.reply_byte_check .count');
+    const form = area.querySelector(".replyForm");
+
+    console.log("초기 DOM 상태 확인:");
+    console.log("textarea:", textarea);
+    console.log("replyBtn:", replyBtn);
+    console.log("countSpan:", countSpan);
+    console.log("form:", form);
+
+
+    function checkFormValid() {
+      const reviewLength = textarea.value.trim().length;
+      const reviewValid = reviewLength >= 10;
+      replyBtn.disabled = !reviewValid;
+      console.log("=== 유효성 검사 결과 ===");
+      console.log("📝 리뷰 길이:", reviewLength, "-> 유효?", reviewValid);
+      console.log("🔒 버튼 활성화됨?", reviewValid);
+      if (countSpan) countSpan.textContent = reviewLength;
+    }
+
+    textarea.addEventListener("input", checkFormValid);
+
+    function resetReplyForm() {
+      textarea.value = "";
+      if (countSpan) countSpan.textContent = "0";
+      replyBtn.disabled = true;
+    }
+
+    // 버튼 클릭 시 알림 + 모달 닫기 + 초기화
+    replyBtn.addEventListener("click", () => {
+      // 유효하면 등록 처리
+      alert("리뷰 등록이 완료되었습니다");
+
+      // 폼 제출
+      if (form) {
+        form.submit();
+      }
+      resetReplyForm();
+    });
+  });
+  checkFormValid();
+});
