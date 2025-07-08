@@ -24,7 +24,7 @@ def member_update(request, user_id):
     # 현재 로그인한 사용자와 수정하려는 사용자가 같은지 확인
     if request.session['user_id'] != user_id:
         messages.error(request, '본인의 정보만 수정할 수 있습니다.')
-        return redirect('/member/login/')
+        return redirect('/')
     
     # 사용자 정보 가져오기
     member = get_object_or_404(Member, id=user_id)
