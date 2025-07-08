@@ -45,14 +45,30 @@ def Bmark(request):
 def mygroup(request):
     return render(request,'mypage/mygroup.html')
 
-# def review_delete(request):
-#     if request.method =='POST':
-#         review_id = request.POST.get('review_id')
+def review_delete(request):
+    if request.method == 'POST':
+        review_id = request.POST.get('review_id')
+        if not review_id:
+            return JsonResponse({'result': 'error', 'message': '리뷰 ID 없음'}, status=400)
+
+        print("삭제 요청 review_id:", review_id)
+
+        try:
+            review_id = int(review_id)  # 문자열을 숫자로 변환
+            review = Review.objects.get(review_id=review_id)
+            review.delete()
+            return JsonResponse({"result": "success"})
+        except ValueError:
+            return JsonResponse({"result": "error", "message": "리뷰 ID 형식이 잘못되었습니다."}, status=400)
+        except Review.DoesNotExist:
+            return JsonResponse({"result": "error", "message": "리뷰가 존재하지 않습니다."}, status=404)
+
+    return JsonResponse({'result': 'error', 'message': '허용되지 않은 요청 방식입니다.'}, status=400)
+
+
+
         
-#         ## 나중에 db 연결되면 실제 삭제처리 들어갈 자리 
             
-#         return JsonResponse({"result":"success"})
 
 
 
-#     return JsonResponse({'result':'error','message':'invalid method'},status=400)

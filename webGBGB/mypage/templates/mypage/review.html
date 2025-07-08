@@ -44,8 +44,9 @@
                 <div class="comment_list">
                       <!--리뷰박스1-->
                       <!--여기에 북디테일 html 연결-->
+                      
                     {% for r in reviews %}
-                      <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" data-id="{{5212265}}">
+                      <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" data-id="{{r.review_id}}">
                         <div class="comment_all">
                           <div class="comment_header">
                             <div class="left_area">
@@ -61,7 +62,7 @@
                                 <span class="review_gap"> | </span>
                                 <span class="info_item">
                                   <button class="btn_comment_util" type="button" data-role="report">
-                                      <span class="text deleteBtn">삭제</span>
+                                      <span class="text deleteBtn" data-review-id="{{ r.review_id }}">삭제</span>
                                   </button>
                                 </span>
                               </div>

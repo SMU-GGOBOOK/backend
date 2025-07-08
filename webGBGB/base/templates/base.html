@@ -46,19 +46,26 @@
         </div>
       </form>
 
-      {% if not request.session.session_id %}
       <div class="fig-right">
-        <a href="/member/join01/" class="fig-r1">회원가입</a>
-        <a href="/member/login/" class="fig-r2">로그인</a>
+        {% if request.session.user_id %}
+          <a href="/mypage/reviewlist/" class="fig-r1">{{ request.session.user_name }}님</a>
+          <a href="/member/logout/" class="fig-r2">로그아웃</a>
+        {% else %}
+          <a href="/member/join1/" class="fig-r1">회원가입</a>
+          <a href="/member/login/" class="fig-r2">로그인</a>
+        {% endif %}
       </div>
-      {% else %}
-      <div class="fig-right">
-        <a href="/mypage/review/" class="fig-r1">마이페이지</a>
-        <a href="/member/logout/" class="fig-r2">로그아웃</a>
-      </div>
-      {% endif %}
 
     </nav>
+    <!-- Messages 표시 부분 추가 -->
+    {% if messages %}
+    {% for message in messages %}
+      <script>
+        alert('{{ message }}');
+      </script>
+    {% endfor %}
+    {% endif %}
+    <!-- Messages 표시 부분 여기까지 -->
   </header> 
   <hr class="fig-hr">
   <div class="fig-main">
