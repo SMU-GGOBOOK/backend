@@ -26,8 +26,8 @@
           <div class="swiper-slide" style="background: #b6c5d1;">
             <div class="mainBanner__center">
                 <div class="mainBanner__center__text">
-                  <div class="mainBanner__center__title">똘병이의 스타성...<br>인형 똘병이는 어떻게 성공했나</div>
-                  <div class="mainBanner__center__subtitle">똘병이가 좋아 내가 좋아?<br>**당연히소희지</div>
+                  <div class="mainBanner__center__title">똘병이의 스타성...<br>성공한 인형 똘병이</div>
+                  <div class="mainBanner__center__subtitle">똘병이가 좋아 내가 좋아?<br>불닭볶음면 닭 아닙니다</div>
                 </div>
                 <div class='mainBanner__bookcover'><img src="/static/images/home/banner_2.jpg"></div>
 
@@ -158,73 +158,25 @@
     <div class="CIirP0cq">
       <div class="listWrapper">
         <ul>
+          {% for r in review %}
           <li class="w_exposed_cell">
-            <a title="윈드 브레이커 공식 캐릭터북 극비 노트">
+            <a title="{{r.title}}">
               <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_1.jpg">
-                <div class="rank">1</div>
+                <a href='{% url "booksearch:detail" r.book_id %}'><img class='book__cover' alt="{{r.title}} 표지 이미지" src="{{r.cover}}"></a>
+                <div class="rank">{{forloop.counter}}</div>
               </div>
               <div class="bVUVO8nJ">
-                <div class="book__title">윈드 브레이커 공식 캐릭터북 극비 노트</div>
-                <div class="rating">별점 ★ 3.7</div>
+                <div class="book__title">{{r.title}}</div>
+                <div class="rating">별점 ★ {{r.rating}}</div>
               </div>
             </a>
           </li>
+          {% endfor %}
 
-          <li class="w_exposed_cell">
-            <a title="결국 국민이 합니다 : 이재명의 인생과 정치철학">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_2.jpg">
-                <div class="rank">2</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">결국 국민이 합니다 : 이재명의 인생과 정치철학</div>
-                <div class="rating">별점 ★ 3.7</div>
-              </div>
-            </a>
-          </li>
-
-          <li class="w_exposed_cell">
-            <a title="순간을 달리는 할머니">
-              <div class="book-cover-container">
-                  <img class='book__cover' alt="content" src="/static/images/home/ranking_3.jpg">
-                  <div class="rank">3</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">순간을 달리는 할머니</div>
-                <div class="rating">별점 ★ 3.5</div>
-              </div>
-            </a>
-          </li>
-
-          <li class="w_exposed_cell">
-            <a title="순간을 달리는 할머니">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_4.jpg" >
-                <div class="rank">4</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">순간을 달리는 할머니</div>
-                <div class="rating">별점 ★ 3.7</div>
-              </div>
-            </a>
-          </li>
-
-          <li class="w_exposed_cell">
-            <a title="미술관에 간 할미">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_5.jpg">
-                <div class="rank">5</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">미술관에 간 할미</div>
-                <div class="rating">별점 ★ 3.7</div>
-              </div>
-            </a>
-          </li>
         </ul>
       </div>
     </div>
+
 
     <div>
       <p class="ranking__title"><i class="fa-solid fa-chart-simple"></i>조회수 순위 Top 5</p>
@@ -232,70 +184,22 @@
     <div class="CIirP0cq">
       <div class="listWrapper">
         <ul>
-          <li class="w_exposed_cell">
-            <a title="샨티">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_6.jpg">
-                <div class="rank">1</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">샨티</div>
-                <div class="rating">별점 ★ 4.5</div>
-              </div>
-            </a>
-          </li>
-        
-          <li class="w_exposed_cell">
-            <a title="불멸의 유전자">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_7.jpg">
-                <div class="rank">2</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">불멸의 유전자</div>
-                <div class="rating">별점 ★ 4.5</div>
-              </div>
-            </a>
-          </li>
 
+          {% for v in views %}
           <li class="w_exposed_cell">
-            <a title="2025 심우철 실전 동형 모의고사 Season">
+            <a title="{{v.title}}">
               <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_8.jpg">
-                <div class="rank">3</div>
+                <a href='{% url "booksearch:detail" v.book_id %}'><img class='book__cover' alt="{{b.title}} 표지" src="{{v.cover}}"></a>
+                <div class="rank">{{forloop.counter}}</div>
               </div>
               <div class="bVUVO8nJ">
-                <div class="book__title">2025 심우철 실전 동형 모의고사 Season</div>
-                <div class="rating">별점 ★ 4.5</div>
+                <div class="book__title">{{v.title}}</div>
+                <div class="rating">별점 ★ {{v.rating}}</div>
               </div>
             </a>
           </li>
+          {% endfor %}
 
-          <li class="w_exposed_cell">
-            <a title="토막 난 우주를 안고서">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_9.jpg">
-                <div class="rank">4</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">토막 난 우주를 안고서</div>
-                <div class="rating">별점 ★ 4.5</div>
-              </div>
-            </a>
-          </li>
-        
-          <li class="w_exposed_cell">
-            <a title="무엇도 홀로 존재하지 않는다">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_10.jpg">
-                <div class="rank">5</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">무엇도 홀로 존재하지 않는다</div>
-                <div class="rating">별점 ★ 3.3</div>
-              </div>
-            </a>
-          </li>
         </ul>
       </div>
     </div>
@@ -306,70 +210,22 @@
     <div class="CIirP0cq">
       <div class="listWrapper">
         <ul>
-          <li class="w_exposed_cell">
-            <a title="안녕이라 그랬어">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_11.jpg">
-                <div class="rank">1</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">안녕이라 그랬어</div>
-                <div class="rating">별점 ★ 4.5</div>
-              </div>
-            </a>
-          </li>
-        
-          <li class="w_exposed_cell">
-            <a title="유지만 다이어트 레시피">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_12.jpg">
-                <div class="rank">2</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">유지만 다이어트 레시피</div>
-                <div class="rating">별점 ★ 4.5</div>
-              </div>
-            </a>
-          </li>
 
+          {% for b in bookmark %}
           <li class="w_exposed_cell">
-            <a title="믿을 구석 The Last Resort">
+            <a title="{{b.title}}">
               <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_13.jpg">
-                <div class="rank">3</div>
+                <a href='{% url "booksearch:detail" b.book_id %}'></a><img class='book__cover' alt="{{b.title}} 표지" src="{{b.cover}}">
+                <div class="rank">{{forloop.counter}}</div>
               </div>
               <div class="bVUVO8nJ">
-                <div class="book__title">믿을 구석 The Last Resort</div>
-                <div class="rating">별점 ★ 4.0</div>
+                <div class="book__title">{{b.title}}</div>
+                <div class="rating">별점 ★ {{b.rating}}</div>
               </div>
             </a>
           </li>
+          {% endfor %}
 
-          <li class="w_exposed_cell">
-            <a title="첫 여름, 완주">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_14.jpg">
-                <div class="rank">4</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">첫 여름, 완주</div>
-                <div class="rating">별점 ★ 4.5</div>
-              </div>
-            </a>
-          </li>
-        
-          <li class="w_exposed_cell">
-            <a title="소설 보다: 여름">
-              <div class="book-cover-container">
-                <img class='book__cover' alt="content" src="/static/images/home/ranking_15.jpg">
-                <div class="rank">5</div>
-              </div>
-              <div class="bVUVO8nJ">
-                <div class="book__title">소설 보다: 여름</div>
-                <div class="rating">별점 ★ 2.2</div>
-              </div>
-            </a>
-          </li>
         </ul>
       </div>
     </div>
