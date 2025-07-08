@@ -14,7 +14,7 @@
     
   }
 
-  .saveAgree {
+  .saveAgree,.chchch {
       vertical-align: middle;
       display: inline-block;
       margin-top:-2px;
@@ -82,4 +82,15 @@
 
     .afaf {
       margin:0 auto; text-align:center
+    }
+
+    .forch{
+      margin-bottom:20px;
+      text-align:center;
+    }
+    .chchch{
+      margin-right:8px;
+    }
+    .forch label{
+      color:#1a1a1a;
     }
