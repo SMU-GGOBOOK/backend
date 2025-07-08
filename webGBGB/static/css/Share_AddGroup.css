@@ -1,11 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
-
-body, input, select, textarea, button {
-  font-family: 'Noto Sans KR', sans-serif !important;
-}
-
-
-/* --------------------------------------- */
 /* 교환독서 그룹만들기 */
 .feed__content{
     margin-top: 82px;

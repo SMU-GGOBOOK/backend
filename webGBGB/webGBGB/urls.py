@@ -9,6 +9,8 @@ urlpatterns = [
     path('', include('home.urls')),
     path('cscenter/', include('cscenter.urls')),
     path('booksearch/', include('booksearch.urls')),
+    path('bookmark/', include('bookmark.urls')),
+    path('review/', include('review.urls')),
     path('member/', include('member.urls')),
 ]
 

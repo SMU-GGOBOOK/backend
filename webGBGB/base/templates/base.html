@@ -48,7 +48,7 @@
       </form>
 
       <div class="fig-right">
-      {% if request.session.user_id %}
+        {% if request.session.user_id %}
           <a href="/mypage/reviewlist/" class="fig-r1">{{ request.session.user_name }}님</a>
           <a href="{% url 'member:logout' %}" class="fig-r2">로그아웃</a>
         {% else %}
@@ -58,6 +58,15 @@
       </div>
 
     </nav>
+    <!-- Messages 표시 부분 추가 -->
+    {% if messages %}
+    {% for message in messages %}
+      <script>
+        alert('{{ message }}');
+      </script>
+    {% endfor %}
+    {% endif %}
+    <!-- Messages 표시 부분 여기까지 -->
   </header> 
   <hr class="fig-hr">
   <div class="fig-main">
@@ -135,22 +144,3 @@
   {% endblock %}
 </body>
 </html>
-  {% if request.GET.alert == '1' %}
-  <script>alert('로그인 되었습니다.');</script>
-  {% endif %}
-  {% if request.GET.alert == '2' %}
-  <script>
-    alert('로그아웃 되었습니다.');
-    location.href='/';
-  </script>
-  {% endif %}
-
-  <script>
-    // 장고 messages를 JavaScript alert으로 출력
-  {% if messages %}
-    {% for message in messages %}
-      alert('{{ message }}');
-    {% endfor %}
-  {% endif %}
-  </script>
-  

@@ -40,75 +40,38 @@
     <div class="items">
       <home-search-book-list _nghost-ng-c2831665569="">
         {% if books %}
-        {% for b in books %}
-        <div class="book--box ng-star-inserted">
-          <sui-book class="{{b.title}}">
-            <div class="sui-book__box">
-              <div class="sui-book__cover-box">
-                <button class="bookmarkBtn" onclick="toggleBookmark(this)">
-                  <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
-                </button>
-                <div class="sui-book__cover-container">
-                  <a href="/booksearch/detail/{{b.title}}/{{b.author}}/">
-                    <img sui-book-cover="" class="sui-book-cover" tabindex="0" src="{{b.cover}}" alt="{{b.title}}"><!----></div>
-                    <div class="sui-book__tags"><!----></div>
-                    <div class="sui-book__tail-tags"><!----><!---->
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="sui-book__tail-tags-tail">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M16 16L-6.99382e-07 16L0 0C-3.86258e-07 8.83656 7.16344 16 16 16Z" fill="white"></path>
-                      </svg>
-                    </div><!---->
-                  </a>
-                </div>
-                <div class="sui-book__inform-container">
-                  <a href="/booksearch/detail/{{b.title}}/{{b.author}}/">
-                    <sui-book-title tabindex="0">{{b.title}}</sui-book-title>
-                    <sui-book-author tabindex="0">{{b.author}}</sui-book-author>
-                    <sui-book-genre tabindex="0">{{b.publisher}}</sui-book-genre>
-                    <sui-book-rating tabindex="0">별점 4.9</sui-book-rating>
-                  </a>
-                </div>
-              </div>
-            </sui-book>
-        </div>
-            
-        {% endfor %}
-        {% endif %}
-            <script>
-              $(function(){ 
-
-                var hdata=``;
-                hdata += ```
-                <div class="book ng-star-inserted">
-              <sui-book _nghost-ng-c1655548388="">
+          {% for b in books %}
+            <div class="book--box ng-star-inserted">
+              <sui-book class="{{b.title}}">
                 <div class="sui-book__box">
                   <div class="sui-book__cover-box">
-                    <button class="bookmarkBtn" onclick="toggleBookmark(this)">
-                      <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
+                    <button onclick="toggleBookmark(this)" 
+                            class="bookmarkBtn {% if b.book_id in bookmarks %} active{% endif %}" 
+                            data-book-id="{{ b.book_id }}">
+                      <i class="fa-{% if b.book_id in bookmarks %}solid{% else %}regular{% endif %} fa-bookmark"></i>
                     </button>
-                    <div class="sui-book__cover-container">
-                      <img sui-book-cover="" class="sui-book-cover" tabindex="0" src="/static/images/booksearch/kf9632.jpg"><!----></div>
-                      <div class="sui-book__tags"><!----></div>
-                      <div class="sui-book__tail-tags"><!----><!---->
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="sui-book__tail-tags-tail">
-                          <path fill-rule="evenodd" clip-rule="evenodd" d="M16 16L-6.99382e-07 16L0 0C-3.86258e-07 8.83656 7.16344 16 16 16Z" fill="white"></path>
-                        </svg>
-                      </div><!---->
-                    </div>
+                    <a href="/booksearch/detail/{{b.book_id}}/" class="sui-book__cover-link">
+                      <img sui-book-cover="" class="sui-book-cover" tabindex="0" src="{{b.cover}}" alt="{{b.title}}">
+                    </a>
+                  </div>
+                  <a href="/booksearch/detail/{{b.book_id}}/" class="inform_a">
                     <div class="sui-book__inform-container">
-                      <sui-book-title tabindex="0">제목</sui-book-title>
-                      <sui-book-author tabindex="0">글쓴이</sui-book-author>
-                      <sui-book-genre tabindex="0">장르 | 출판사</sui-book-genre>
+                      <sui-book-title tabindex="0">{{b.title}}</sui-book-title>
+                      <sui-book-author tabindex="0">{{b.author}}</sui-book-author>
+                      <sui-book-genre tabindex="0">{{b.publisher}}</sui-book-genre>
                       <sui-book-rating tabindex="0">별점 4.9</sui-book-rating>
                     </div>
+                  </a>
+                  <div class="sui-book__tags"></div>
+                  <div class="sui-book__tail-tags">
+                    <svg width="16" height="16" ...> ... </svg>
                   </div>
-                </sui-book>
+                </div>
+              </sui-book>
             </div>
-                ```
-                
-
-              })//jquery
-            </script>
-          </home-search-book-list>
+          {% endfor %}
+        {% endif %}
+      </home-search-book-list>
           <!-- paginator -->
           <div class="pg-container">
             <div class="paginator">

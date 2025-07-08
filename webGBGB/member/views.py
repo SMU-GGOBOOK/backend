@@ -571,12 +571,5 @@ def logout(request):
 
 
 
-# 기입용
-def sample(request):
-    return render(request,'member/sample.html')
-
-
-
-
 
 

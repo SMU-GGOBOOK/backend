@@ -1,14 +1,10 @@
-{% extends "member/sample.html" %}
+{% extends "base.html" %}
 {% load static %}
-{% block link %}
-<script src="https://kit.fontawesome.com/955e8c2313.js" crossorigin="anonymous"></script>
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'css/join3.css' %} ">
-{% endblock %}
 {% block title %}회원정보수정{% endblock %}
-{% block js-block %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/join3.css' %} ">
+<link rel="stylesheet" type="text/css" href="{% static 'css/Share_AddGroup.css' %} ">
 {% endblock %}
-{% block style-block %}{% endblock %}
 {% block content %}
 <div class="feed__content">
     <!-- 메시지 표시 -->
@@ -161,7 +157,7 @@
 
 </div>
 {% endblock %}
-{% block last %}
+{% block extra_js %}
 
 <!--                           script                          -->
 <!-- 해시태그 기능 -->

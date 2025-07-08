@@ -1,23 +1,33 @@
 // 북마크 버튼 js
 function toggleBookmark(button) {
-    console.log('버튼 클릭됨!');  // 이 로그가 찍히나요?
+    const bookId = button.getAttribute('data-book-id');
+    let cToken = $('meta[name="csrf-token"]').attr('content');
     const icon = button.querySelector('i');
     if (!icon) {
-    console.warn('아이콘 없음');
-    return;
+        console.warn('아이콘 없음');
+        return;
     }
 
-    const isSolid = icon.classList.contains('fa-solid');
+    $.ajax({
+        url: '/bookmark/create/',
+        type: 'post',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': cToken },
+        data: JSON.stringify({ book_id: bookId }),
+        success: function(data) {
+            if (data.bookmarked !== undefined) {
+                icon.classList.remove('fa-solid', 'fa-regular');
+                icon.classList.add(data.bookmarked ? 'fa-solid' : 'fa-regular');
+                button.classList.toggle('active', data.bookmarked);
+            }
+        },
+        error: function() {
+        }
+    });
+
+    // 애니메이션 효과는 성공 후에 처리하는 게 더 자연스러울 수 있습니다.
     icon.classList.add('fading-out');
-
     setTimeout(() => {
-    icon.classList.remove('fa-solid', 'fa-regular');
-    icon.classList.add(isSolid ? 'fa-regular' : 'fa-solid');
-    button.classList.toggle('active');
-    }, 50);
-
-    setTimeout(() => {
-    icon.classList.remove('fading-out');
+        icon.classList.remove('fading-out');
     }, 100);
 }
 
@@ -66,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById("rating-value-review");
   const valSpan = document.querySelector(".caption-review .val"); // 오타 반영
   const textSpan = document.querySelector(".caption-review-badge span > span:first-child");
+  const visibleRatingInput = document.querySelector(".form_rating.rating-input"); // 🔹 추가된 라인
 
   let currentValue = parseInt(input.value || "0");
 
@@ -75,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (input) input.value = value;
+    if (visibleRatingInput) visibleRatingInput.value = value; // 🔹 여기에 추가!
     if (valSpan) valSpan.textContent = value;
     if (textSpan) textSpan.textContent = `5점 중 ${value}점`;
 
@@ -221,6 +233,22 @@ $(document).on('click', '.btn_reply', function () {
   $commentItem.find('.reply_wrap').first().toggle();
 });
 
+
+/* 태그 */
+document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    const alreadyActive = tag.classList.contains('active');
+    document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(t => t.classList.remove('active'));
+    if (!alreadyActive) tag.classList.add('active');
+
+    const emotionInput = document.getElementById('selected-emotion');
+    if (emotionInput) {
+      const selectedText = tag.querySelector('.text')?.textContent.trim();
+      emotionInput.value = selectedText || "";
+    }
+  });
+});
+
 // 모달 팝업 내 사진 추가
 document.addEventListener('DOMContentLoaded', function () {
   const fileList = document.querySelector('.file_list');
@@ -251,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function () {
     li.innerHTML = `
       <span class="file_item ${attached ? 'attached' : ''}">
         <span class="btn_box">
-          <input id="${id}" type="file" accept="image/*" />
+          <input id="${id}" type="file" name="review_image" multiple/>
           <label for="${id}"><span class="hidden">첨부파일 추가</span></label>
           <span class="attach_img_box" style="display:${attached ? 'inline-block' : 'none'};">
             <span class="attach_img_view" style="background-image: url('${imgSrc}');"></span>
@@ -302,7 +330,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateAttachVal();
       };
       reader.readAsDataURL(file);
-      input.value = '';
     });
 
     removeBtn.addEventListener('click', () => {
@@ -368,22 +395,19 @@ document.addEventListener('DOMContentLoaded', function () {
   updateAttachVal();
 });
 
-/* 태그 */
-document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(tag => {
-  tag.addEventListener('click', () => {
-    const alreadyActive = tag.classList.contains('active');
-    document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(t => t.classList.remove('active'));
-    if (!alreadyActive) tag.classList.add('active');
-  });
-});
-
 
 /* 모달 팝업 등록 버튼 & 초기화 */
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("reviewModal");
   const modalBtn = document.getElementById("modal_btn");
-  const textarea = document.getElementById("ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_reviewText");
+  const textarea = document.getElementById("comments");
   const ratingInput = document.getElementById("rating-value-review");
+
+  console.log("초기 DOM 상태 확인:");
+  console.log("ratingInput:", ratingInput);
+  console.log("textarea:", textarea);
+  console.log("modalBtn:", modalBtn);
+
 
   // ⭐ 리뷰 폼 초기화 함수
   function resetReviewForm() {
@@ -412,9 +436,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ 유효성 검사 함수
   function checkFormValid() {
-    const ratingValid = parseInt(ratingInput.value || "0") > 0;
+    const ratingVal = parseInt(ratingInput.value || "0");
+    const ratingValid = ratingVal > 0;
     const tagSelected = document.querySelector('.tag_wrap.size_lg .tag.active') !== null;
-    const reviewValid = textarea.value.trim().length >= 10;
+    const reviewLength = textarea.value.trim().length;
+    const reviewValid = reviewLength >= 10;
+
+    console.log("=== 유효성 검사 결과 ===");
+    console.log("⭐ 별점 (ratingInput.value):", ratingVal, "-> 유효?", ratingValid);
+    console.log("🏷️ 태그 선택됨?", tagSelected);
+    console.log("📝 리뷰 길이:", reviewLength, "-> 유효?", reviewValid);
+    console.log("🔒 버튼 활성화됨?", ratingValid && tagSelected && reviewValid);
 
     modalBtn.disabled = !(ratingValid && tagSelected && reviewValid);
   }
@@ -445,9 +477,18 @@ document.addEventListener("DOMContentLoaded", () => {
   modalBtn.addEventListener("click", () => {
     // 유효하면 등록 처리
     alert("리뷰 등록이 완료되었습니다");
+
+    // 폼 제출
+    const form = document.getElementById("reviewForm");
+      if (form) {
+        form.submit();
+      }
+
+    // 모달 닫기 및 초기화는 폼 제출 후 (선택사항)
     modal?.classList.remove("active");
     resetReviewForm();
   });
+
 
 
   // 모달 외부 닫힘 감지

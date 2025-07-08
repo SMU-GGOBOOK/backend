@@ -7,9 +7,9 @@ class Notice(models.Model):
     ntitle = models.CharField(max_length=1000) # 제목
     ncontent = models.TextField()              # 내용
 
-    nhit = models.IntegerField(default=0)      # 조회수
     nfile = models.ImageField(null=True,blank=True,upload_to='notice')
     # FileField : 모든파일 업로드 가능
+    nhit = models.IntegerField(default=0)      # 조회수
     ndate = models.DateTimeField(auto_now=True)  # 현재날짜시간자동등록
     
     def __str__(self):
