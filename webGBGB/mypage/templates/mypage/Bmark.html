@@ -38,14 +38,16 @@
                 </div>
      
                 <section>
-                    <div class="bookbox">
+                    {% for b in bookmarks%}
+                    <div class="bookbox" data-id={{bookmark_id}}>
                         <div class="bookbox_cover">
                             <button class="bookmarkBtn"><i class="fa-solid fa-bookmark"></i></button>
                             <img src="/static/images/책1.jpg">
                         </div>
-                        <div class="booktitle">나 때문에 힘든 나에게</div>
-                        <div class="bookauthor">박지혜</div>
+                        <div class="booktitle">{{b.book_id.title}}</div>
+                        <div class="bookauthor">{{b.book_id.author}}</div>
                     </div>
+                    {% endfor %}
                     <div class="bookbox">
                         <div class="bookbox_cover">
                             <button class="bookmarkBtn"><i class="fa-solid fa-bookmark"></i></button>
@@ -137,20 +139,6 @@
   </div>
   {% endblock content %}
   {% block extra_js %}
-  <script>
-    // 모든 북마크된 버튼에 클릭 이벤트 연결
-    document.querySelectorAll('.bookmarkBtn').forEach(button => {
-      button.addEventListener('click', function () {
-        const bookbox = this.closest('.bookbox');
+    <script src="{% static 'js/2My_BookMark.js' %}"></script>
 
-        // 북마크된 책에서 클릭하면 삭제
-        if (bookbox) {
-          const shouldDelete = confirm("북마크를 삭제하시겠습니까?");
-          if (shouldDelete) {
-            bookbox.remove();
-          }
-        }
-      });
-    });
-  </script>
   {% endblock extra_js %}
