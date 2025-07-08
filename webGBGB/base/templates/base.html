@@ -49,10 +49,10 @@
       <div class="fig-right">
         {% if request.session.user_id %}
           <a href="/mypage/reviewlist/" class="fig-r1">{{ request.session.user_name }}님</a>
-          <a href="{% url 'member:logout' %}" class="fig-r2">로그아웃</a>
+          <a href="/member/logout/" class="fig-r2">로그아웃</a>
         {% else %}
-          <a href="{% url 'member:join1' %}" class="fig-r1">회원가입</a>
-          <a href="{% url 'member:login' %}" class="fig-r2">로그인</a>
+          <a href="/member/join1/" class="fig-r1">회원가입</a>
+          <a href="/member/login/" class="fig-r2">로그인</a>
         {% endif %}
       </div>
 
