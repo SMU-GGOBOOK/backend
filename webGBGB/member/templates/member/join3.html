@@ -1,12 +1,10 @@
-{% extends "member/sample.html" %}
+{% extends "base.html" %}
 {% load static %}
-{% block link %}
+{% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/fin.css'%}">
 {% endblock %}
 {% block title %}회원가입완료{% endblock %}
-{% block js-block %}
-{% endblock %}
-{% block style-block %}{% endblock %}
+
 {% block content %}
 <div class="full">
       
@@ -31,6 +29,5 @@
     </div>
     </div>
 {% endblock %}
-{% block last %}
+{% block extra_js %}
 {% endblock %}
-
