@@ -20,10 +20,10 @@ def search(request):
     books = []
     total_count = 0
 
-    member_id = request.session.get('user_id')
-    member = Member.objects.get(id=member_id)
-
-    if not member_id:
+    try:
+        member_id = request.session.get('user_id')
+        member = Member.objects.get(id=member_id)
+    except:
         messages.error(request, "로그인이 필요합니다.")
         return redirect('/member/login/')
     
@@ -171,8 +171,13 @@ def detail(request, book_id):
 
     # 북마크 여부 확인
     is_bookmarked = False
-    member_id = request.session.get('user_id')
-    member = Member.objects.get(id=member_id)
+    try:
+        member_id = request.session.get('user_id')
+        member = Member.objects.get(id=member_id)
+    except:
+        messages.error(request, "로그인이 필요합니다.")
+        return redirect('/member/login/')
+    
     if member:
         from bookmark.models import Bookmark
         is_bookmarked = Bookmark.objects.filter(book_id=book, member_id=member.member_id).exists()
