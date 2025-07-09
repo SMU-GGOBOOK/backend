@@ -1,8 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
-
-body, input, select, textarea, button {
-  font-family: 'Noto Sans KR', sans-serif !important;
-}
+body {font-family: 'Noto Sans KR', sans-serif;}
 
 * {margin: 0; padding: 0; box-sizing: border-box; -moz-osx-font-smoothing: grayscale; -webkit-font-smoothing: antialiased;
     text-decoration: none; list-style: none;
@@ -11,6 +7,8 @@ body, input, select, textarea, button {
 table,tr,td{
     border-collapse:collapse;
 }
+
+
 
 input {
     color: inherit; 
@@ -56,23 +54,29 @@ hr {
 }
 
 .fig-nav{
-    display:flex;
-    justify-content: space-between;
+    display: grid; 
+    grid-template-columns: 1fr auto auto; 
     align-items: center; 
     padding: 16px 18px 8px 30px;
 }
 
-/* 헤더 왼쪽 ------- 로고 + 교환독서 탭 */
+/* 로고 + 교환독서 탭 */
 .fig-header-left {
+    display: flex;
     align-items: center; 
+    gap: 12px; 
 }
 .fig-one{
+    display: inline-flex;
+    width: fit-content;
     display: flex; 
     align-items: center; 
     gap: 0.5rem;
 }
 
-/*로고 글씨체*/
+
+/*---------헤더 로고 글씨체----------*/
+
 @font-face {
     font-family: 'HakgyoansimDunggeunmisoTTF-B';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimDunggeunmisoTTF-B.woff2') format('woff2');
@@ -83,7 +87,10 @@ hr {
 
 .fig-logo{
     font-family: 'HakgyoansimDunggeunmisoTTF-B';
+    height: 25px;
     display: flex;
+    align-items: center;
+    justify-content: center;
     color: #2D7868;
     margin: 0; 
     font-size: 30px; 
@@ -91,19 +98,27 @@ hr {
 
 
 .fig-exchangeimage {
+    height: 20px; 
     margin-left: 20px; 
+    position: relative;
 }
 
 
 .fig-exchange-book{
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #2D7868;
-    font-family: 'NanumSquareAcb';
+    margin: 0; 
     font-size: 17px; 
 }
 
 
 /* 검색바 */
 .fig-searchform {
+    position: absolute;
+    left: 700px;
     width: 500px;
     display: flex;
     align-items: flex-start;
@@ -156,19 +171,17 @@ hr {
 }
 
 /* 로그인 회원가입 */
-.fig-right {
+.fig-join {
     display: flex;
     align-items: center;
-    font-family: 'NanumSquareAcb';
-    width:222.73px;
-    justify-content: end;
+    position: relative;
 }
 
-.fig-r1,
-.fig-r2 {
-    padding: 12px;
+.fig-signup,
+.fig-login {
+    padding: 11px 12px;
+    font-weight: 600;
     font-size: 16px;
-    font-weight:600;
     line-height: 18px;
     text-align: center;
     color: #2D7868;
@@ -221,7 +234,7 @@ hr {
     font-size:22px;
 }
 
-.totalReview>p>span{
+p>span{
     font-weight:700;
     padding:0 10px;
     font-size: 23px;
@@ -284,7 +297,7 @@ hr {
     justify-content: space-between;
 }
 
-.csWrap button{
+.csWrap > button{
     cursor: pointer;
     width:180px;
     height:40px;
