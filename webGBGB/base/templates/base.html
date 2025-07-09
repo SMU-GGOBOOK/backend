@@ -48,7 +48,7 @@
 
       <div class="fig-right">
         {% if request.session.user_id %}
-          <a href="/mypage/reviewlist/" class="fig-r1">{{ request.session.user_name }}님</a>
+          <a href="/mypage/review/" class="fig-r1">{{ request.session.user_name }}님</a>
           <a href="/member/logout/" class="fig-r2">로그아웃</a>
         {% else %}
           <a href="/member/join1/" class="fig-r1">회원가입</a>
