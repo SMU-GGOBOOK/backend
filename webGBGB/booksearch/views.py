@@ -23,7 +23,6 @@ def search(request):
     member_id = request.session.get('user_id')
     member = Member.objects.get(id=member_id)
 
-
     if not member_id:
         messages.error(request, "로그인이 필요합니다.")
         return redirect('/member/login/')
