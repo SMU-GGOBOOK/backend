@@ -134,6 +134,8 @@ def detail(request, book_id):
     for r in reviews:
         r.rating_percent = r.rating * 20
         r.reply_list = Reply.objects.filter(review_id=r).order_by('created_at')
+        
+    total_count = reviews.count()
 
 
     # 북마크 여부 확인
@@ -209,5 +211,6 @@ def detail(request, book_id):
         'book': book,
         'reviews': reviews,
         'is_bookmarked': is_bookmarked,
+        'total_count': total_count,
     }
     return render(request, 'booksearch/bookdetail.html', context)

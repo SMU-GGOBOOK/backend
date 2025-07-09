@@ -46,5 +46,29 @@ def reply_create(request):
         
         return redirect(f'/booksearch/detail/{book.book_id}/')
 
-        
+def reply_delete(request, reply_id):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        messages.error(request, "로그인이 필요합니다.")
+        return redirect('/member/login/')
+
+    member = Member.objects.get(id=user_id)
+    reply = Reply.objects.get(reply_id=reply_id)
+    
+    if reply.member_id.member_id != member.member_id:
+        messages.error(request, "본인이 작성한 리뷰만 삭제할 수 있습니다.")
+        return redirect(f'/booksearch/detail/{reply.review_id.book_id.book_id}/')
+    
+    print(reply.member_id, member.member_id)
+    
+    review = reply.review_id
+    if review.comments > 0:
+        review.comments -= 1
+        review.save()
+
+    reply.delete()
+    
+    messages.success(request, "답글이 삭제되었습니다.")
+    
+    return redirect(f'/booksearch/detail/{reply.review_id.book_id.book_id}/')
         

@@ -43,7 +43,7 @@ def review_create(request):
         )
 
         print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments)
-        
+                
         images = request.FILES.getlist('review_image', '')  # 단일 이미지 (ImageField 단일)
         for i, img in enumerate(images):
             if i>=3:
@@ -73,7 +73,7 @@ def review_delete(request, review_id):
     review.delete()
     messages.success(request, "리뷰가 삭제되었습니다.")
     
-    return redirect(f'/booksearch/detail/{review.book_id}/')
+    return redirect(f'/booksearch/detail/{review.book_id.book_id}/')
 
 def review_like(request):
     if request.method == 'POST':
