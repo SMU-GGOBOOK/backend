@@ -19,16 +19,16 @@
 
 $(document).on('click', '.bookmarkBtn', function() {
   const $bookBox = $(this).closest('.bookbox');
-  const reviewId = $bookBox.data('id'); // HTML에서 data-id로 지정된 값
+  const bookmarkId = $bookBox.data('id'); // HTML에서 data-id로 지정된 값
   const cToken = $('meta[name="csrf-token"]').attr('content');
 
   if (!confirm('정말 삭제하시겠습니까?')) return;
 
   $.ajax({
-    url: '/mypage/review_delete/',  // 백엔드 URL에 맞게 수정
+    url: '/mypage/bookmark_delete/',  // 백엔드 URL에 맞게 수정
     type: 'post',
     headers: { 'X-CSRFToken': cToken },
-    data: { 'review_id': reviewId },
+    data: { 'bookmark_id': bookmarkId },
     success: function(data) {
       if (data.result === 'success') {
         $bookBox.remove(); // DOM에서 제거

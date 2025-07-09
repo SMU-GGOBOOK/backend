@@ -43,8 +43,9 @@
 
                   <!--내 그룹 목록-->
                   <div class="my_group">
+                    {% for g in sharegroup%}
                       <div class="bookbox">
-                        <button class="outBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+                        <button class="outBtn" data-bookmark-id="{{b.bookmark_id}}"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                           <div class="bookbox_cover">
                               <img src="/static/images/책1.jpg">
                           </div>
@@ -58,6 +59,7 @@
                               <div class="bookauthor">그룹장 닉네임</div>
                           </div>
                       </div>
+                    {% endfor %}
                       <div class="bookbox">
                         <button class="outBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                           <div class="bookbox_cover">

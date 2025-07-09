@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import F,Q
 from review.models import Review
 from member.models import Member
-
+from bookmark.models import Bookmark
 
 
 ## list : 현재 페이지의 리뷰 목록
@@ -27,7 +27,7 @@ def review(request):
 
     page = request.GET.get('page', 1)
     qs = Review.objects.filter(member_id=member).order_by('-created_at')  # member_id는 FK니까 객체로 필터
-
+    
     paginator = Paginator(qs, 5)
     paginated_reviews = paginator.get_page(page)
 
@@ -51,13 +51,13 @@ def Bmark(request):
         return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
 
     page = request.GET.get('page', 1)
-    qs = Review.objects.filter(member_id=member).order_by('-created_at')  # member_id는 FK니까 객체로 필터
+    qs = Bookmark.objects.filter(member_id=member).order_by('-marked_date')  # member_id는 FK니까 객체로 필터
 
     paginator = Paginator(qs, 5)
-    paginated_reviews = paginator.get_page(page)
+    paginated_bookmarks = paginator.get_page(page)
 
     context = {
-        'reviews': paginated_reviews,
+        'bookmarks': paginated_bookmarks,
         'page': int(page),
     }
     
@@ -83,6 +83,28 @@ def review_delete(request):
             return JsonResponse({"result": "error", "message": "리뷰 ID 형식이 잘못되었습니다."}, status=400)
         except Review.DoesNotExist:
             return JsonResponse({"result": "error", "message": "리뷰가 존재하지 않습니다."}, status=404)
+
+    return JsonResponse({'result': 'error', 'message': '허용되지 않은 요청 방식입니다.'}, status=400)
+
+
+
+def bookmark_delete(request):
+    if request.method == 'POST':
+        bookmark_id = request.POST.get('bookmark_id')
+        if not bookmark_id:
+            return JsonResponse({'result': 'error', 'message': '리뷰 ID 없음'}, status=400)
+
+        print("삭제 요청 bookmark_id:", bookmark_id)
+
+        try:
+            bookmark_id = int(bookmark_id)  # 문자열을 숫자로 변환
+            bookmark = Bookmark.objects.get(bookmark_id=bookmark_id)
+            bookmark.delete()
+            return JsonResponse({"result": "success"})
+        except ValueError:
+            return JsonResponse({"result": "error", "message": "북마크 ID 형식이 잘못되었습니다."}, status=400)
+        except Bookmark.DoesNotExist:
+            return JsonResponse({"result": "error", "message": "북마크가 존재하지 않습니다."}, status=404)
 
     return JsonResponse({'result': 'error', 'message': '허용되지 않은 요청 방식입니다.'}, status=400)
 

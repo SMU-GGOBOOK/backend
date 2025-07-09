@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type='text/css' href="/static/css/2My_BookMark.css">
 <link rel="stylesheet" href="/static/css/paginator.css" />
+<meta name="csrf-token" content="{{ csrf_token }}">
+
 {% endblock extra_css %}
 
 {% block content %}
@@ -39,55 +41,24 @@
      
                 <section>
                     {% for b in bookmarks%}
-                    <div class="bookbox" data-id={{bookmark_id}}>
+                    <div class="bookbox" data-id="{{b.bookmark_id}}">
                         <div class="bookbox_cover">
-                            <button class="bookmarkBtn"><i class="fa-solid fa-bookmark"></i></button>
-                            <img src="/static/images/책1.jpg">
+                            <button class="bookmarkBtn" data-bookmark-id="{{b.bookmark_id}}"><i class="fa-solid fa-bookmark"></i></button>
+                            <img src={{b.book_id.cover}}>
                         </div>
                         <div class="booktitle">{{b.book_id.title}}</div>
                         <div class="bookauthor">{{b.book_id.author}}</div>
                     </div>
                     {% endfor %}
-                    <div class="bookbox">
+                    {% comment %} <div class="bookbox">
                         <div class="bookbox_cover">
                             <button class="bookmarkBtn"><i class="fa-solid fa-bookmark"></i></button>
                             <img src="/static/images/책2.jpg">
                         </div>
                         <div class="booktitle">우주 전함 실종 사건</div>
                         <div class="bookauthor">해리 해리슨 지음 / TR 클럽 옮김</div>
-                    </div>
-                    <div class="bookbox">
-                        <div class="bookbox_cover">
-                            <button class="bookmarkBtn"><i class="fa-solid fa-bookmark"></i></button>
-                            <img src="/static/images/책3.jpg">
-                        </div>
-                        <div class="booktitle">AI 트랜스포메이션</div>
-                        <div class="bookauthor">케이트리</div>
-                    </div>
-                    <div class="bookbox">
-                        <div class="bookbox_cover">
-                            <button class="bookmarkBtn"><i class="fa-solid fa-bookmark"></i></button>
-                            <img src="/static/images/책4.jpg">
-                        </div>
-                        <div class="booktitle">AI 트랜스포메이션</div>
-                        <div class="bookauthor">케이트리</div>
-                    </div>
-                    <div class="bookbox">
-                        <div class="bookbox_cover">
-                            <button class="bookmarkBtn"><i class="fa-solid fa-bookmark"></i></button>
-                            <img src="/static/images/책5.jpg">
-                        </div>
-                        <div class="booktitle">AI 트랜스포메이션</div>
-                        <div class="bookauthor">케이트리</div>
-                    </div>
-                    <div class="bookbox">
-                        <div class="bookbox_cover">
-                            <button class="bookmarkBtn"><i class="fa-solid fa-bookmark"></i></button>
-                            <img src="/static/images/책1.jpg">
-                        </div>
-                        <div class="booktitle">AI 트랜스포메이션</div>
-                        <div class="bookauthor">케이트리</div>
-                    </div>
+                    </div> {% endcomment %}
+                    
                 </section>
                      <!-- paginator -->
                   <div class="pg-container">

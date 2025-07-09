@@ -140,6 +140,8 @@ def detail(request, title, author):
         return render(request, 'booksearch/404.html', status=404)
     
     reviews = Review.objects.filter(book_id=book).prefetch_related('images')
+    for r in reviews:
+        r.rating_percent = r.rating * 20
 
     # 북마크 여부 확인
     is_bookmarked = False
