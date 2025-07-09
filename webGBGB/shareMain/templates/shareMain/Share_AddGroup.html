@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% block title %}그룹 만들기{% endblock %}
 {% block extra_css %}
   <link rel="stylesheet" type="text/css" href="/static/css/Share_AddGroup.css">
   <link rel="stylesheet" type="text/css" href="/static/css/paginator.css">
@@ -16,8 +16,14 @@
               <span>교환독서 그룹 만들기</span>
           </div>
           <!-- form (addgroupFrm)-->
-          <form action="{% url 'shareMain:Share_AddGroup' %}" method="post" name="addgroupFrm">
+          <form action="{% url 'shareMain:Share_AddGroup' %}" method="post" name="addgroupFrm" id="addgroupFrm">
             {% csrf_token %}
+            <!-- 📌 숨겨진 input들로 책 정보 전달 -->
+            <input type="hidden" id="id_book_title" name="book_title">
+            <input type="hidden" id="id_book_author" name="book_author">
+            <input type="hidden" id="id_book_cover" name="book_cover">
+            <input type="hidden" id="id_book_isbn" name="book_isbn">
+            <input type="hidden" id="id_tag" name="tag">
               <table class="group_table">
                 <tbody>
                   <!-- 그룹명 -->
@@ -36,7 +42,7 @@
                     </th>
                     <td>
                       <div class="member">
-                        <select id="member_count" name="member_count" required >
+                        <select id="max_member" name="max_member" required >
                           <option>2</option>
                           <option>3</option>
                           <option>4</option>
@@ -62,6 +68,9 @@
                     </td>
                   </tr>
                   <!-- 책 선택 -->
+                  <script>
+                    const AJAX_SEARCH_URL = "{% url 'shareMain:ajax_search' %}";
+                  </script>
                   <tr>
                     <th>
                       <label>책 선택</label>
@@ -69,7 +78,7 @@
                     </th>
                     <td>
                       <!-- 여기에 선택된 책 표시 -->
-                      <div id="selected-book-display" class="selected_book_display">
+                      <div id="selected-book-display">
                         <div id="book_search_trigger" class="selected_book_img">
                           <img src='/static/images/plusBtn.png'/>
                         </div>
@@ -87,175 +96,16 @@
                       <h2>책 선택</h2>
                       <!-- 모달 내부 검색 input -->
                       <div class="modal_input_wrap">
-                        <input type="text" name="book" class="modal_search" id="book_search_input_modal" placeholder="책 제목/저자 검색" required>
-                        <button class="modal_search_btn" id="modal_search_btn">
+                        <input type="text" name="book" class="modal_search" id="book_search_input_modal" placeholder="책 제목/저자 검색">
+                        <button type="button" class="modal_search_btn" id="modal_search_btn">
                           <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                       </div>
                       <!-- 검색 결과 -->
                       <div class="modal_results">
-                        <!-- 1 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36582/74/cover150/k232039558_1.jpg" alt="">
-                          </div>
-                            <div class="modal_book_info">
-                              <h3>어린왕자</h3>
-                              <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 김설아 옮김</p>
-                              <p><strong>출판사:</strong> 단한권의책</p>
-                              <p class="modal_description">프랑스의 비행조종사 출신의 저자인 앙투안 드 생텍쥐페리가 1943년에 발표한 작품이다. 『어린 왕자』는 어린이가 읽기엔 다소 어렵겠지만, 성인이 읽으면 가슴 밑바닥에 묻어두었던 유년의 꿈과 우주와 대자연, 그리고 세상사가 담겨있는 경이로운 그림동화이다.</p>
-                            </div>
-                            <div class="modal_book_select">
-                              <button type="button" class="modal_book_select_btn">선택</button>
-                            </div>
-                          </div>
-                        <!-- 2 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36662/50/cover150/k862030183_1.jpg" alt="">
-                          </div>
-                          <div class="modal_book_info">
-                            <h3>어린 왕자 (별 리커버 에디션) - 생텍쥐페리 재단 인정 공식 한국어판</h3>
-                            <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 김미정 옮김</p>
-                            <p><strong>출판사:</strong> 더스토리</p>
-                            <p class="modal_description">어린 왕자를 영원히 간직할 수 있도록 표지에 어린 왕자의 대표 캐릭터를 타공하였으며, 본문 또한 프랑스 생택쥐페리 재단 공식 오리지널 삽화를 사용해 이 책의 소장 가치를 높였다.</p>
-                          </div>
-                          <div class="modal_book_select">
-                            <button class="modal_book_select_btn">선택</button>
-                          </div>
-                        </div>
-                        <!-- 3 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36322/5/cover150/k812038545_1.jpg" alt="">
-                          </div>
-                          <div class="modal_book_info">
-                            <h3>어린 왕자 그림책으로 만나다</h3>
-                            <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 유나 편집부 엮음, 스튜디오 유나 그림</p>
-                            <p><strong>출판사:</strong> 유나</p>
-                            <p class="modal_description">‘어린 왕자’는 전 세계 수많은 독자에게 사랑받아 온 명작이다. 이 감동적인 이야기를 아이들도 이해할 수 있도록 쉽고 따뜻한 언어로 풀어내고, 아름다운 그림으로 담아냈다. 어린 왕자가 여러 별을 여행하며 만나는 다양한 어른들의 모습은 아이들에게 세상을 바라보는 새로운 시각을 전해주고, 장미와의 관계를 통해 사랑과 책임의 의미를 자연스럽게 배울 수 있도록 도와준다.</p>
-                          </div>
-                          <div class="modal_book_select">
-                            <button class="modal_book_select_btn">선택</button>
-                          </div>
-                        </div>
-                        <!-- 4 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36662/43/cover150/k682030183_1.jpg" alt="">
-                          </div>
-                          <div class="modal_book_info">
-                            <h3>어린 왕자 (장미 리커버 에디션)</h3>
-                            <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 김미정 옮김</p>
-                            <p><strong>출판사:</strong> 더스토리</p>
-                            <p class="modal_description">어린 왕자를 영원히 간직할 수 있도록 표지에 어린 왕자의 대표 캐릭터를 타공하였으며, 본문 또한 프랑스 생택쥐페리 재단 공식 오리지널 삽화를 사용해 이 책의 소장 가치를 높였다. 국내 최초로 선보이는 어린 왕자의 소장용 양장 에디션으로 나만의 어린 왕자를 영원히 간직해 보자.</p>
-                          </div>
-                          <div class="modal_book_select">
-                            <button class="modal_book_select_btn">선택</button>
-                          </div>
-                        </div>
-                        <!-- 5 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36662/54/cover150/k812030183_1.jpg" alt="">
-                          </div>
-                          <div class="modal_book_info">
-                            <h3>어린 왕자 (여우 리커버 에디션) - 생텍쥐페리 재단 인정 공식 한국어판</h3>
-                            <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 김미정 옮김</p>
-                            <p><strong>출판사:</strong> 더스토리</p>
-                            <p class="modal_description">어린 왕자를 영원히 간직할 수 있도록 표지에 어린 왕자의 대표 캐릭터를 타공하였으며, 본문 또한 프랑스 생택쥐페리 재단 공식 오리지널 삽화를 사용해 이 책의 소장 가치를 높였다. 국내 최초로 선보이는 어린 왕자의 소장용 양장 에디션으로 나만의 어린 왕자를 영원히 간직해 보자.</p>
-                          </div>
-                          <div class="modal_book_select">
-                            <button class="modal_book_select_btn">선택</button>
-                          </div>
-                        </div>
-                        <!-- 6 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36582/74/cover150/k232039558_1.jpg" alt="">
-                          </div>
-                          <div class="modal_book_info">
-                            <h3>어린왕자</h3>
-                            <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 김설아 옮김</p>
-                            <p><strong>출판사:</strong> 단한권의책</p>
-                            <p class="modal_description">프랑스의 비행조종사 출신의 저자인 앙투안 드 생텍쥐페리가 1943년에 발표한 작품이다. 『어린 왕자』는 어린이가 읽기엔 다소 어렵겠지만, 성인이 읽으면 가슴 밑바닥에 묻어두었던 유년의 꿈과 우주와 대자연, 그리고 세상사가 담겨있는 경이로운 그림동화이다.</p>
-                          </div>
-                          <div class="modal_book_select">
-                            <button class="modal_book_select_btn">선택</button>
-                          </div>
-                        </div>
-                        <!-- 7 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36662/50/cover150/k862030183_1.jpg" alt="">
-                          </div>
-                          <div class="modal_book_info">
-                            <h3>어린 왕자 (별 리커버 에디션) - 생텍쥐페리 재단 인정 공식 한국어판</h3>
-                            <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 김미정 옮김</p>
-                            <p><strong>출판사:</strong> 더스토리</p>
-                            <p class="modal_description">어린 왕자를 영원히 간직할 수 있도록 표지에 어린 왕자의 대표 캐릭터를 타공하였으며, 본문 또한 프랑스 생택쥐페리 재단 공식 오리지널 삽화를 사용해 이 책의 소장 가치를 높였다.</p>
-                          </div>
-                          <div class="modal_book_select">
-                            <button class="modal_book_select_btn">선택</button>
-                          </div>
-                        </div>
-                        <!-- 8 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36322/5/cover150/k812038545_1.jpg" alt="">
-                          </div>
-                          <div class="modal_book_info">
-                            <h3>어린 왕자 그림책으로 만나다</h3>
-                            <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 유나 편집부 엮음, 스튜디오 유나 그림</p>
-                            <p><strong>출판사:</strong> 유나</p>
-                            <p class="modal_description">‘어린 왕자’는 전 세계 수많은 독자에게 사랑받아 온 명작이다. 이 감동적인 이야기를 아이들도 이해할 수 있도록 쉽고 따뜻한 언어로 풀어내고, 아름다운 그림으로 담아냈다. 어린 왕자가 여러 별을 여행하며 만나는 다양한 어른들의 모습은 아이들에게 세상을 바라보는 새로운 시각을 전해주고, 장미와의 관계를 통해 사랑과 책임의 의미를 자연스럽게 배울 수 있도록 도와준다.</p>
-                          </div>
-                          <div class="modal_book_select">
-                            <button class="modal_book_select_btn">선택</button>
-                          </div>
-                        </div>
-                        <!-- 9 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36662/43/cover150/k682030183_1.jpg" alt="">
-                          </div>
-                          <div class="modal_book_info">
-                            <h3>어린 왕자 (장미 리커버 에디션)</h3>
-                            <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 김미정 옮김</p>
-                            <p><strong>출판사:</strong> 더스토리</p>
-                            <p class="modal_description">어린 왕자를 영원히 간직할 수 있도록 표지에 어린 왕자의 대표 캐릭터를 타공하였으며, 본문 또한 프랑스 생택쥐페리 재단 공식 오리지널 삽화를 사용해 이 책의 소장 가치를 높였다. 국내 최초로 선보이는 어린 왕자의 소장용 양장 에디션으로 나만의 어린 왕자를 영원히 간직해 보자.</p>
-                          </div>
-                          <div class="modal_book_select">
-                            <button class="modal_book_select_btn">선택</button>
-                          </div>
-                        </div>
-                        <!-- 10 -->
-                        <div class="modal_result">
-                          <!-- 자바스크립트로 검색 결과 삽입 -->
-                          <div class="modal_book_item">
-                            <img src="https://image.aladin.co.kr/product/36662/54/cover150/k812030183_1.jpg" alt="">
-                          </div>
-                          <div class="modal_book_info">
-                            <h3>어린 왕자 (여우 리커버 에디션) - 생텍쥐페리 재단 인정 공식 한국어판</h3>
-                            <p><strong>저자:</strong> 앙투안 드 생텍쥐페리 지음, 김미정 옮김</p>
-                            <p><strong>출판사:</strong> 더스토리</p>
-                            <p class="modal_description">어린 왕자를 영원히 간직할 수 있도록 표지에 어린 왕자의 대표 캐릭터를 타공하였으며, 본문 또한 프랑스 생택쥐페리 재단 공식 오리지널 삽화를 사용해 이 책의 소장 가치를 높였다. 국내 최초로 선보이는 어린 왕자의 소장용 양장 에디션으로 나만의 어린 왕자를 영원히 간직해 보자.</p>
-                          </div>
-                          <div class="modal_book_select">
-                            <button class="modal_book_select_btn">선택</button>
-                          </div>
-                        </div>
-
-                          <!-- paginator -->
+                        <!-- 자바스크립트로 검색 결과 삽입 -->
+                      
+                        <!-- 모달창 paginator -->
                         <div class="pg-container">
                             <div class="paginator">
                                 <!-- 첫 페이지, 이전 페이지 버튼 -->
@@ -299,7 +149,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- paginator 끝 -->
+                        <!-- 모달창 paginator 끝 -->
                         
                       </div>
                     </div>
@@ -371,7 +221,7 @@
                     <td>
                       <div class="input-with-icon">
                         <input type="password" name="password" class="group_pw" placeholder="비밀번호"
-                          id="group_pw" inputmode="numeric" pattern="\d*" maxlength="10" required>
+                          id="group_pw" inputmode="numeric" pattern="\d*" maxlength="10">
                         <i class="fa-solid fa-eye-slash toggle-visibility" id="togglePw"></i>
                       </div>
                       <span id="pw_message" class="pw-message"></span>
@@ -379,383 +229,18 @@
                   </tr>
                 </tbody>
               </table>
+              <!-- 하단 버튼 -->
+              <div class="group_button">
+                  <button type="button" id="group_button_1">취소</button>
+                  <button type="submit" id="group_button_2">완료</button>
+              </div>
           </form>
-          <!-- 하단 버튼 -->
-          <div class="group_button">
-              <button type="button" id="group_button_1">취소</button>
-              <button type="submit" id="group_button_2"><a onclick='submitBtn()'>완료</a></button>
-          </div>
       </div>
     
     </div>          
 
     {% endblock content %}
 
-
-
-  <!-- -------------------- script ----------------------------------------- -->
-
   {% block extra_js %}
-
-
-  <!-- 책 검색 (모달창) -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const modal = document.getElementById("book_search_modal"); 
-      const overlay = modal.querySelector(".modal_overlay");
-      const closeBtn = modal.querySelector(".modal_close");
-      const input = document.getElementById("book_search_input_modal");
-      const searchBtn = document.getElementById("modal_search_btn");
-      const results = document.querySelector(".modal_results");
-      const selectedDisplay = document.getElementById("selected-book-display");
-
-      // 모달 열기
-      function openModal() {
-        modal.style.display = "block";
-        input.focus();
-      }
-      // 모달 닫기
-      function closeModal() {
-        console.log("closeModal 호출됨");
-        modal.style.display = "none";
-        results.innerHTML = "";
-        input.value = "";
-      }
-      // 검색 결과 렌더링
-      function renderBooks(filter = "") {
-        results.innerHTML = "";
-
-        // 여기에 검색 API 또는 백엔드 데이터 연동 가능
-        const dummyBooks = [
-          {
-            title: "어린 왕자",
-            author: "앙투안 드 생텍쥐페리 지음, 김설아 옮김",
-            publisher: "단한권의책",
-            description: "어린이를 위한 철학동화. 순수함을 찾는 여정.",
-            image: "https://image.aladin.co.kr/product/22323/62/cover200/8932907503_1.jpg"
-          },
-          {
-            title: "모모의 여름 방학",
-            author: "야엘 아샤 지음, 박재연 옮김",
-            publisher: "불광출판사",
-            description: "모모는 지루함과 심심함에서 벗어나고 싶어졌다.",
-            image: "https://image.aladin.co.kr/product/32000/60/cover200/8901265032_1.jpg"
-          }
-        ];
-
-        const filtered = dummyBooks.filter(book => book.title.includes(filter));
-        if (filtered.length === 0) {
-          results.innerHTML = "<p>검색 결과가 없습니다.</p>";
-          return;
-        }
-        filtered.forEach(book => {
-          const div = document.createElement("div");
-          div.className = "modal_book_item";
-          div.innerHTML = `
-            <img src="${book.image}" alt="${book.title}">
-            <div class="modal_book_info">
-              <h3>${book.title}</h3>
-              <p class="modal_author"><strong>저자:</strong> ${book.author}</p>
-              <p><strong>출판사:</strong> ${book.publisher}</p>
-              <p>${book.description}</p>
-              <button type="button" class="modal_book_select_btn">선택</button>
-            </div>
-          `;
-          results.appendChild(div);
-        });
-      }
-      // 모달 열기 (+ 버튼)
-      document.addEventListener("click", function (e) {
-        if (e.target.closest("#book_search_trigger")) {
-          e.preventDefault();
-          openModal();
-        }
-      });
-      // 모달 닫기
-      overlay.addEventListener("click", closeModal);
-      closeBtn.addEventListener("click", closeModal);
-      document.querySelector(".modal_close").addEventListener("click", function (event) {
-        event.preventDefault(); // 기본 동작 차단
-        modal.style.display = "none";
-        results.innerHTML = "";
-        input.value = "";
-      });
-
-      // 검색 실행 (버튼 클릭 / 엔터 입력)
-      searchBtn.addEventListener("click", () => renderBooks(input.value.trim()));
-      input.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          renderBooks(input.value.trim());
-        }
-      });
-
-      // 책 선택 버튼 클릭 시
-      results.addEventListener("click", function (e) {
-        if (e.target.classList.contains("modal_book_select_btn")) {
-          const bookItem = e.target.closest(".modal_book_item");
-          const img = bookItem.querySelector("img").getAttribute("src");
-          const title = bookItem.querySelector("h3").innerText;
-          const author = bookItem.querySelector(".modal_author").innerText;
-
-          /*
-          selectedDisplay.innerHTML = `
-            <div class="selected_book_img">
-              <img src="${img}" alt="">
-            </div>
-            <div class="selected_book_text">
-              <span>${title}</span>
-              <p>${author.replace("저자:", "").trim()}</p>
-            </div>
-            <div id="book_search_trigger" class="selected_book_img">
-            </div>
-          `;
-          */
-          
-          // <!-- 여기에 선택된 책 표시 -->
-          selectedDisplay.innerHTML = `
-          <div id="selected-book-display" class="selected_book_display">
-            <a href="#" id="book_search_trigger">
-              <div class="selected_book_img">
-                <div class="tooltip_wrapper">
-                  <img src="${img}" alt="">
-                  <div class="custom_tooltip">변경<br></div>
-                </div>
-              </div>
-            </a>
-            <div class="selected_book_text">
-              <span>${title}</span>
-              <p>${author.replace("저자:", "").trim()}</p>
-            </div>
-          </div>
-          `;
-          console.log="선택"
-          closeModal();
-        }
-      });
-
-
-    });
-
-  </script>
-
-
-  <!-- 해시태그 기능 추가
-      1) input에서 Enter로 태그 추가
-      2) + 버튼 클릭으로 태그 추가
-      3) 한글만 입력 가능
-      4) 최대 8개까지만 추가 가능
-      5) 중복 태그 방지
-      6) 태그 삭제 가능
-      7) 폼 제출용 hidden input에 자동 저장
-      8) 태그 선택시 tags목록에도 hover유지
-      9) 태그 삭제시 hover유지 취소
-      10) 태그도 최대 8개까지만 hover유지, alert띄움
-      -->
-  <script>
-    const input = document.querySelector("input[name='tag']");
-    const addBtn = document.querySelector(".add_tag_btn");
-    const outputArea = document.querySelector(".group_keyword_output");
-    const hiddenInput = document.querySelector("#group_keywords_hidden");
-    const tagLinks = document.querySelectorAll(".tags a"); // 아래 해시태그 리스트
-    const addedTags = new Set();
-    const MAX_TAGS = 8;
-    const HANGUL_REGEX = /^[가-힣]+$/;
-    // hidden input에 저장
-    function updateHiddenInput() {
-      hiddenInput.value = Array.from(addedTags).join(",");
-    }
-    // 실제 태그 추가 함수 (중복, 제한 등 포함)
-    function addTag(tagText) {
-      if (!tagText || addedTags.has(tagText)) return;
-      if (addedTags.size >= MAX_TAGS) {
-        alert("최대 8개의 태그만 추가할 수 있습니다.");
-        return;
-      }
-      addedTags.add(tagText);
-      const tag = document.createElement("div");
-      tag.className = "added-tag";
-      tag.textContent = tagText;
-      const delBtn = document.createElement("span");
-      delBtn.className = "tag-delete";
-      delBtn.innerHTML = "&times;";
-      // ⬇ 삭제 버튼 기능은 이 안에!
-      delBtn.onclick = () => {
-        addedTags.delete(tagText);
-        tag.remove();
-        updateHiddenInput();
-        // ⬇ 아래 해시태그에서 hover 유지용 클래스도 제거
-        tagLinks.forEach(link => {
-          if (link.textContent.trim() === tagText) {
-            link.classList.remove("clicked");
-          }
-        });
-      };
-      tag.appendChild(delBtn);
-      outputArea.appendChild(tag);
-      updateHiddenInput();
-    }
-    // input 기반 태그 추가 (한글 체크 포함)
-    function addTagFromInput() {
-      const value = input.value.trim();
-      const tagText = `#${value}`;
-      if (!value) return;
-      if (!HANGUL_REGEX.test(value)) {
-        alert("한글만 입력 가능합니다.");
-        return;
-      }
-      addTag(tagText);
-      input.value = "";
-    }
-    // Enter 키로 입력
-    input.addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        addTagFromInput();
-      }
-    });
-    // + 버튼 클릭
-    addBtn.addEventListener("click", addTagFromInput);
-    // 아래 해시태그 클릭 시 추가
-    tagLinks.forEach(link => {
-      link.addEventListener("click", function(e) {
-        e.preventDefault();
-        const tagText = this.textContent.trim();
-        if (addedTags.size >= MAX_TAGS && !this.classList.contains("clicked")) {
-          alert("최대 8개의 태그만 선택할 수 있습니다.");
-          return;
-        }
-        addTag(tagText);
-        this.classList.add("clicked");
-      });
-    });
-  </script>
-
-  <!-- 그룹 비밀번호 관련 기능 추가:
-    1) 공개여부-비공개 select 선택 시 비밀번호 설정부분 표시됨.
-    2) 숫자 외 글자 입력시 차단(alert표시)
-    3)  실시간 안내 UX (4~10자리만 입력 가능)
-    4) 길이 초과 시 자르기 (11자리부터 미입력됨)
-    5) 눈 아이콘 on/off 기능
-    -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const selectEl = document.getElementById("is_public");
-      const pwRow = document.querySelector(".pw_hide");
-      const pwInput = document.getElementById("group_pw");
-      const toggleIcon = document.getElementById("togglePw");
-      const pwMsg = document.getElementById("pw_message");
-
-      // 공개/비공개 선택 시 비밀번호 입력칸 표시
-      selectEl.addEventListener("change", function () {
-        if (this.value === "1") {
-          pwRow.style.display = "table-row";
-
-          // DOM이 렌더링되고 난 후에 input 활성화를 위해 약간의 여유를 줌
-          setTimeout(() => {
-            pwInput.focus();
-            pwInput.scrollIntoView({ behavior: "smooth", block: "center" });
-          }, 50); // 50~100ms가 대부분 안정적
-        } else {
-          pwRow.style.display = "none";
-          pwInput.value = "";
-          pwInput.type = "password";
-          toggleIcon.classList.remove("fa-eye");
-          toggleIcon.classList.add("fa-eye-slash");
-          pwMsg.textContent = "";
-          pwMsg.className = "pw-message";
-        }
-      });
-
-      // 숫자 외 입력 차단
-      let alertShown = false;
-      pwInput.addEventListener("keydown", function (e) {
-        const allowed =
-          (e.key >= "0" && e.key <= "9") ||
-          ["Backspace", "Tab", "ArrowLeft", "ArrowRight", "Delete"].includes(e.key);
-
-        if (!allowed) {
-          e.preventDefault();
-
-          if (!alertShown) {
-            alertShown = true;
-            alert("숫자만 입력 가능합니다.");
-            setTimeout(() => (alertShown = false), 500);
-          }
-        }
-      });
-
-      // 실시간 유효성 검사
-      pwInput.addEventListener("input", function () {
-        const len = pwInput.value.length;
-
-        if (len === 0) {
-          pwMsg.textContent = "";
-          pwMsg.className = "pw-message";
-        } else if (len < 4) {
-          pwMsg.textContent = "비밀번호는 4~10자리로 입력 가능합니다.";
-          pwMsg.className = "pw-message invalid";
-        } else {
-          pwMsg.textContent = "사용 가능한 비밀번호입니다.";
-          pwMsg.className = "pw-message valid";
-        }
-
-        // 혹시라도 maxlength 초과 입력 시 자동 자르기
-        if (len > 10) {
-          pwInput.value = pwInput.value.slice(0, 10);
-        }
-      });
-
-      // 비밀번호 보기/숨기기 토글
-      toggleIcon.addEventListener("click", function () {
-        const isHidden = pwInput.type === "password";
-
-        pwInput.type = isHidden ? "text" : "password";
-        toggleIcon.classList.toggle("fa-eye-slash", !isHidden);
-        toggleIcon.classList.toggle("fa-eye", isHidden);
-      });
-    });
-  </script>
-
-
-  <!-- 취소/완료 버튼 alert -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const cancelBtn = document.getElementById("group_button_1");
-      const submitBtn = document.getElementById("group_button_2");
-      // 취소 버튼 클릭 시
-      cancelBtn.addEventListener("click", function() {
-        const result = confirm("교환독서 메인페이지로 이동하시겠습니까?");
-        if (result) {
-          // 확인 누른 경우
-          console.log("이동");
-          window.location.href = "/shareMain/Share_Main/";
-        } else {
-          // 취소 누른 경우
-          console.log("이동 취소");
-        }
-      });
-      // 완료 버튼 클릭 시
-      submitBtn.addEventListener("click", function() {
-        if($('input[name="group_name"]').val().length<2){
-          alert('그룹명을 입력하세요.');
-          $('input[name="group_name"]').focus();
-          return;
-        }
-        if($('textarea[name="description"]').val().length<2){
-          alert('그룹 소개글을 입력하세요.');
-          $('textarea[name="description"]').focus();
-          return;
-        }
-        if($('select[name="is_public"]').val() === "1"){
-          if($('input[name="password"]').val().length<4){
-            alert('비밀번호를 입력하세요.');
-            $('input[name="password"]').focus();
-            return;
-          }
-        }
-        addgroupFrm.submit();
-        console.log("제줄 test");
-      });
-    });
-  </script>
+    <script src="{% static 'js/Share_AddGroup.js' %}"></script>
   {% endblock %}

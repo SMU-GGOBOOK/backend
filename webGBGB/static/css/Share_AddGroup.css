@@ -284,7 +284,7 @@ form[name='addgroupFrm'] {
   cursor: pointer;
 }
 /* 선택한 책 표시 */
-.selected_book_display {
+#selected-book-display {
   padding-right: 25px;
   height:176px;
   flex: 1;

@@ -19,7 +19,7 @@
                 {% for group in groups %}
                 <div class="feed__join_body_item">
                     <div class="join_body_item_book">
-                        <img src="{{ group.book }}" alt="책 이미지"/>
+                        <img src="{{ group.book.cover }}" alt="책 이미지"/>
                     </div>
                     <div class="join_body_item_groupName">
                          {{ group.group_name }}
@@ -65,7 +65,7 @@
                     </a>
                 </div>
                 <div class="feed__preview_book">
-                    <img src="{{ group.book }}" alt="책 이미지"/>
+                    <img src="{{ group.book.cover }}" alt="책 이미지"/>
                 </div>
             </div>
             {% endfor %}
