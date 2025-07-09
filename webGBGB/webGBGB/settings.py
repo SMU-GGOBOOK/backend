@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'bookmark',
     'review',
     'member',
+    'shareReading',
 
 ]
 

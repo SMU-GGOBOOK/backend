@@ -78,9 +78,21 @@
     <!-- 참여중인 그룹 표시 -->
     <div class="feed__join">
         <div class="feed__join_title">
-            <span>인기 교환독서 그룹</span>
+            <span>최신 교환독서 그룹</span>
         </div>
         <div class="feed__join_body">
+          {% if sharegroup %}
+          {% for s in sharegroup %}
+            <div class="feed__join_body_item">
+                <div class="join_body_item_book">
+                    <a href='#'><img src="{{s.book.cover}}" alt="{{s.group_name}}"></a>
+                </div>
+                <div class="join_body_item_groupName">
+                    {{s.group_name}}
+                </div>
+            </div>
+          {% endfor %}
+          {% else %}
             <div class="feed__join_body_item">
                 <div class="join_body_item_book">
                     <img src="/static/images/home/exchange_1.jpg" alt="[예술과 중력가속도] 낙하 끝의 비상">
@@ -145,6 +157,7 @@
                   [이방인] 카뮈가 말하는 부조리
                 </div>
             </div>
+          {% endif %}
         </div>
     </div>
   </div> 
