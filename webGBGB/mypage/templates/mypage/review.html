@@ -18,9 +18,9 @@
         <!--카테고리 바뀐부분 시작-->
           <div class="left_side">
               <ul class="category">
-                <li class="icon checked"><a href='{% url "mypage:review" %}'><i class="fa-solid fa-book"></i>내 리뷰<span>{{review.count}}</span></a></li>
-                <li class="icon"><a href='{% url "mypage:Bmark" %}'><i class="fa-solid fa-book-bookmark"></i>북마크<span>(6)</span></a></li>
-                <li class="icon"><a href='{% url "mypage:mygroup" %}'><i class="fa-solid fa-rotate"></i>교환독서<span>(5)</span></a></li>
+                <li class="icon checked"><a href='{% url "mypage:review" %}'><i class="fa-solid fa-book"></i>내 리뷰<span>({{my_review_count}})</span></a></li>
+                <li class="icon"><a href='{% url "mypage:Bmark" %}'><i class="fa-solid fa-book-bookmark"></i>북마크<span>({{my_bookmark_count}})</span></a></li>
+                <li class="icon"><a href='{% url "mypage:mygroup" %}'><i class="fa-solid fa-rotate"></i>교환독서<span>({{my_group_count}})</span></a></li>
               </ul>
           </div>
           <!--카테고리 바뀐부분 끝-->
@@ -48,7 +48,9 @@
                       <!--여기에 북디테일 html 연결-->
                       
                     {% for r in reviews %}
-                      <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" data-id="{{r.review_id}}">
+                      <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" 
+                      data-reviewtitle="{{ r.book_id.title }}"  data-reviewauthor="{{ r.book_id.author }}"
+                      data-id="{{r.review_id}}">
                         <div class="comment_all">
                           <div class="comment_header">
                             <div class="left_area">

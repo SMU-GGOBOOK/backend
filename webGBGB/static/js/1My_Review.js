@@ -19,22 +19,7 @@ document.querySelectorAll('.deleteBtn').forEach(button => {
 
 
 
-// 리뷰박스 클릭시 상세페이지 
 
-// document.addEventListener('DOMContentLoaded', function () {
-//   document.querySelectorAll('.comment_item').forEach(function (element) {
-//     element.addEventListener("click", function (e) {
-//       // 버튼 클릭이면 무시
-//       if (e.target.closest("button")) return; // 삭제 버튼 같은 건 제외
-      
-//       // 페이지 이동
-//       const reviewId = this.dataset.reviewId;
-//       if (reviewId) {
-//         window.location.href = `/books/${reviewId}/`; // ← 여길 실제 경로에 맞게
-//       }
-//     });
-//   });
-// });
 
 
 
@@ -71,63 +56,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // /* 별점 */
-  // const stars = document.querySelectorAll(".rating-stars-review .star");
-  // const input = document.getElementById("rating-value-review");
-  // const valSpan = document.querySelector(".caption-review .val"); // 오타 반영
-  // const textSpan = document.querySelector(".caption-review-badge span > span:first-child");
-  // const visibleRatingInput = document.querySelector(".form_rating.rating-input"); // 🔹 추가된 라인
+  // 리뷰박스 클릭시 상세페이지 
 
-  // let currentValue = parseInt(input.value || "0");
+  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('click', function (e) {
+      // 1. 가장 가까운 comment_item을 찾기
+      const commentItem = e.target.closest('.comment_item');
+      if (!commentItem) return;
 
-  // function updateStars(value) {
-  //   stars.forEach((s, idx) => {
-  //     s.classList.toggle("active", idx < value);
-  //   });
+      // 2. 삭제 버튼이나 기타 버튼 클릭은 무시
+      if (
+        e.target.closest("button") || // 버튼 전체
+        e.target.classList.contains("deleteBtn") || // 삭제 span
+        e.target.closest(".btn_like") || // 좋아요 버튼
+        e.target.closest(".btn_reply") || // 댓글 버튼
+        e.target.closest(".btn_more_body") || // 펼치기 버튼
+        e.target.closest(".btn_view_img") || // 이미지 클릭
+        e.target.closest(".form_textarea") // 텍스트 입력창
+      ) {
+        return;
+      }
 
-  //   if (input) input.value = value;
-  //   if (visibleRatingInput) visibleRatingInput.value = value; // 🔹 여기에 추가!
-  //   if (valSpan) valSpan.textContent = value;
-  //   if (textSpan) textSpan.textContent = `5점 중 ${value}점`;
+      // 3. 데이터 속성 읽기
+      const reviewtitle = commentItem.dataset.reviewtitle;
+      const reviewauthor = commentItem.dataset.reviewauthor;
 
-  //   currentValue = value; // 현재 점수 저장
-  // }
+      console.log("✅ 리뷰 본문 클릭됨 →", reviewtitle, reviewauthor);
 
-  // stars.forEach((star, idx) => {
-  //   const hoverValue = idx + 1;
+      if (reviewtitle && reviewauthor) {
+        const encodedTitle = encodeURIComponent(reviewtitle);
+        const encodedAuthor = encodeURIComponent(reviewauthor);
+        window.location.href = `/booksearch/detail/${encodedTitle}/${encodedAuthor}/`;
+      }
+    });
+  });
 
-  //   star.addEventListener("mouseenter", function () {
-  //     stars.forEach((s, i) => {
-  //       s.classList.toggle("active", i < hoverValue);
-  //     });
 
-  //     if (input) input.value = hoverValue;
-  //     if (valSpan) valSpan.textContent = hoverValue;
-  //     if (textSpan) textSpan.textContent = `5점 중 ${hoverValue}점`;
-  //   });
-
-  //   star.addEventListener("mouseleave", function () {
-  //     updateStars(currentValue); // 마우스 빠질 때 기존 값으로 복원
-  //   });
-
-  //   star.addEventListener("click", function () {
-  //   const newValue = idx + 1;
-
-  //   stars.forEach((s, i) => {
-  //     const shouldFade = (i < currentValue && i >= newValue) || (i >= currentValue && i < newValue);
-  //     if (shouldFade) s.classList.add("fading-out");
-  //   });
-
-  //   setTimeout(() => {
-  //     updateStars(newValue);
-  //     stars.forEach(s => s.classList.remove("fading-out"));
-  //   }, 120);
-  // });
-  // ;
-  // });
-
-  // 초기 세팅
-  // updateStars(currentValue);
 
   /* 이미지 썸네일 클릭 시 Swiper 보기 */
   document.querySelectorAll('.comment_thumb_box').forEach(box => {
