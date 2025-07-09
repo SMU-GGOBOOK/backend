@@ -56,40 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 리뷰박스 클릭시 상세페이지 
-
-  document.addEventListener('DOMContentLoaded', function () {
-    document.addEventListener('click', function (e) {
-      // 1. 가장 가까운 comment_item을 찾기
-      const commentItem = e.target.closest('.comment_item');
-      if (!commentItem) return;
-
-      // 2. 삭제 버튼이나 기타 버튼 클릭은 무시
-      if (
-        e.target.closest("button") || // 버튼 전체
-        e.target.classList.contains("deleteBtn") || // 삭제 span
-        e.target.closest(".btn_like") || // 좋아요 버튼
-        e.target.closest(".btn_reply") || // 댓글 버튼
-        e.target.closest(".btn_more_body") || // 펼치기 버튼
-        e.target.closest(".btn_view_img") || // 이미지 클릭
-        e.target.closest(".form_textarea") // 텍스트 입력창
-      ) {
-        return;
-      }
-
-      // 3. 데이터 속성 읽기
-      const reviewtitle = commentItem.dataset.reviewtitle;
-      const reviewauthor = commentItem.dataset.reviewauthor;
-
-      console.log("✅ 리뷰 본문 클릭됨 →", reviewtitle, reviewauthor);
-
-      if (reviewtitle && reviewauthor) {
-        const encodedTitle = encodeURIComponent(reviewtitle);
-        const encodedAuthor = encodeURIComponent(reviewauthor);
-        window.location.href = `/booksearch/detail/${encodedTitle}/${encodedAuthor}/`;
-      }
-    });
-  });
 
 
 
@@ -151,7 +117,6 @@ $(document).on('click', '.deleteBtn', function() {
 
 
 
-
 });
 
 
@@ -161,3 +126,22 @@ $(document).on('click', '.deleteBtn', function() {
 
 
 
+
+/* 리뷰 박스 클릭시 상세페이지 */
+document.addEventListener('DOMContentLoaded', function () {
+  console.log("✅ DOMContentLoaded 실행됨");
+
+  document.addEventListener('click', function (e) {
+    console.log("✅ document 클릭 감지됨");
+
+    const commentItem = e.target.closest('.comment_item');
+    console.log("👉 commentItem:", commentItem);
+
+    if (!commentItem) return;
+
+    const bookId = commentItem.dataset.bookId;
+    console.log("📘 클릭된 bookId:", bookId);
+
+    window.location.href = `/booksearch/detail/${bookId}/`;
+  });
+});

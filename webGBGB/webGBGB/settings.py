@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'review',
     'member',
     'shareReading',
+    'mypage',
 
 ]
 

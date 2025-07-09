@@ -48,9 +48,7 @@
                       <!--여기에 북디테일 html 연결-->
                       
                     {% for r in reviews %}
-                      <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" 
-                      data-reviewtitle="{{ r.book_id.title }}"  data-reviewauthor="{{ r.book_id.author }}"
-                      data-id="{{r.review_id}}">
+                      <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" data-id="{{r.review_id}}" data-book-id="{{ r.book_id.book_id }}">
                         <div class="comment_all">
                           <div class="comment_header">
                             <div class="left_area">

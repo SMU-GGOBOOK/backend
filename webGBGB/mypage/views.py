@@ -5,7 +5,7 @@ from django.db.models import F,Q
 from review.models import Review
 from member.models import Member
 from bookmark.models import Bookmark
-
+from shareReading.models import ReadingGroup
 
 ## list : 현재 페이지의 리뷰 목록
 #list.paginator.num_pages : 전체 페이지 수
@@ -24,6 +24,7 @@ def review(request):
         member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
         my_review_count = Review.objects.filter(member_id=member).count()
         my_bookmark_count = Bookmark.objects.filter(member_id=member).count()
+        my_group_count = ReadingGroup.objects.filter(member=member).count()
         
         # my_group_count = ReadingGroup.objects.filter(member_id=member).count()
     except Member.DoesNotExist:
@@ -40,7 +41,9 @@ def review(request):
         'reviews': paginated_reviews,
         'page': int(page),
         'my_review_count': my_review_count,
-        'my_bookmark_count': my_bookmark_count
+        'my_bookmark_count': my_bookmark_count,
+        "my_group_count": my_group_count
+        
     }
 
     return render(request, 'mypage/review.html', context)
@@ -56,7 +59,7 @@ def Bmark(request):
         member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
         my_review_count = Review.objects.filter(member_id=member).count()
         my_bookmark_count = Bookmark.objects.filter(member_id=member).count()
-        
+        my_group_count = ReadingGroup.objects.filter(member=member).count()
     except Member.DoesNotExist:
         return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
 
@@ -70,37 +73,43 @@ def Bmark(request):
         'bookmarks': paginated_bookmarks,
         'page': int(page),
         'my_review_count': my_review_count,
-        'my_bookmark_count': my_bookmark_count
+        'my_bookmark_count': my_bookmark_count,
+        "my_group_count": my_group_count
     }
     
     return render(request,'mypage/Bmark.html',context)
 
 def mygroup(request):
-    # user_id = request.session.get('user_id')  # 로그인된 유저의 ID
+    user_id = request.session.get('user_id')  # 로그인된 유저의 ID
 
-    # if not user_id:
-    #     return redirect(f'/member/login/?next={request.path}')  # 로그인 안 되어있으면 로그인 페이지로
+    if not user_id:
+        return redirect(f'/member/login/?next={request.path}')  # 로그인 안 되어있으면 로그인 페이지로
 
-    # try:
-    #     member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
-    #     my_group_count = Review.objects.filter(member_id=member).count()
-    # except Member.DoesNotExist:
-    #     return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
+    try:
+        member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
+        my_review_count = Review.objects.filter(member_id=member).count()
+        my_bookmark_count = Bookmark.objects.filter(member_id=member).count()
+        my_group_count = ReadingGroup.objects.filter(member=member).count()
+    except Member.DoesNotExist:
+        return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
 
-    # page = request.GET.get('page', 1)
-    # qs = Review.objects.filter(member_id=member).order_by('-created_at')  # member_id는 FK니까 객체로 필터
+    page = request.GET.get('page', 1)
+    qs = ReadingGroup.objects.filter(member=member).order_by('-created_at')  # member_id는 FK니까 객체로 필터
     
-    # paginator = Paginator(qs, 5)
-    # paginated_reviews = paginator.get_page(page)
+    paginator = Paginator(qs, 5)
+    paginated_reviews = paginator.get_page(page)
 
-    # context = {
-    #     'reviews': paginated_reviews,
-    #     'page': int(page),
-    #     'my_group_count': my_group_count
-    # }
+    context = {
+        'sharegroups': paginated_reviews,
+        'page': int(page),
+        'my_review_count': my_review_count,
+        'my_bookmark_count': my_bookmark_count,
+        "my_group_count": my_group_count
+        
+    }
     
     
-    return render(request,'mypage/mygroup.html')
+    return render(request,'mypage/mygroup.html',context)
 
 
 
