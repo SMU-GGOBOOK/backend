@@ -13,7 +13,6 @@ urlpatterns = [
     path('join-complete/',views.join3,name='join_complete'),
     path('login/',views.login,name='login'),
     path('logout/',views.logout,name='logout'),
-    path('sample/',views.sample,name='sample'),
     
     
     

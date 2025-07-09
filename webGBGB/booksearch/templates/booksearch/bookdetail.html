@@ -26,13 +26,12 @@
                     <div class="left overflow-box">
                       <!-- 도서 표지 -->
                       <div class="cover-box">
-                        <img class="cover" src="{{book.cover}}" alt="{{book.title}}" style="width: 100%">
+                        <img class="cover" src="{{book.cover}}" alt="{{book.title}}" style="width: 110%">
                       </div>
                     </div>
                     <div class="right">
                       <div class="meta">
                         <!-- 도서 제목 -->
-                        <p>{{is_bookmarked}}</p>
                         <div class="title">
                           <h1>{{book.title}}</h1>
                           <button onclick="toggleBookmark(this)" 
@@ -67,14 +66,14 @@
                               </tr>
                               <tr>
                                 <th scope="row">쪽수</th>
-                                <td>416쪽</td>
+                                <td>{{book.page}}p</td>
                               </tr>
                               <tr>
                                 <th scope="row">크기</th>
                                 <td>
                                   <div class="btn_text_box">
                                     <span class="text">
-                                      130 * 190 * 28 mm / 503 g
+                                      {{book.size}}
                                     </span>
                                   </div>
                                 </td>
@@ -116,7 +115,7 @@
                                           <i class="glyphicon glyphicon-star-empty"></i>
                                         </span>
                                       </span>
-                                      <span class="filled-stars" style="width:  {{r.rating_percent}}%;">
+                                      <span class="filled-stars" style="width: 100%;">
                                         <span class="star" title="One Star">
                                           <i class="glyphicon glyphicon-star"></i>
                                         </span>
@@ -320,11 +319,10 @@
                         <span class="gap"> | </span>
                         <span class="info_item">{{ r.created_at|date:"Y.m.d H:i" }}</span>
                         <span class="gap"> | </span>
-                        <span class="info_item">
-                          {% comment %} <button class="btn_comment_util" type="button" data-role="report">
-                            <span class="text">신고</span>
-                          </button> {% endcomment %}
-                        </span>
+                        <span class="info_item">수정</span>
+                        <span class="gap"> | </span>
+                        <a href="/review/delete/{{r.review_id}}/" class="info_item">삭제</a>
+                        <span class="gap"> | </span>
                       </div>
                     </div>
                     
@@ -352,7 +350,7 @@
                                 <i class="glyphicon glyphicon-star-empty"></i>
                               </span>
                             </span>
-                            <span class="filled-stars" style="width: 100%;">
+                            <span class="filled-stars" style="width: {{r.rating}}*20%;">
                               <span class="star" title="One Star">
                                 <i class="glyphicon glyphicon-star"></i>
                               </span>
@@ -441,6 +439,13 @@
                       </div>
                     </div>
                   </div>
+
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="alert">{{ message }}</div>
+                    {% endfor %}
+                  {% endif %}
+
                   <!-- 답글달기 -->
                   <div class="reply_wrap" style="display: none;">
                     <div class="reply_write_area active">

@@ -52,4 +52,23 @@ def review_create(request):
         print("IMAGES:", request.FILES.getlist('review_image'))
 
         # 리뷰 저장 후
-        return redirect(f'/booksearch/detail/{book.title}/{book.author}/')
+        return redirect(f'/booksearch/detail/{book.book_id}/')
+
+def review_delete(request, review_id):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        messages.error(request, "로그인이 필요합니다.")
+        return redirect('/member/login/')
+
+    member = Member.objects.get(id=user_id)
+    review = Review.objects.get(review_id=review_id)
+    
+    if review.member_id.member_id != member.member_id:
+        messages.error(request, "본인이 작성한 리뷰만 삭제할 수 있습니다.")
+        return redirect(f'/booksearch/detail/{review.book_id.book_id}/')
+    
+    print(review.member_id, member.member_id)
+    review.delete()
+    messages.success(request, "리뷰가 삭제되었습니다.")
+    
+    return redirect(f'/booksearch/detail/{review.book_id}/')

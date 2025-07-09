@@ -31,7 +31,6 @@ function toggleBookmark(button) {
     }, 100);
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
   /* 글자수 체크 - 댓글 / 모달 통합 */
   document.querySelectorAll('.form_textarea').forEach(textarea => {

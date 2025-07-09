@@ -27,12 +27,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base',
-    'dummyhome',
-    'member',
+    'home',
+    'cscenter',
     'booksearch',
-    'review',
     'bookmark',
-    'mypage',
+    'review',
+    'member',
+    'shareReading',
 
 ]
 

@@ -1,31 +1,13 @@
-{% extends "member/sample.html" %}
+{% extends "base.html" %}
 {% load static %}
-{% block link %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'css/join2.css' %}">
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/Share_AddGroup.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/join1.css' %}">
 
 {% endblock %}
 {% block title %}이용약관{% endblock %}
-{% block js-block %}
-{% comment %} 
-이 위치에 넣고 싶다면
-document.addEventListener("DOMContentLoaded", function() 로 감쌀것
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("agreeFrm").addEventListener("submit", function(event) {
-      const checkboxes = document.querySelectorAll(".saveAgree");
-      const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
 
-      if (!allChecked) {
-        event.preventDefault(); // 제출 중단
-        alert("모든 약관에 동의해야 가입할 수 있습니다.");
-      }
-    });
-  });
-</script> {% endcomment %}
-{% endblock %}
-{% block style-block %}{% endblock %}
 {% block content %}
 <div class="feed__content">
       <!-- 참여중이 그룹 표시 -->
@@ -88,6 +70,10 @@ document.addEventListener("DOMContentLoaded", function() 로 감쌀것
             </div>
               
           </section>
+          <div class="forch">
+
+            <input type="checkbox" class="chchch"><label>모두 동의하시겠습니까?</label>
+          </div>
           <div class="afaf">
             
             <button type="submit" class="login-btn" id="loginBtn">가입하기</button>
@@ -96,18 +82,7 @@ document.addEventListener("DOMContentLoaded", function() 로 감쌀것
           </div>
       </div>
 {% endblock %}
-{% block last %}
+{% block extra_js %}
+<script src="{% static 'js/join1.js' %}" defer></script>
 
-<script>
-  
-    document.getElementById("agreeFrm").addEventListener("submit", function(event) {
-      const checkboxes = document.querySelectorAll(".saveAgree");
-      const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-
-      if (!allChecked) {
-        event.preventDefault(); // 제출 중단
-        alert("모든 약관에 동의해야 가입할 수 있습니다.");
-      }
-    });
-</script>
 {% endblock %}
