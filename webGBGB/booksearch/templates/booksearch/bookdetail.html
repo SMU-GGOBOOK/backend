@@ -99,7 +99,7 @@
                             <div class="prod_info_wrap">
                               <div class="prod_review_box">
                                 <div class="col_review">
-                                  <span class="review_score feel_lucky">5.0</span>
+                                  <span class="review_score feel_lucky">{{ average|floatformat:1 }}</span>
                                   <div class="rating-container theme-krajee-gly rating-md rating-animate rating-disabled">
                                     <div class="clear-rating" title="초기화">
                                       <i class="glyphicon glyphicon-minus-sign"></i>
@@ -122,7 +122,7 @@
                                           <i class="glyphicon glyphicon-star-empty"></i>
                                         </span>
                                       </span>
-                                      <span class="filled-stars" style="width: 100%;">
+                                      <span class="filled-stars" style="width: {{average_percent}}%;">
                                         <span class="star" title="One Star">
                                           <i class="glyphicon glyphicon-star"></i>
                                         </span>
@@ -143,7 +143,7 @@
                                   </div>
                                   <input type="number" class="form_rating rating-input" title="이 책의 평점" readonly="readonly"
                                   tabindex="-1">
-                                  <span class="review_desc">(<span class="val">12</span>개의 리뷰)</span>
+                                  <span class="review_desc">(<span class="val">{{book.review_count}}</span>개의 리뷰)</span>
                                 </div>
                                 <div class="col_review">
                                   <span class="review_quotes_text">재밌어요</span>
@@ -307,175 +307,175 @@
       
       <!-- 리뷰 리스트 영역 -->
       
-    {% if reviews %}
-    <div class="tab_content">
-      <div class="comment_wrap">
-        <div class="comment_list" style>
-            {% for r in reviews %}
-              <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" data-id="5212265">
-                <div class="comment_all">
-                  <div class="comment_header">
-                    <div class="left_area">
-                      <div class="user_info_box">
-                        <span class="badge_box">
-                          <span class="badge_sm badge_pill badge_kyobo">
-                            <span class="text">{{r.book_id.title}}</span>
+      <div class="tab_content">
+        <div class="comment_wrap">
+          {% if reviews %}
+            <div class="comment_list" style>
+              {% for r in reviews %}
+                <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" data-id="5212265">
+                  <div class="comment_all">
+                    <div class="comment_header">
+                      <div class="left_area">
+                        <div class="user_info_box">
+                          <span class="badge_box">
+                            <span class="badge_sm badge_pill badge_kyobo">
+                              <span class="text">{{r.book_id.title}}</span>
+                            </span>
                           </span>
-                        </span>
-                        <span class="info_item">{{r.member_id.name}}</span>
-                        <span class="gap"> | </span>
-                        <span class="info_item">{{ r.created_at|date:"Y.m.d H:i" }}</span>
-                        <span class="gap"> | </span>
-                        <span class="info_item">수정</span>
-                        <span class="gap"> | </span>
-                        <a href="/review/delete/{{r.review_id}}/" class="info_item">삭제</a>
-                        <span class="gap"> | </span>
+                          <span class="info_item">{{r.member_id.name}}</span>
+                          <span class="gap"> | </span>
+                          <span class="info_item">{{ r.created_at|date:"Y.m.d H:i" }}</span>
+                          <span class="gap"> | </span>
+                          <span class="info_item">수정</span>
+                          <span class="gap"> | </span>
+                          <a href="/review/delete/{{r.review_id}}/" class="info_item">삭제</a>
+                          <span class="gap"> | </span>
+                        </div>
                       </div>
-                    </div>
-                    <div class="right_area">
-                      <div class="review_summary_wrap">
-                        <div class="rating-container theme-krajee-gly rating-sm rating-animate rating-disabled">
-                          <div class="clear-rating" title="초기화">
-                            <i class="glyphicon glyphicon-minus-sign"></i>
-                          </div>
-                          <div class="rating-stars" tabindex="0">
-                            <span class="empty-stars">
-                              <span class="star" title="One Star">
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                              </span>
-                              <span class="star" title="Two Stars">
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                              </span>
-                              <span class="star" title="Three Stars">
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                              </span>
-                              <span class="star" title="Four Stars">
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                              </span>
-                              <span class="star" title="Five Stars">
-                                <i class="glyphicon glyphicon-star-empty"></i>
-                              </span>
-                            </span>
-                            <span class="filled-stars" style="width: {{r.rating_percent}}%;">
-                              <span class="star" title="One Star">
-                                <i class="glyphicon glyphicon-star"></i>
-                              </span>
-                              <span class="star" title="Two Stars">
-                                <i class="glyphicon glyphicon-star"></i>
-                              </span>
-                              <span class="star" title="Three Stars">
-                                <i class="glyphicon glyphicon-star"></i>
-                              </span>
-                              <span class="star" title="Four Stars">
-                                <i class="glyphicon glyphicon-star"></i>
-                              </span>
-                              <span class="star" title="Five Stars">
-                                <i class="glyphicon glyphicon-star"></i>
-                              </span>
-                            </span>
-                          </div>
-                        </div>
-                        <input class="form_rating rating-input" type="number" value="{{r.rating}}" title="평가점수 선택"
-                        readonly data-size="sm" tabindex="-1">
-                        <span class="gap">/</span>
-                        <span class="review_quotes_text">{{r.tag}}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="comment_contents">
-                    <div class="comment_contents_inner">
-                      <div class="comment_view_wrap">
-                        <div class="comment_text_box">
-                          <div class="comment_text">{{r.content}}</div>
-                        </div>
-                        {% if r.images.exists %}
-                          <div class="comment_thumb_box">
-                            {% for img in r.images.all %}
-                              <span class="comment_thumb_view" style="background-image: url('{{ img.image.url }}')">
-                                <img src="{{ img.image.url }}" alt="리뷰 썸네일">
-                              </span>
-                            {% endfor %}
-                            <span class="thumb_count">{{r.images.count}}</span>
-                          </div>
-                        {% endif %}
-                        </div>
-
-                        {% if r.images.exists %}
-                          <div class="comment_swiper_wrap" style="display: none;">
-                            <div class="swiper-container">
-                              <ul class="swiper-wrapper">
-                                {% for img in r.images.all %}
-                                  <li class="swiper-slide">
-                                    <div class="comment_img_box" style="background-image: url('{{ img.image.url }}');">
-                                      <button class="btn_view_img" type="button">
-                                        <img src="{{ img.image.url }}">
-                                      </button>
-                                    </div>
-                                  </li>
-                                {% endfor %}
-                              </ul>
-                            </div>
-                            <div class="swiper-button-next" style="display: none;">
-                              <span class="hidden">다음</span>
-                            </div>
-                            <div class="swiper-button-prev" style="display: none;">
-                              <span class="hidden">이전</span>
-                            </div>
-                          </div>
-                        {% endif %}
-                    </div>
-                  </div>
-                  <div class="comment_footer">
-                    <div class="comment_util_box">
-                      <button class="btn_more_body" type="button" data-btn-toggle="">
-                        <span class="text">펼치기</span>
-                        <span class="ico_arw">
-                          <i class="fa-solid fa-circle-arrow-down"></i>
-                        </span>
-                      </button>
                       <div class="right_area">
-                        <button class="btn_like" type="button" data-review-id="{{r.review_id}}">
-                          <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
-                          <span class="text">{{r.likes}}</span>
-                        </button>
-                        <button class="btn_reply" type="button">
-                            <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
-                            <span class="count">{{r.comments}}</span>
-                        </button>
+                        <div class="review_summary_wrap">
+                          <div class="rating-container theme-krajee-gly rating-sm rating-animate rating-disabled">
+                            <div class="clear-rating" title="초기화">
+                              <i class="glyphicon glyphicon-minus-sign"></i>
+                            </div>
+                            <div class="rating-stars" tabindex="0">
+                              <span class="empty-stars">
+                                <span class="star" title="One Star">
+                                  <i class="glyphicon glyphicon-star-empty"></i>
+                                </span>
+                                <span class="star" title="Two Stars">
+                                  <i class="glyphicon glyphicon-star-empty"></i>
+                                </span>
+                                <span class="star" title="Three Stars">
+                                  <i class="glyphicon glyphicon-star-empty"></i>
+                                </span>
+                                <span class="star" title="Four Stars">
+                                  <i class="glyphicon glyphicon-star-empty"></i>
+                                </span>
+                                <span class="star" title="Five Stars">
+                                  <i class="glyphicon glyphicon-star-empty"></i>
+                                </span>
+                              </span>
+                              <span class="filled-stars" style="width: {{r.rating_percent}}%;">
+                                <span class="star" title="One Star">
+                                  <i class="glyphicon glyphicon-star"></i>
+                                </span>
+                                <span class="star" title="Two Stars">
+                                  <i class="glyphicon glyphicon-star"></i>
+                                </span>
+                                <span class="star" title="Three Stars">
+                                  <i class="glyphicon glyphicon-star"></i>
+                                </span>
+                                <span class="star" title="Four Stars">
+                                  <i class="glyphicon glyphicon-star"></i>
+                                </span>
+                                <span class="star" title="Five Stars">
+                                  <i class="glyphicon glyphicon-star"></i>
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                          <input class="form_rating rating-input" type="number" value="{{r.rating}}" title="평가점수 선택"
+                          readonly data-size="sm" tabindex="-1">
+                          <span class="gap">/</span>
+                          <span class="review_quotes_text">{{r.tag}}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                    <div class="comment_contents">
+                      <div class="comment_contents_inner">
+                        <div class="comment_view_wrap">
+                          <div class="comment_text_box">
+                            <div class="comment_text">{{r.content}}</div>
+                          </div>
+                          {% if r.images.exists %}
+                            <div class="comment_thumb_box">
+                              {% for img in r.images.all %}
+                                <span class="comment_thumb_view" style="background-image: url('{{ img.image.url }}')">
+                                  <img src="{{ img.image.url }}" alt="리뷰 썸네일">
+                                </span>
+                              {% endfor %}
+                              <span class="thumb_count">{{r.images.count}}</span>
+                            </div>
+                          {% endif %}
+                          </div>
 
-                  <!-- 답글달기 -->
-                  <div class="reply_wrap" style="display: none;">
-                    <form method="post" action="/reply/create/" class="replyForm" enctype="multipart/form-data">
-                      {% csrf_token %}
-                      <input type="hidden" name="review_id" value="{{r.review_id }}">
-                      <div class="reply_write_area active">
-                        <div class="byte_check_wrap">
-                          <textarea class="form_textarea reply_comments" name="replyText" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                        <div class="byte_check_footer">
-                            <div class="reply_byte_check">
-                              <span class="count">0</span>
-                              <span class="total">1000</span>
+                          {% if r.images.exists %}
+                            <div class="comment_swiper_wrap" style="display: none;">
+                              <div class="swiper-container">
+                                <ul class="swiper-wrapper">
+                                  {% for img in r.images.all %}
+                                    <li class="swiper-slide">
+                                      <div class="comment_img_box" style="background-image: url('{{ img.image.url }}');">
+                                        <button class="btn_view_img" type="button">
+                                          <img src="{{ img.image.url }}">
+                                        </button>
+                                      </div>
+                                    </li>
+                                  {% endfor %}
+                                </ul>
+                              </div>
+                              <div class="swiper-button-next" style="display: none;">
+                                <span class="hidden">다음</span>
+                              </div>
+                              <div class="swiper-button-prev" style="display: none;">
+                                <span class="hidden">이전</span>
+                              </div>
+                            </div>
+                          {% endif %}
+                      </div>
+                    </div>
+                    <div class="comment_footer">
+                      <div class="comment_util_box">
+                        <button class="btn_more_body" type="button" data-btn-toggle="">
+                          <span class="text">펼치기</span>
+                          <span class="ico_arw">
+                            <i class="fa-solid fa-circle-arrow-down"></i>
+                          </span>
+                        </button>
+                        <div class="right_area">
+                          <button class="btn_like" type="button" data-review-id="{{r.review_id}}">
+                            <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
+                            <span class="text">{{r.likes}}</span>
+                          </button>
+                          <button class="btn_reply" type="button">
+                              <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
+                              <span class="count">{{r.comments}}</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 답글달기 -->
+                    <div class="reply_wrap" style="display: none;">
+                      <form method="post" action="/reply/create/" class="replyForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="review_id" value="{{r.review_id }}">
+                        <div class="reply_write_area active">
+                          <div class="byte_check_wrap">
+                            <textarea class="form_textarea reply_comments" name="replyText" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                          <div class="byte_check_footer">
+                              <div class="reply_byte_check">
+                                <span class="count">0</span>
+                                <span class="total">1000</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="btn_wrap_home">
+                            <div class="btn_wrap">
+                              <button class="btn_xs btn_primary reply_btn" type="submit" disabled="">
+                                <span class="text" style="font-weight: 500;">등록</span>
+                              </button>
                             </div>
                           </div>
                         </div>
-                        <div class="btn_wrap_home">
-                          <div class="btn_wrap">
-                            <button class="btn_xs btn_primary reply_btn" type="submit" disabled="">
-                              <span class="text" style="font-weight: 500;">등록</span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                    <div class="reply_list_area">
-                      <div class="reply_list">
-                        {% for reply in r.reply_list %}
-                          <div class="reply_item" id="{{reply.reply_id}}">
-                            <div class="reply_header">
-                              <div class="user_info_box">
+                      </form>
+                      <div class="reply_list_area">
+                        <div class="reply_list">
+                          {% for reply in r.reply_list %}
+                            <div class="reply_item" id="{{reply.reply_id}}">
+                              <div class="reply_header">
+                                <div class="user_info_box">
                                   <span class="info_item">{{reply.member_id.id}}<span>
                                   <span class="gap"> | </span>
                                   <span class="info_item">{{reply.created_at}}</span>
@@ -484,100 +484,141 @@
                                   <span class="gap"> | </span>
                                   <a href="/reply/delete/{{reply.reply_id}}/" class="info_item">삭제</a>
                                   <span class="gap"> | </span>
+                                </div>
                               </div>
-                            </div>
-                            <div class="reply_contents">
-                              <div class="reply_text">{{reply.content}}</div>
-                              <div class="reply_write_area">
+                              <div class="reply_contents">
+                                <div class="reply_text">{{reply.content}}</div>
+                                <div class="reply_write_area">
                                   <div class="byte_check_wrap">
-                                  <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                                  <div class="byte_check_footer">
+                                    <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                                    <div class="byte_check_footer">
                                       <div class="byte_check">
-                                      <span class="count">0</span>
-                                      <span class="total">1000</span>
+                                        <span class="count">0</span>
+                                        <span class="total">1000</span>
                                       </div>
                                       <div class="btn_wrap">
-                                      <button class="btn_xs btn_light_gray" type="button">
+                                        <button class="btn_xs btn_light_gray" type="button">
                                           <span class="text">취소</span>
-                                      </button>
-                                      <button class="btn_xs btn_primary disabled" type="button">
+                                        </button>
+                                        <button class="btn_xs btn_primary disabled" type="button">
                                           <span class="text">등록</span>
-                                      </button>
+                                        </button>
                                       </div>
+                                    </div>
                                   </div>
-                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        {% endfor %}
-                      </div>
-                    </div> 
-                  </div>
-                      
-                  <div class="reply_wrap" style="display: none;">
-                    <div class="comment_status_box">
-                      <div class="login"></div>
-                      <div class="comment_status_text">
-                        답글 등록은 로그인 후 이용할 수 있습니다.
-                        <button class="btn_xxs btn_line_gray" type="button">
-                          <span class="text">로그인</span>
-                        </button>
+                          {% endfor %}
+                        </div>
+                      </div> 
+                    </div>
+                        
+                    <div class="reply_wrap" style="display: none;">
+                      <div class="comment_status_box">
+                        <div class="login"></div>
+                        <div class="comment_status_text">
+                          답글 등록은 로그인 후 이용할 수 있습니다.
+                          <button class="btn_xxs btn_line_gray" type="button">
+                            <span class="text">로그인</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              {% endfor %}
             </div>
-            {% endfor %}
-            <!-- paginator -->
+          {% endif %}
+          <!-- paginator -->
             <div class="pg-container">
               <div class="paginator">
-                <!-- 첫 페이지, 이전 페이지 버튼 -->
                 <div class="pg-btns">
-                  <button disabled>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
-                      <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
-                    </svg>
-                  </button>
-                  <button disabled>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
-                    </svg>
-                  </button>
+                  <!-- 첫 페이지 버튼 -->
+                  {% if page_obj.number > 1 %}
+                    <button onclick="location.href='?query={{ query }}&page=1'">
+                      <!-- svg 코드 -->
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+                        <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% else %}
+                    <button disabled>
+                      <!-- svg 코드 -->
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+                        <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% endif %}
+
+                  <!-- 이전 블록 버튼 -->
+                  {% if has_prev_block %}
+                    <button onclick="location.href='?query={{ query }}&page={{ prev_block_page }}'">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% else %}
+                    <button disabled>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% endif %}
                 </div>
-                
+
                 <!-- 페이지 번호 -->
                 <div class="pg-numbers">
-                  <a class="active">1</a>
-                  <a>2</a>
-                  <a>3</a>
-                  <a>4</a>
-                  <a>5</a>
-                  <a>6</a>
+                  {% for i in page_range %}
+                    {% if i == page_obj.number %}
+                      <a class="active">{{ i }}</a>
+                    {% else %}
+                      <a href="?query={{ query }}&page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                  {% endfor %}
                 </div>
-                
-                <!-- 다음 페이지, 마지막 페이지 버튼 -->
+
                 <div class="pg-btns">
-                  <button disabled>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
-                    </svg>
-                  </button>
-                  <button disabled>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
-                      <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
-                    </svg>
-                  </button>
+                  <!-- 다음 블록 버튼 -->
+                  {% if has_next_block %}
+                    <button onclick="location.href='?query={{ query }}&page={{ next_block_page }}'">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% else %}
+                    <button disabled>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% endif %}
+
+                  <!-- 마지막 페이지 버튼 -->
+                  {% if page_obj.number != page_obj.paginator.num_pages %}
+                    <button onclick="location.href='?query={{ query }}&page={{ books.paginator.num_pages }}'">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+                        <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% else %}
+                    <button disabled>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+                        <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% endif %}
                 </div>
-          </div>
+              </div>
+            </div>          
+          <!--paginator 끝-->
         </div>
-        <!--paginator 끝-->
-        {% endif %}
-        
       </div>
-    </div>
+      </div>
 
       <!-- 팝업 모달 구조 -->
       <div id="reviewModal" class="modal">

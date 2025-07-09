@@ -41,6 +41,10 @@ def review_create(request):
             tag=tag,
             content=comments,
         )
+        
+        book.review_count += 1
+        book.rating += rating
+        book.save()
 
         print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments)
                 
@@ -65,12 +69,20 @@ def review_delete(request, review_id):
     member = Member.objects.get(id=user_id)
     review = Review.objects.get(review_id=review_id)
     
+    rating = review.rating
+    book = review.book_id
+    
     if review.member_id.member_id != member.member_id:
         messages.error(request, "본인이 작성한 리뷰만 삭제할 수 있습니다.")
         return redirect(f'/booksearch/detail/{review.book_id.book_id}/')
     
     print(review.member_id, member.member_id)
     review.delete()
+    
+    book.review_count = max(0, book.review_count - 1)
+    book.rating = max(0, book.rating - rating)
+    book.save()
+    
     messages.success(request, "리뷰가 삭제되었습니다.")
     
     return redirect(f'/booksearch/detail/{review.book_id.book_id}/')
