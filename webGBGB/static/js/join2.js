@@ -210,7 +210,7 @@ $(document).ready(function() {
   // ID 입력란 변경 감지 (중복 확인 상태 초기화)
   $('input[name="id"]').on('input', function() {
     if (isIdChecked) { // 이전에 중복 확인을 완료한 상태였다면
-      alert('아이디를 변경하시면 중복 확인을 다시 해주셔야 합니다.');
+      
       isIdChecked = false; // 중복 확인 상태 초기화
       $('input[name="id"]').css('border', ''); // 테두리 색상 초기화
     }
