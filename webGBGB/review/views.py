@@ -4,6 +4,8 @@ from review.models import ReviewImage
 from member.models import Member
 from booksearch.models import Book
 from django.contrib import messages
+from django.http import JsonResponse
+import json
 
 
 # Create your views here.
@@ -72,3 +74,22 @@ def review_delete(request, review_id):
     messages.success(request, "리뷰가 삭제되었습니다.")
     
     return redirect(f'/booksearch/detail/{review.book_id}/')
+
+def review_like(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        review_id = data.get('review_id')
+        delta = data.get('delta')
+
+        try:
+            review = Review.objects.get(review_id=review_id)
+        except Review.DoesNotExist:
+            return JsonResponse({'success': False, 'error': '리뷰 없음'}, status=404)
+
+        # 좋아요 토글 처리
+        review.likes = max(0, review.likes + int(delta))
+        review.save()
+
+        return JsonResponse({'success': True, 'likes': review.likes})
+
+    return JsonResponse({'success': False, 'error': '잘못된 요청'}, status=400)

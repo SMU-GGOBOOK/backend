@@ -157,14 +157,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* 좋아요 */
   document.querySelectorAll('.btn_like').forEach(likeBtn => {
-    likeBtn.addEventListener('click', () => {
-      const countEl = likeBtn.querySelector('.text');
-      const icon = likeBtn.querySelector('i');
+    likeBtn.addEventListener('click', function() {
+      const reviewId = likeBtn.getAttribute('data-review-id');
+      let cToken = $('meta[name="csrf-token"]').attr('content');
+      const countEl = this.querySelector('.text');
+      const icon = this.querySelector('i');
       let count = parseInt(countEl?.textContent || '0');
-      const liked = likeBtn.classList.toggle('liked');
+      const liked = this.classList.toggle('liked');
       icon?.classList.toggle('fa-solid', liked);
       icon?.classList.toggle('fa-regular', !liked);
+
       if (countEl) countEl.textContent = liked ? count + 1 : count - 1;
+
+
+      $.ajax({
+        url: '/review/like/',
+        type: 'post',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': cToken },
+        data: JSON.stringify({ review_id: reviewId, delta: liked ? 1 : -1 }),
+        success: function(data) {
+          if (data.likes !== undefined) {
+            countEl.textContent = data.likes; // 서버에서 최신값 받아서 반영!
+          }          
+        },
+        error: function(){
+        }
+      });
     });
   });
 });
