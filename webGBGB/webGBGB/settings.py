@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'booksearch',
     'bookmark',
     'review',
+    'reply',
     'member',
     'shareReading',
     'mypage',
