@@ -393,7 +393,6 @@ html:not(.ios) body.dialog_open .dialog_wrapper.open {
     font-size: 16px;
     line-height: 22px;
     letter-spacing: -0.01em;
-    margin-left: 5px;
     max-height: 44px;
 }
 .modal .prod_area .prod_info_box.size_sm .prod_name:not(.ellipsis_single) {
@@ -422,9 +421,6 @@ html:not(.ios) body.dialog_open .dialog_wrapper.open {
 }
 
 /* 별점 */
-.modal .dialog_wrapper .ui-dialog .dialog_wrap.ui-dialog-content .dialog_contents .thumbnail_round_box .prod_area .prod_info_box .rating-container {
-    margin-top: 16px;
-}
 .modal .rating-container.rating-lg {
     margin-left: -2px;
 }

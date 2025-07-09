@@ -36,8 +36,12 @@ def bookmark_create(request):
     bookmark, created = Bookmark.objects.get_or_create(member_id=member, book_id=book)
     if not created:
         bookmark.delete()
+        book.bookmark_count = max(0, book.bookmark_count - 1)  # 북마크 수 -1
+        book.save()
         bookmarked = False
     else:
+        book.bookmark_count += 1  # 북마크 수 +1
+        book.save()
         bookmarked = True
 
     # 5. 결과를 JSON으로 반환

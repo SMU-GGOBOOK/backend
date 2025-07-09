@@ -4,6 +4,8 @@ from review.models import ReviewImage
 from member.models import Member
 from booksearch.models import Book
 from django.contrib import messages
+from django.http import JsonResponse
+import json
 
 
 # Create your views here.
@@ -39,9 +41,13 @@ def review_create(request):
             tag=tag,
             content=comments,
         )
+        
+        book.review_count += 1
+        book.rating += rating
+        book.save()
 
         print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments)
-        
+                
         images = request.FILES.getlist('review_image', '')  # 단일 이미지 (ImageField 단일)
         for i, img in enumerate(images):
             if i>=3:
@@ -63,12 +69,39 @@ def review_delete(request, review_id):
     member = Member.objects.get(id=user_id)
     review = Review.objects.get(review_id=review_id)
     
+    rating = review.rating
+    book = review.book_id
+    
     if review.member_id.member_id != member.member_id:
         messages.error(request, "본인이 작성한 리뷰만 삭제할 수 있습니다.")
         return redirect(f'/booksearch/detail/{review.book_id.book_id}/')
     
     print(review.member_id, member.member_id)
     review.delete()
+    
+    book.review_count = max(0, book.review_count - 1)
+    book.rating = max(0, book.rating - rating)
+    book.save()
+    
     messages.success(request, "리뷰가 삭제되었습니다.")
     
-    return redirect(f'/booksearch/detail/{review.book_id}/')
+    return redirect(f'/booksearch/detail/{review.book_id.book_id}/')
+
+def review_like(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        review_id = data.get('review_id')
+        delta = data.get('delta')
+
+        try:
+            review = Review.objects.get(review_id=review_id)
+        except Review.DoesNotExist:
+            return JsonResponse({'success': False, 'error': '리뷰 없음'}, status=404)
+
+        # 좋아요 토글 처리
+        review.likes = max(0, review.likes + int(delta))
+        review.save()
+
+        return JsonResponse({'success': True, 'likes': review.likes})
+
+    return JsonResponse({'success': False, 'error': '잘못된 요청'}, status=400)
