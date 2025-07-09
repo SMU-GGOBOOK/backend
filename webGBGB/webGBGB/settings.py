@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'review',
     'member',
     'shareReading',
-
+    'reply',
 ]
 
 MIDDLEWARE = [

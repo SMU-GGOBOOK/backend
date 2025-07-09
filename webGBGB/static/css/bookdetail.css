@@ -26,13 +26,13 @@ main {
     flex: 0 0 auto;
     width: 300px;
 }
-img, fieldset {
+.fig-main img, fieldset {
     border: 0;
 }
-img {
+.fig-main img {
     vertical-align: middle;
 }
-img {
+.fig-main img {
     vertical-align: middle;
     border-radius: 7px;
     box-shadow: 0 4px 4px #797e8480;
