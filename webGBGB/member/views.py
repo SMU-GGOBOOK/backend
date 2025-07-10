@@ -24,7 +24,7 @@ def member_update(request, user_id):
     # 현재 로그인한 사용자와 수정하려는 사용자가 같은지 확인
     if request.session['user_id'] != user_id:
         messages.error(request, '본인의 정보만 수정할 수 있습니다.')
-        return redirect('/member/login/')
+        return redirect('/')
     
     # 사용자 정보 가져오기
     member = get_object_or_404(Member, id=user_id)
@@ -293,7 +293,7 @@ def send_verification_code(request):
             if not members.exists():
                 return JsonResponse({
                     'success': False,
-                    'message': '가입되지 않은 이메일입니다.'
+                    'message': '이름과 이메일을 다시 확인해주세요.'
                 })
             
             # 여러 회원이 있는 경우 첫 번째 회원 선택 (또는 가장 최근 가입자)
@@ -434,6 +434,7 @@ def login(request):
             if user_pw == user.pw:
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
+                request.session['member_id'] = user.member_id  # 세션에 로그인 정보 저장(shareMain)
                 messages.success(request, '로그인 되었습니다.')
                 return redirect('/')
             else:
