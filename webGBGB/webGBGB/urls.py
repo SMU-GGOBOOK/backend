@@ -12,7 +12,6 @@ urlpatterns = [
     path('bookmark/', include('bookmark.urls')),
     path('review/', include('review.urls')),
     path('member/', include('member.urls')),
-    path('shareReading/', include('shareReading.urls')),
     path('mypage/', include('mypage.urls')),
 ]
 

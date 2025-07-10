@@ -53,12 +53,12 @@
                           </div>
                           <div class="group_info">
                               <div class="booktitle">
-                                <span id="group_name">그룹명</span>
-                                <span id="group_count">(8/8)</span>
+                                <span id="group_name">{{g.group_name}}</span>
+                                <span id="group_count">({{g.membercount}}/{{g.max_member}})</span>
                               </div>
-                              <div class="bookauthor">책이름</div>
-                              <div class="bookauthor">그룹소개</div>
-                              <div class="bookauthor">그룹장 닉네임</div>
+                              <div class="bookauthor">{{g.book.title}}</div>
+                              <div class="bookauthor">{{g.group_id.description}}</div>
+                              <div class="bookauthor">{{g.admin}}</div>
                           </div>
                       </div>
                     {% endfor %}
