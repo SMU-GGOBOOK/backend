@@ -12,14 +12,6 @@
 {% endblock %}
 
 {% block content %}
-{% if messages %}
-  <script>
-    {% for message in messages %}
-      alert("{{ message|escapejs }}");
-    {% endfor %}
-  </script>
-{% endif %}
-
     <!-- 상단 -->
     <div class="book-inform-wrap">
       <ng-component class="ng-star-inserted">
