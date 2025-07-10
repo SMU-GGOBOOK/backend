@@ -1,3 +1,4 @@
 from django.contrib import admin
+from shareMain.models import ReadingGroup
 
-# Register your models here.
+admin.site.register(ReadingGroup)

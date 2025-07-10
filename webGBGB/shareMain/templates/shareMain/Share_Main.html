@@ -9,36 +9,41 @@
 {% block content %}
     <!-- shareMain -->
     <div class="feed__content">
-        <!-- 참여중인 그룹 표시 -->
+        <!-- 로그인한 경우에만 참여 그룹 섹션 보이기 -->
+        {% if join_groups %}
         <div class="feed__join">
             <div class="feed__join_title">
                 <span>회원님이 참여 중인 그룹</span>
-                <span id="group_count">8/8</span>
+                <span id="group_count">{{ join_groups|length }}/8</span>
             </div>
             <div class="feed__join_body">
-                {% for group in groups %}
+                {% for group in join_groups %}
                 <div class="feed__join_body_item">
                     <div class="join_body_item_book">
                         <img src="{{ group.book.cover }}" alt="책 이미지"/>
                     </div>
                     <div class="join_body_item_groupName">
-                         {{ group.group_name }}
+                        {{ group.group_name }}
                     </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
-    
+        {% endif %}
+
 
         <!-- 꼬북꼬북 교환독서 그룹 목록 표시 -->
         <div class="feed__tabs">
             <div class="feed__tabs_title">
                 꼬북꼬북 교환독서 그룹
             </div>
-            <div class="feed__tabs_search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" class="feed__tabs_search_input" placeholder="책, 그룹, 해시태그  검색">
-            </div>
+            <form method="get" action="{% url 'shareMain:search_groups' %}">
+                <div class="feed__tabs_search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="feed__tabs_search_input" name="q" placeholder="책, 그룹, 해시태그 검색" value="{{ request.GET.q }}">
+                </div>
+            </form>
+
             <a href='/shareMain/Share_AddGroup/'>
                 <div class="feed__tabs_button">
                     그룹 만들기
@@ -46,6 +51,14 @@
             </a>
         </div>
         <div class="feed__list">
+            {% if groups %}
+                {% for group in groups %}
+                    <!-- 그룹 출력 코드 (지금처럼) -->
+                {% endfor %}
+            {% else %}
+                <p style="text-align:center; padding: 20px;">검색 결과가 없습니다.</p>
+            {% endif %}
+            
             {% for group in groups %}
             <div class="feed__preview">
                 <div class="feed__preview_text">
@@ -121,9 +134,7 @@
 
 {% endblock content %}
 
-<!-- -------------------- script ----------------------------------------- -->
-<!-- Share_Main 페이지일 때만 헤더-검색창 숨김 기능 (추후 설정) -->
 
-
-<!-- --------------------------------------------------------------------- -->
-
+{% block extra_js %}
+    <script src="{% static 'js/Share_Main.js' %}"></script>
+{% endblock %}

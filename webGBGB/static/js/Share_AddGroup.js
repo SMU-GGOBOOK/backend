@@ -55,7 +55,8 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(data => {
         const books = data.books || [];
         if (books.length === 0) {
-          results.innerHTML = "<p>검색 결과가 없습니다.</p>";
+          results.innerHTML =
+            "<p style='text-align:center; padding: 20px; font-size:16px; color:#636363;'>검색 결과가 없습니다.</p>";
           return;
         }
 
@@ -110,9 +111,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // 📌 UI에 선택된 책 표시
       selectedDisplay.innerHTML = `
         <a href="#" id="book_search_trigger">
-        <div class="selected_book_img">
+        <div class="selected_book_img_js">
+          <div class="tooltip_wrapper">
             <img src="${cover}" alt="${title}">
             <div class="custom_tooltip">변경<br></div>
+          </div>
         </div>
         </a>
         <div class="selected_book_text">
