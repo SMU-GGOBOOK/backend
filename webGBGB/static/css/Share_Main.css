@@ -136,7 +136,8 @@ body, input, select, textarea, button {
     align-items: center;            /* 세로 중앙정렬 원하면 */
 }
 .feed__preview_text {
-    height:100%;
+    width: 80%;
+    height: 100%;
     display: flex;
     flex-direction: column;           /* 세로 방향으로 정렬 */
 }
@@ -151,7 +152,7 @@ body, input, select, textarea, button {
     cursor: pointer;
 }
 .group_name{
-    padding: 20px 0 25px;
+    padding: 20px 0;
     font-size: 22px;
     font-weight: 700;
     color: #1a1a1a;
@@ -161,7 +162,7 @@ body, input, select, textarea, button {
     font-size: 14px;
     font-weight: 400;
     color: #636363;
-    display: flex;
+    /* display: flex; */
 }
 .group_leader img{
     margin-right:5px;

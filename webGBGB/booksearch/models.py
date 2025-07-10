@@ -17,5 +17,8 @@ class Book(models.Model):
     rating = models.IntegerField(default=0) # 평점
     views = models.IntegerField(default=0) # 조회수
     
+    class Meta:
+        unique_together = ('ISBN', 'title', 'author')
+    
     def __str__(self):
         return f"{self.book_id}, {self.title}, {self.author}"

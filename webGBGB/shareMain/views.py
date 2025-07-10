@@ -7,6 +7,32 @@ from django.http import JsonResponse  # 책 검색 모달창 api 관련
 import requests, urllib # 책 검색 모달창 api 관련
 from django.db.models import Q  # 메인페이지_그룹 검색 관련
 from member.models import Member  # member 앱의 모델 불러오기
+from django.contrib import messages  # Share_AddGroup 로그인 관련
+
+# 3. 참여 중인 그룹 수 제한
+def join_group(request, group_id):
+    member_id = request.session.get('member_id')
+    if not member_id:
+        return redirect('member:login')
+    member = Member.objects.get(member_id=member_id)
+    group = ReadingGroup.objects.get(id=group_id)
+
+    # 참여한 그룹 수 체크
+    joined_count = ReadingGroup.objects.filter(
+        Q(admin=member) | Q(member=member)
+        ).distinct().count()
+    if joined_count >= 8:
+        messages.warning(request, '최대 8개의 그룹만 참여할 수 있습니다.')
+        return redirect('shareMain:Share_Main')
+
+    # 중복 가입 방지
+    if group.member.filter(member_id=member_id).exists():
+        messages.info(request, '이미 참여 중인 그룹입니다.')
+        return redirect('shareMain:Share_Main')
+
+    group.member.add(member)
+    messages.success(request, '그룹에 가입되었습니다!')
+    return redirect('shareMain:Share_Main')
 
 
 # 2-2. 교환독서_그룹만들기 | api 관련
@@ -35,7 +61,19 @@ def ajax_search(request):
         publisher = doc.get('publisher', '')
         thumbnail = doc.get('thumbnail', '')
         isbn_raw = doc.get('isbn', '')
-        isbn = isbn_raw.split()[-1] if isbn_raw else ""
+
+        # ISBN-13(13자리)로만 저장하는 게 안전
+        isbn13 = ''
+        for num in isbn_raw.split():
+            if len(num) == 13:
+                isbn13 = num
+                break
+        isbn = isbn13 or (isbn_raw.split()[-1] if isbn_raw else "")
+        
+        # isbn_raw 전체를 로그로 출력!
+        print(f"[Kakao API] {title} | isbn_raw: {isbn_raw}")
+        
+        
         # 고화질 이미지 추출
         if 'fname=' in thumbnail:
             cover = urllib.parse.unquote(thumbnail.split("fname=")[-1])
@@ -55,6 +93,16 @@ def ajax_search(request):
 
 # 2. 교환독서_그룹만들기 | Share_AddGroup
 def Share_AddGroup(request):
+    # 로그인한 유저 정보 가져오기
+    member_id = request.session.get('member_id')
+    if not member_id:
+        messages.warning(request, '로그인이 필요합니다.')
+        return redirect('member:login')  # 로그인 페이지로
+    try:
+        member = Member.objects.get(member_id=member_id)
+    except Member.DoesNotExist:
+        return redirect('member:login')  # 세션에 이상 있으면 로그인 요구
+    
     if request.method == 'POST':
         form = ReadingGroupForm(request.POST)
         if form.is_valid():
@@ -63,6 +111,7 @@ def Share_AddGroup(request):
             title = form.cleaned_data['book_title']
             author = form.cleaned_data['book_author']
             cover = form.cleaned_data['book_cover']
+            publisher = form.cleaned_data.get('book_publisher', '')
 
             if not isbn or not title:
                 return render(request, 'shareMain/Share_AddGroup.html', {
@@ -72,31 +121,31 @@ def Share_AddGroup(request):
             # Book DB 저장 or get
             book_obj, created = Book.objects.get_or_create(
                 ISBN=isbn,
+                title=title,
+                author=author,
                 defaults={
                     'title': title,
                     'author': author,
                     'cover': cover,
-                    'publisher': '',
-                    'book_url': '',
-                    'pub_date': '',
+                    'publisher': publisher,
                 }
             )
-            # 로그인한 유저 정보 가져오기
-            member_id = request.session.get('member_id')
-            if not member_id:
-                return redirect('member:login')  # 또는 로그인 페이지로
-            try:
-                member = Member.objects.get(member_id=member_id)
-            except Member.DoesNotExist:
-                return redirect('member:login')  # 세션에 이상 있으면 로그인 요구
+            # 1. 참여 중인 그룹 수 확인
+            joined_count = ReadingGroup.objects.filter(
+                Q(admin=member) | Q(member=member)
+            ).distinct().count()
 
-            # 그룹 생성
+            if joined_count >= 8:
+                messages.warning(request, '최대 8개의 그룹만 참여할 수 있습니다. 그룹을 더 만들 수 없습니다.')
+                return redirect('shareMain:Share_Main')
+            
+            # 2. 그룹 생성
             group = form.save(commit=False)
             group.book = book_obj
             group.admin = member  # 방장 지정
             group.save()
 
-            # 만든 사람도 참여자로 추가
+            # 3. 자신도 멤버로 추가
             group.member.add(member)
 
             return redirect('shareMain:Share_Main')
@@ -133,7 +182,7 @@ def Share_Main(request):
             member = Member.objects.get(member_id=member_id)
             join_groups = ReadingGroup.objects.filter(
                 Q(admin=member) | Q(member=member)
-            ).distinct().order_by('-id')
+            ).distinct().order_by('-id')[:8]  # 최신순으로 8개만
             print("참여 그룹 수:", join_groups.count())
         except Member.DoesNotExist:
             print("Member 객체 못 찾음")

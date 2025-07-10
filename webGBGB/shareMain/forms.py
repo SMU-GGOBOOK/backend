@@ -9,7 +9,8 @@ class ReadingGroupForm(forms.ModelForm):
     book_author = forms.CharField(widget=forms.HiddenInput())
     book_cover = forms.CharField(widget=forms.HiddenInput())
     book_isbn = forms.CharField(widget=forms.HiddenInput())
-    tag = forms.CharField(widget=forms.HiddenInput())
+    tag = forms.CharField(required=False, widget=forms.HiddenInput())
+    book_publisher = forms.CharField(required=False)
 
     class Meta:
         model = ReadingGroup

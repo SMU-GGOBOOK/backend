@@ -13,7 +13,7 @@
         {% if join_groups %}
         <div class="feed__join">
             <div class="feed__join_title">
-                <span>회원님이 참여 중인 그룹</span>
+                <span>{{ group.name }}님이 참여 중인 그룹</span>
                 <span id="group_count">{{ join_groups|length }}/8</span>
             </div>
             <div class="feed__join_body">
@@ -37,6 +37,7 @@
             <div class="feed__tabs_title">
                 꼬북꼬북 교환독서 그룹
             </div>
+            <!-- 교환독서 메인페이지 - 검색창 -->
             <form method="get" action="{% url 'shareMain:search_groups' %}">
                 <div class="feed__tabs_search">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -44,12 +45,26 @@
                 </div>
             </form>
 
-            <a href='/shareMain/Share_AddGroup/'>
-                <div class="feed__tabs_button">
-                    그룹 만들기
-                </div>
-            </a>
+            <!-- 그룹 만들기 버튼 -->
+            {% if request.session.member_id %}
+                <!-- 로그인 했을 때: 그룹 만들기 페이지로 이동 -->
+                <a href="{% url 'shareMain:Share_AddGroup' %}" class="btn btn-create" id="create-group-btn">
+                    <div class="feed__tabs_button">
+                        그룹 만들기
+                    </div>
+                </a>
+            {% else %}
+                <!-- 로그인 안 했을 때: 로그인 페이지로 이동 -->
+                <a href="{% url 'member:login' %}?next={% url 'shareMain:Share_Main' %}" 
+                    class="btn btn-create" onclick="alert('로그인 후 이용 가능합니다.')">
+                    <div class="feed__tabs_button">
+                        그룹 만들기
+                    </div>
+                </a>
+            {% endif %}
         </div>
+
+        <!-- 교환독서 그룹 List -->
         <div class="feed__list">
             {% if groups %}
                 {% for group in groups %}
@@ -72,8 +87,9 @@
                             <span>{{ group.group_name }}</span>
                         </div>
                         <div class="group_leader">
-                            {{ group.user.username }}
-                            {{ group.description }}
+                            <strong>· 책주제:</strong> {{ group.book.title}} <br/>
+                            <strong>· 그룹장:</strong> {{ group.admin.name }} <br/>
+                            <strong>· 소개글:</strong> {{ group.description }}
                         </div>
                     </a>
                 </div>
@@ -136,5 +152,8 @@
 
 
 {% block extra_js %}
+    <script>
+        var joinGroupCount = {{ join_groups|length|default:0 }};
+    </script>
     <script src="{% static 'js/Share_Main.js' %}"></script>
 {% endblock %}
