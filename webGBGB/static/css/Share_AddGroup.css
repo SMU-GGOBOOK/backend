@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+body, input, select, textarea, button {
+  font-family: 'Noto Sans KR', sans-serif !important;
+}
+
+
+/* --------------------------------------- */
 /* 교환독서 그룹만들기 */
 .feed__content{
     margin-top: 82px;
@@ -160,15 +168,15 @@ form[name='addgroupFrm'] {
   font-size: 25px;
 
 }
-
 .modal_close {
   position: absolute;
   top: 10px;
   right: 15px;
-  font-size: 22px;
+  font-size: 25px;
   background: none;
   border: none;
   cursor: pointer;
+  color: #2D7868;
 }
 
 /* 검색 input+버튼 정렬 */
@@ -276,7 +284,7 @@ form[name='addgroupFrm'] {
   cursor: pointer;
 }
 /* 선택한 책 표시 */
-.selected_book_display {
+#selected-book-display {
   padding-right: 25px;
   height:176px;
   flex: 1;
@@ -295,10 +303,14 @@ form[name='addgroupFrm'] {
   border-radius: 7px;
   vertical-align: top;
   box-sizing: border-box;
-  background-size: 16px 16px;
-  background-image: url(../images/plusBtn.png);
-  background-position: center;
-  background-repeat: no-repeat;
+  /* background-image: url(../images/plusBtn.png); */
+  display: flex;               /* 💡 flex 사용 */
+  align-items: center;         /* 세로 중앙 */
+  justify-content: center;     /* 가로 중앙 */
+}
+.selected_book_img img {
+  width: 16px;
+  height: 16px;
 }
 
 .selected_book_text {
