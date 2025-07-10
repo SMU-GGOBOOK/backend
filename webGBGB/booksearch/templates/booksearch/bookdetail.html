@@ -171,92 +171,52 @@
       <!-- 헤더 영역 -->
       <div class="title_wrap title_size_md has_btn" data-kbbfn-role="title">
       </div>
-      
-      <!-- 감성태그 overview 영역 -->
-      <!-- 그래프로 변경 예정 -->
-      <div class="klover_review_box">
-        <div class="klover_box_left">
-          
-        </div>
-      
-        <div class="klover_box_right">
-          
-        </div>
-      </div>
 
       <!-- 독서 그룹 영역 -->
       <div class="feed__content">
-        <div class="feed__join">
-            <div class="feed__join_title">
-                <span>이 책이 주제인 교환 독서 그룹</span>
-            </div>
-            <div class="feed__join_body">
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/32379/9/cover150/8954695175_1.jpg" alt="귀하의 노고에 감사드립니다 - 월급사실주의 2023">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        [📚수북플러스] 2. 귀하의 노고에 감...
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/36249/44/cover150/k692038529_1.jpg" alt="다르게 걷기">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        책 증정 [박산호 x 조영주] 인터뷰
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/35872/76/cover150/k362037780_1.jpg" alt="">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        [ Do it! 오라클로 배우는 SQL 입문 ]
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/36582/74/cover150/k232039558_1.jpg" alt="">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        어린왕자
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/32379/9/cover150/8954695175_1.jpg" alt="귀하의 노고에 감사드립니다 - 월급사실주의 2023">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        [📚수북플러스] 2. 귀하의 노고에 감...
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/36249/44/cover150/k692038529_1.jpg" alt="다르게 걷기">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        책 증정 [박산호 x 조영주] 인터뷰
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/35872/76/cover150/k362037780_1.jpg" alt="">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        [ Do it! 오라클로 배우는 SQL 입문 ]
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/36582/74/cover150/k232039558_1.jpg" alt="">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        어린왕자
-                    </div>
-                </div>
-
-            </div>
+        <div class="chart_sReading_container sReading">
+          <div class="sReading_title">이 책이 주제인 교환 독서 그룹</div>
+          <div class='sReading_body'>
+            <table>
+              {% if readingGroup %}
+              {% for r in readingGroup %}
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
+                <td class='sReading_name'><a href='#'>{{r.group_name}}</a></td>
+                <td class='sReading_date'>{{r.created_at|date:'Y-m-d'}}</td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[1/10]</td>
+                <td class='sReading_name'><a href='#'>test교환독서그룹11</a></td>
+                <td class='sReading_date'>2025-07-10</td>
+              </tr>
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[2/10]</td>
+                <td class='sReading_name'><a href='#'>ttttest교환독서그룹2222222</a></td>
+                <td class='sReading_date'>2025-07-10</td>
+              </tr>
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[3/5]</td>
+                <td class='sReading_name'><a href='#'>TEST교환독서그룹3333333333333333333333333333333333333333333</a></td>
+                <td class='sReading_date'>2025-07-10</td>
+              </tr>
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[1/7]</td>
+                <td class='sReading_name'><a href='#'>TTst교환독서그룹4</a></td>
+                <td class='sReading_date'>2025-07-10</td>
+              </tr>
+              {% endif %}
+            </table>
+          </div>
+        </div>
+        <div class="chart_sReading_container chartdraw">
         </div>
       </div>
       

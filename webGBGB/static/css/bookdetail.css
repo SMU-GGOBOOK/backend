@@ -343,7 +343,7 @@ prod_review_box .col_review .review_desc {
     padding: 39px 90px 34px 108px;
     margin-bottom: 80px;
     border: 1px solid #ccc;
-    border-radius: 20px;
+    border-radius: 7px;
     box-sizing: border-box;
     display: -webkit-flex;
     -webkit-box-pack: start;
@@ -897,25 +897,28 @@ color: #2D7868; /* 숫자 색상 */
 
 /* 교환독서 메인페이지 */
 .feed__content{
-    /* border:1px solid black; */
     margin:0 auto;
     width:100%;
     height:100%;
-    /* padding: 0 63px; */
+    margin-bottom: 100px;
+    display: flex;
+    justify-content: space-between;
 }
 
 /* 참여 중인 그룹 표시부분 */
-.feed__join{
-    padding: 20px 50px 25px;
-    border: 1px solid #ccccccBF;
+.chart_sReading_container{
+    width:700px;
+    padding: 25px;
+    border: 1px solid #ccc;
     border-radius: 7px;
-    margin-bottom: 100px;
     background: white;
-    box-shadow: 0 4px 4px #ccccccBF;
+    color:#1a1a1a;
 }
-.feed__join_title{
-    margin-bottom: 20px;
+
+.sReading_title{
+    margin-bottom: 15px;
     padding-left: 27px;
+    padding-right: 40px;
     font-size: 25px;
     font-weight: 700;
     color: #1a1a1a;
@@ -923,35 +926,50 @@ color: #2D7868; /* 숫자 색상 */
 }
 .feed__join_body{
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
 }
-/* 참여 중인 그룹 1개씩 */
-.feed__join_body_item{
-    margin: 0 25px;
-    width:118px;
-    
+
+/*----교환독서그룹----*/
+.sReading_body{
+    width:638px;
+    height:200px;
+    margin:0 auto;
 }
-.join_body_item_book{
-    display: flex;
-    width:118px;
-    height:172px;
-    object-fit: cover;
+
+.sReading_body table{
+    width:600px;
+    height:200px;
+    table-layout: fixed;
+    margin:0 auto;
 }
-.join_body_item_book img{
-    width:100%;
-    height:100%;
-    object-fit: cover;
-    border-radius: 7px;
-    box-shadow: 0 4px 4px #797e8480;
+
+.sReading_body th{   /*책 아이콘*/
+    width:60px;
 }
-.join_body_item_groupName{
-    margin-top: 10px;
-    height: 45px;
-    font-size: 15px;
-    font-weight: 400;
-    color: #636363;
+
+.sReading_name{
+    width:350px;
+    max-width:350px;
+    padding-right:30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
+
+.sReading_date{
+    font-size: 14px;
+    color:#636363;
+    width:83px;
+}
+
+.sReading_member{
+    color:#2F80ED;
+    font-weight:600;
+    margin-right:10px;
+    width:55px;
+}
+
 
 /* 모달 팝업 */
 .modal {
