@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="https://kit.fontawesome.com/e1869b8eb9.js" crossorigin="anonymous"></script>
   <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css" rel="stylesheet">
@@ -45,14 +46,13 @@
           </div>
         </div>
       </form>
-
       <div class="fig-right">
         {% if request.session.user_id %}
-          <a href="/mypage/reviewlist/" class="fig-r1">{{ request.session.user_name }}님</a>
-          <a href="/member/logout/" class="fig-r2">로그아웃</a>
+          <a href="/mypage/review/" class="fig-r1"><span>{{ request.session.user_name }}님</span></a>
+          <a href="{% url 'member:logout' %}" class="fig-r2">로그아웃</a>
         {% else %}
-          <a href="/member/join1/" class="fig-r1">회원가입</a>
-          <a href="/member/login/" class="fig-r2">로그인</a>
+          <a href="{% url 'member:join1' %}" class="fig-r1">회원가입</a>
+          <a href="{% url 'member:login' %}" class="fig-r2">로그인</a>
         {% endif %}
       </div>
 
@@ -68,6 +68,15 @@
     <!-- Messages 표시 부분 여기까지 -->
   </header> 
   <hr class="fig-hr">
+  <!-- Messages 표시 부분 추가 -->
+  {% if messages %}
+    {% for message in messages %}
+      <script>
+        alert('{{ message }}');
+      </script>
+    {% endfor %}
+  {% endif %}
+  <!-- Messages 표시 부분 여기까지 -->
   <div class="fig-main">
 
   {% block content %}
@@ -139,7 +148,7 @@
     <!--리뷰수 아래부분-->
   </div>
   {% block extra_js %}
-  <!-- 각 페이지별 JS 들어오는 자리 -->
+  
   {% endblock %}
 </body>
 </html>

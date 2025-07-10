@@ -4,7 +4,6 @@ body, input, select, textarea, button {
   font-family: 'Noto Sans KR', sans-serif !important;
 }
 
-
 /* --------------------------------------- */
 /* 교환독서 그룹만들기 */
 .feed__content{
@@ -18,10 +17,12 @@ body, input, select, textarea, button {
     width: 1137px;
 }
 .feed__add_title{
+    /* padding-left: 15px; */
     font-size: 40px;
     font-weight: 700;
     color: #1a1a1a;
 }
+
 .feed__add_title i {
   font-size:35px;
   margin-right:8px;
@@ -464,7 +465,7 @@ form[name='addgroupFrm'] {
 }
 
 
-/* ---- 하단 버튼 (취소,완료) ---- */
+/* 하단 버튼 (취소,완료) */
 .group_button {
     margin-top: 50px;
     display: flex;
@@ -488,4 +489,3 @@ form[name='addgroupFrm'] {
     background-color: #2D7868;
 }
 
-/* ------------------------------------------- */
