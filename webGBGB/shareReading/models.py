@@ -7,7 +7,7 @@ class ReadingGroup(models.Model):
     group_name = models.CharField(max_length=100)
     max_member = models.IntegerField(default=2)
     admin = models.ForeignKey(Member, on_delete=models.CASCADE,related_name='owned_groups')  # 세션아이디 로그인중인 유저로 방장 설정
-    member = models.ManyToManyField(Member,related_name='reading_groups')  # 방장 제외 나머지 멤버가 들어옴, null이어도 ok
+    member = models.ManyToManyField(Member,related_name='reading_groups',blank=True)  # 방장 제외 나머지 멤버가 들어옴, null이어도 ok
     description = models.TextField()
     tag = models.CharField(max_length=100,null=True,blank=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE,default=1)

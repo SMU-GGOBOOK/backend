@@ -178,7 +178,10 @@
           <div class="sReading_title">이 책이 주제인 교환 독서 그룹</div>
           <div class='sReading_body'>
             <table>
-              {% if readingGroup %}
+              {% comment %} 
+              qs = ReadingGroup.objects.filter(book=book)  대충이렇게..
+              context = {'readingGroup':qs[0]} 이렇게 context보내주면될듯 {% endcomment %}
+              {% if readingGroup %} 
               {% for r in readingGroup %}
               <tr>
                 <th><i class="fa-solid fa-book-open"></i></th>
