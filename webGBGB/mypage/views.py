@@ -24,9 +24,8 @@ def review(request):
         member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
         my_review_count = Review.objects.filter(member_id=member).count()
         my_bookmark_count = Bookmark.objects.filter(member_id=member).count()
-        # my_group_count = ReadingGroup.objects.filter(member=member).count()
+        my_group_count = ReadingGroup.objects.filter(member=member).count()
         
-        # my_group_count = ReadingGroup.objects.filter(member_id=member).count()
     except Member.DoesNotExist:
         return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
 
@@ -42,7 +41,7 @@ def review(request):
         'page': int(page),
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
-        # "my_group_count": my_group_count
+        "my_group_count": my_group_count
         
     }
 
@@ -59,7 +58,8 @@ def Bmark(request):
         member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
         my_review_count = Review.objects.filter(member_id=member).count()
         my_bookmark_count = Bookmark.objects.filter(member_id=member).count()
-        # my_group_count = ReadingGroup.objects.filter(member_id=member).count()
+        my_group_count = ReadingGroup.objects.filter(member=member).count()
+        
     except Member.DoesNotExist:
         return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
 
@@ -74,7 +74,7 @@ def Bmark(request):
         'page': int(page),
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
-        # "my_group_count": my_group_count
+        "my_group_count": my_group_count
     }
     
     return render(request,'mypage/Bmark.html',context)
@@ -89,14 +89,14 @@ def mygroup(request):
         member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
         my_review_count = Review.objects.filter(member_id=member).count()
         my_bookmark_count = Bookmark.objects.filter(member_id=member).count()
-        # my_group_count = ReadingGroup.objects.filter(admin=member).count()
+        my_group_count = ReadingGroup.objects.filter(member=member).count()
     except Member.DoesNotExist:
         return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
 
     page = request.GET.get('page', 1)
     qs = ReadingGroup.objects.filter(member=member).order_by('-created_at')  # member_id는 FK니까 객체로 필터
     for g in qs:
-            g.membercount = g.member.count() +1
+            g.membercount = g.member.count()
     paginator = Paginator(qs, 5)
     paginated_sharegroups = paginator.get_page(page)
 
@@ -105,7 +105,7 @@ def mygroup(request):
         'page': int(page),
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
-        # "my_group_count": my_group_count
+        "my_group_count": my_group_count
         
     }
     
@@ -113,21 +113,7 @@ def mygroup(request):
     return render(request,'mypage/mygroup.html',context)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#---------------------------------------------------------------------------
 
 def review_delete(request):
     if request.method == 'POST':
@@ -172,9 +158,37 @@ def bookmark_delete(request):
     return JsonResponse({'result': 'error', 'message': '허용되지 않은 요청 방식입니다.'}, status=400)
 
 
+def mygroup_delete(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        if not id :
+            return JsonResponse({'result': 'error', 'message': '그룹 ID 없음'}, status=400)
 
+        print("삭제 요청 id :", id)
+
+        try:
+            id = int(id)  # 문자열을 숫자로 변환
+            sharegroup = ReadingGroup.objects.get(id=id)
+            sharegroup.delete() 
+            return JsonResponse({"result": "success"})
+        except ValueError:
+            return JsonResponse({"result": "error", "message": "그룹 ID 형식이 잘못되었습니다."}, status=400)
+        except ReadingGroup.DoesNotExist:
+            return JsonResponse({"result": "error", "message": "그룹이 존재하지 않습니다."}, status=404)
+
+    return JsonResponse({'result': 'error', 'message': '허용되지 않은 요청 방식입니다.'}, status=400)
+    
         
-            
+# def mygroup_delete(request):
+#     if request.method == 'POST':
+#         print("💬 POST 데이터:", request.POST)
+
+#     group_id = request.POST.get('group_id')  # 띄어쓰기 제거했음
+
+#     if not group_id:
+#         return JsonResponse({'result': 'error', 'message': '그룹 ID 없음'}, status=400)
+
+#     print("✅ 삭제 요청 group_id:", group_id)
 
 
 
