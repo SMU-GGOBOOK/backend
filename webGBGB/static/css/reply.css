@@ -124,29 +124,29 @@ a.btn_line_gray, button.btn_line_gray {
     transition: background 0.2s ease-out;
 }
 /* 글자 수 */
-.byte_check_wrap .byte_check_footer .byte_check {
+.byte_check_wrap .byte_check_footer .reply_byte_check {
     margin-top: 2px;
 }
 
-.byte_check_wrap .byte_check {
+.byte_check_wrap .reply_byte_check {
     display: inline-block;
     line-height: 1;
     font-size: 0;
 }
-.byte_check_wrap .byte_check .count {
+.byte_check_wrap .reply_byte_check .count {
     display: inline-block;
     color: #2D7868;
 }
-.byte_check_wrap .byte_check .total {
+.byte_check_wrap .reply_byte_check .total {
     color: #636363;
 }
-.byte_check_wrap .byte_check .count, .byte_check_wrap .byte_check .total {
+.byte_check_wrap .reply_byte_check .count, .byte_check_wrap .reply_byte_check .total {
     display: inline-block;
     font-size: 12px;
     line-height: 18px;
     letter-spacing: -0.01em;
 }
-.byte_check_wrap .byte_check .total:before {
+.byte_check_wrap .reply_byte_check .total:before {
     content: "/";
 }
 .kbb-recent-contents *, :before, :after {
@@ -157,7 +157,7 @@ a.btn_line_gray, button.btn_line_gray {
 }
 
 /* 답글 버튼 */
-.byte_check_wrap .byte_check_footer .byte_check + .btn_wrap {
+.byte_check_wrap .byte_check_footer .reply_byte_check + .btn_wrap {
     margin-left: 10px;
 }
 
@@ -175,6 +175,7 @@ a.btn_line_gray, button.btn_line_gray {
   justify-content: flex-end; /* 왼쪽 정렬 */
   align-items: center;
   gap: 10px;                    /* 버튼 간격 */
+  margin-bottom: 8px;
 }
 .btn_wrap .btn_xs {
     width: 80px;
@@ -218,7 +219,7 @@ button[class^=btn_] .text, a[class^=btn_] .text {
 }
 /* 리뷰 답글 리스트 */
 .reply_wrap .reply_list_area .reply_list .reply_item {
-    margin-top: 8px;
+    margin-bottom: 18px;
 }
 .reply_wrap .reply_list_area .reply_item {
     display: block;
@@ -232,7 +233,7 @@ button[class^=btn_] .text, a[class^=btn_] .text {
     content: "";
     display: inline-block;
     position: absolute;
-    top: 24px;
+    top: 21px;
     left: 20px;
     width: 8px;
     height: 9px;
@@ -242,7 +243,13 @@ button[class^=btn_] .text, a[class^=btn_] .text {
 /* 답글의 답글 헤더 부분*/
 .reply_wrap .reply_list_area .reply_item .reply_header {
     margin-bottom: 9px;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 1;
+    vertical-align: middle;
+    color: #1a1a1a;
 }
+
 /* 답글 내용 부분 */
 .reply_wrap .reply_list_area .reply_item .reply_contents .reply_text {
     display: block;

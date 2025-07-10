@@ -318,7 +318,18 @@
                           <span class="gap"> | </span>
                           <span class="info_item">{{ r.created_at|date:"Y.m.d H:i" }}</span>
                           <span class="gap"> | </span>
-                          <span class="info_item">수정</span>
+                          <span
+                            class="info_item modifyReviewBtn"
+                            data-review='{
+                              "review_id":{{r.review_id}},
+                              "rating":{{r.rating}},
+                              "tag":"{{r.tag}}",
+                              "content":"{{r.content|escapejs}}"
+                            }'
+                            data-images="{% for img in r.images.all %}{% if not forloop.first %},{% endif %}{{ img.image.url }}{% endfor %}">
+                            수정
+                          </span>
+
                           <span class="gap"> | </span>
                           <a href="/review/delete/{{r.review_id}}/" class="info_item">삭제</a>
                           <span class="gap"> | </span>
@@ -466,19 +477,17 @@
                         <div class="reply_list">
                           {% for reply in r.reply_list %}
                             <div class="reply_item" id="{{reply.reply_id}}">
-                              <div class="reply_header">
-                                <div class="user_info_box">
-                                  <span class="info_item">{{reply.member_id.id}}<span>
-                                  <span class="gap"> | </span>
-                                  <span class="info_item">{{reply.created_at}}</span>
-                                  <span class="gap"> | </span>
-                                  <span class="info_item">수정</span>
-                                  <span class="gap"> | </span>
-                                  <a href="/reply/delete/{{reply.reply_id}}/" class="info_item">삭제</a>
-                                  <span class="gap"> | </span>
-                                </div>
+                              <div class="user_info_box">
+                                <span class="info_item">{{reply.member_id.id}}</span>
+                                <span class="gap"></span>
+                                <span class="info_item">{{reply.created_at|date:"Y.m.d H:i"}}</span>
+                                <span class="gap"></span>
+                                <span class="info_item">수정</span>
+                                <span class="gap"></span>
+                                <a href="/reply/delete/{{reply.reply_id}}/" class="info_item">삭제</a>
+                                <span class="gap"></span>
                               </div>
-                              <div class="reply_contents">
+                              <div class="reply_contents" style="margin-top: 10px;">
                                 <div class="reply_text">{{reply.content}}</div>
                                 <div class="reply_write_area">
                                   <div class="byte_check_wrap">
@@ -612,14 +621,13 @@
       </div>
       </div>
 
-      <!-- 팝업 모달 구조 -->
+      <!-- 팝업 작성 모달 구조 -->
       <div id="reviewModal" class="modal">
         <div id="bodyDialog20" class="dialog_wrapper open">
           <div tabindex="-1" role="dialog" class="ui-dialog ui-widget ui-widget-content ui-front" aria-describedby="ReviewList1_e8a3c636-012b-44ff-92d9-1d938aa36eaa_post" aria-labelledby="ui-id-43" style="height: auto;">
               <div id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post" class="dialog_wrap no_title_line has_btn ui-dialog-content ui-widget-content initialized" data-class="" style="width: auto; min-height: 0px; max-height: none; height: 750px;">
                   <div class="dialog_header">
                       <div class="dialog_title">리뷰작성</div>
-                      
                       <button type="button" id="closeReviewBtn" class="btn_dialog_close">
                           <i class="fa-solid fa-xmark" style="color: #2D7868; font-size: 25px;"></i>
                           <span class="hidden">닫기</span>
@@ -639,11 +647,9 @@
                                                   <div class="thumbnail_round_box">
                                                       <div class="prod_area horizontal">
                                                           <div class="prod_thumb_box size_xs">
-                                                              <a class="prod_link" href="https://product.kyobobook.co.kr/detail/S000001913217">
-                                                                  <span class="img_box">
-                                                                      <img data-kbbfn="s3-image" loading="lazy" alt="S000001913217" src="{{book.cover}}">
-                                                                  </span>
-                                                              </a>
+                                                            <span class="img_box">
+                                                                <img data-kbbfn="s3-image" loading="lazy" alt="S000001913217" src="{{book.cover}}">
+                                                            </span>
                                                           </div>
                                                           <div class="prod_info_box size_sm">
                                                               <a class="prod_info" href="#">
@@ -765,7 +771,7 @@
                               </div>
                             </div>
                             <div class="dialog_footer">
-                                <button class="btn_md btn_primary" id="modal_btn" type="submit" disabled="">
+                                <button class="btn_md btn_primary" id="review_btn" type="submit" disabled="">
                                 <span class="text">등록</span>
                               </button>
                             </div>
@@ -777,6 +783,168 @@
                   
                 {% endif %}
       </div>
+      <!-- 팝업 수정 모달 구조 -->
+      <div id="modifyModal" class="modal">
+        <div id="bodyDialog20" class="dialog_wrapper open">
+          <div tabindex="-1" role="dialog" class="ui-dialog ui-widget ui-widget-content ui-front" aria-describedby="ReviewList1_e8a3c636-012b-44ff-92d9-1d938aa36eaa_post" aria-labelledby="ui-id-43" style="height: auto;">
+              <div id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post" class="dialog_wrap no_title_line has_btn ui-dialog-content ui-widget-content initialized" data-class="" style="width: auto; min-height: 0px; max-height: none; height: 750px;">
+                  <div class="dialog_header">
+                      <div class="dialog_title">리뷰수정</div>
+                      <button type="button" id="closeModifyBtn" class="btn_dialog_close">
+                          <i class="fa-solid fa-xmark" style="color: #2D7868; font-size: 25px;"></i>
+                          <span class="hidden">닫기</span>
+                      </button>
+                  </div>
+                  {% if book %}                  
+                    <form method="post" action="/review/update/" id="modifyForm" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="dialog_contents">
+                        <div class="scroll_wrap active" data-simplebar="init">
+                          <input type="hidden" name="review_id" id="modal_review_id">
+                            <div class="simplebar-wrapper" style="margin: 0px -18px 0px 0px;"> 
+                                <div class="simplebar-mask">
+                                    <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                        <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+                                            <div class="simplebar-content" style="padding: 0px 18px 0px 0px;">
+                                                <div class="custom_scroll_inner" tabindex="0">
+                                                    <div class="thumbnail_round_box">
+                                                        <div class="prod_area horizontal">
+                                                            <div class="prod_thumb_box size_xs">
+                                                              <span class="img_box">
+                                                                  <img data-kbbfn="s3-image" loading="lazy" alt="S000001913217" src="{{book.cover}}">
+                                                              </span>
+                                                            </div>
+                                                            <div class="prod_info_box size_sm">
+                                                                <a class="prod_info" href="#">
+                                                                    <span class="prod_name">{{book.title}}</span>
+                                                                </a>
+                                                                <input type="hidden" name="book_id" value="{{ book.book_id }}">
+                                                                <div class="rating-container theme-krajee-gly rating-lg rating-animate has_caption" style="margin-top:16px">
+                                                                    <div class="rating-container has_caption">
+                                                                      <div class="rating-stars-review" id="rating">
+                                                                        <span class="star" data-value="1"></span>
+                                                                        <span class="star" data-value="2"></span>
+                                                                        <span class="star" data-value="3"></span>
+                                                                        <span class="star" data-value="4"></span>
+                                                                        <span class="star" data-value="5"></span>
+                                                                      </div>
+                                                                      <input type="hidden" name="rating" id="rating-value-review" value="5">
+
+                                                                      <div class="caption-review">
+                                                                        <span class="caption-review-badge">
+                                                                          <span>
+                                                                            <span>5점 중 5점</span>
+                                                                            <span class="val" aria-hidden="true">5</span>
+                                                                            <span class="total" aria-hidden="true">5</span>
+                                                                          </span>
+                                                                        </span>
+                                                                      </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form_wrap type_md">
+                                                        <div class="form_box">
+                                                            <div class="form_box">
+                                                            <div class="form_title">
+                                                                <label class="form_label">
+                                                                꼬북 태그 <span class="required">*</span>
+                                                                </label>
+                                                                <p class="info_text font_size_xxs">가장 와 닿는 하나의 키워드를 선택해주세요.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form_cont">
+                                                            <div class="tag_wrap size_lg" data-tag-toggle="">
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion01" data-value="001">
+                                                                    <span class="text">집중돼요</span>
+                                                                </button>
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion02" data-value="002">
+                                                                    <span class="text">도움돼요</span>
+                                                                </button>
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion03" data-value="003">
+                                                                    <span class="text">쉬웠어요</span>
+                                                                </button>
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion04" data-value="004">
+                                                                    <span class="text">최고예요</span>
+                                                                </button>
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion05" data-value="005">
+                                                                    <span class="text">추천해요</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" name="tag" id="selected-emotion" value="">
+
+                                                    </div>
+                                                <div class="form_box">
+                                                    <div class="form_title">
+                                                        <label class="form_label" for="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_reviewText">리뷰 작성
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form_cont">
+                                                        <div class="byte_check_wrap">
+                                                            <textarea class="form_textarea" id="modify_comments" name="reviewText" placeholder="내용을 10자 이상 입력해 주세요. 주제와 무관한 댓글, 악플 등의 비방 글은 임의 삭제될 수 있습니다." maxlength="3000" style="height: 70px;"></textarea>
+                                                            <div class="byte_check byte_check_footer">
+                                                                <span class="count">0</span>
+                                                                <span class="total">3000</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form_box">
+                                                    <div class="form_title photo">
+                                                        <span class="form_label">
+                                                            <span>사진 첨부(선택) </span>
+                                                            <span class="file_attach_val">
+                                                                <span class="val">0</span>
+                                                                <span class="total"> / 3</span>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="form_cont">
+                                                        <ul class="file_list">
+                                                            <li class="list_item">
+                                                                <span class="file_item">
+                                                                    <span class="btn_box">
+                                                                        <input id="review_img" type="file" name="review_image" multiple>
+                                                                        <label for="review_img">
+                                                                            <span class="hidden">첨부파일 추가</span>
+                                                                        </label>
+                                                                        <span class="attach_img_box">
+                                                                            <span class="attach_img_view"></span>
+                                                                            <button class="btn_remove_img" type="button">
+                                                                                <span class="hidden">첨부파일 삭제</span>
+                                                                            </button>
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                        <p class="bul_item_asterisk font_size_xxs">JPG, PNG, GIF 파일만 최대 3장 업로드 가능합니다.</p>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="simplebar-placeholder" style="width: auto; height: 610px;"></div>
+                                </div>
+                              </div>
+                              <div class="dialog_footer">
+                                  <button class="btn_md btn_primary" id="modify_btn" type="submit" disabled="">
+                                  <span class="text">수정</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  {% endif %}
+      </div>
     </div>
   </div>
   {% endblock %}
@@ -784,4 +952,3 @@
 {% block extra_js %}
 <script src="/static/js/bookdetail.js"></script>
 {% endblock %}
-

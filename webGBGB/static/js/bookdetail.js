@@ -71,64 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* 별점 */
-  const stars = document.querySelectorAll(".rating-stars-review .star");
-  const input = document.getElementById("rating-value-review");
-  const valSpan = document.querySelector(".caption-review .val"); // 오타 반영
-  const textSpan = document.querySelector(".caption-review-badge span > span:first-child");
-  const visibleRatingInput = document.querySelector(".form_rating.rating-input"); // 🔹 추가된 라인
-
-  let currentValue = parseInt(input.value || "0");
-
-  function updateStars(value) {
-    stars.forEach((s, idx) => {
-      s.classList.toggle("active", idx < value);
-    });
-
-    if (input) input.value = value;
-    if (visibleRatingInput) visibleRatingInput.value = value; // 🔹 여기에 추가!
-    if (valSpan) valSpan.textContent = value;
-    if (textSpan) textSpan.textContent = `5점 중 ${value}점`;
-
-    currentValue = value; // 현재 점수 저장
-  }
-
-  stars.forEach((star, idx) => {
-    const hoverValue = idx + 1;
-
-    star.addEventListener("mouseenter", function () {
-      stars.forEach((s, i) => {
-        s.classList.toggle("active", i < hoverValue);
-      });
-
-      if (input) input.value = hoverValue;
-      if (valSpan) valSpan.textContent = hoverValue;
-      if (textSpan) textSpan.textContent = `5점 중 ${hoverValue}점`;
-    });
-
-    star.addEventListener("mouseleave", function () {
-      updateStars(currentValue); // 마우스 빠질 때 기존 값으로 복원
-    });
-
-    star.addEventListener("click", function () {
-    const newValue = idx + 1;
-
-    stars.forEach((s, i) => {
-      const shouldFade = (i < currentValue && i >= newValue) || (i >= currentValue && i < newValue);
-      if (shouldFade) s.classList.add("fading-out");
-    });
-
-    setTimeout(() => {
-      updateStars(newValue);
-      stars.forEach(s => s.classList.remove("fading-out"));
-    }, 120);
-  });
-  ;
-  });
-
-  // 초기 세팅
-  updateStars(currentValue);
-
   /* 이미지 썸네일 클릭 시 Swiper 보기 */
   document.querySelectorAll('.comment_thumb_box').forEach(box => {
     box.addEventListener('click', () => {
@@ -141,18 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (swiper) swiper.style.display = 'block';
       }
     });
-  });
-
-
-  /* 모달 */
-  const modal = document.getElementById("reviewModal");
-  document.getElementById("openReviewBtn")?.addEventListener('click', () => modal?.classList.add('active'));
-  document.getElementById("closeReviewBtn")?.addEventListener('click', () => modal?.classList.remove('active'));
-  modal?.addEventListener('click', e => {
-    if (e.target.id === 'reviewModal') modal.classList.remove('active');
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') modal?.classList.remove('active');
   });
 
   /* 좋아요 */
@@ -195,20 +125,6 @@ $(document).on('click', '.btn_reply', function () {
   $commentItem.find('.reply_wrap').first().toggle();
 });
 
-/* 태그 */
-document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(tag => {
-  tag.addEventListener('click', () => {
-    const alreadyActive = tag.classList.contains('active');
-    document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(t => t.classList.remove('active'));
-    if (!alreadyActive) tag.classList.add('active');
-
-    const emotionInput = document.getElementById('selected-emotion');
-    if (emotionInput) {
-      const selectedText = tag.querySelector('.text')?.textContent.trim();
-      emotionInput.value = selectedText || "";
-    }
-  });
-});
 
 // 모달 팝업 내 사진 추가
 document.addEventListener('DOMContentLoaded', function () {
@@ -356,126 +272,6 @@ document.addEventListener('DOMContentLoaded', function () {
   updateAttachVal();
 });
 
-/* 모달 팝업 등록 버튼 & 초기화 */
-document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("reviewModal");
-  const modalBtn = document.getElementById("modal_btn");
-  const textarea = document.getElementById("review_comments");
-  const ratingInput = document.getElementById("rating-value-review");
-
-  console.log("초기 DOM 상태 확인:");
-  console.log("ratingInput:", ratingInput);
-  console.log("textarea:", textarea);
-  console.log("modalBtn:", modalBtn);
-
-
-  // ⭐ 리뷰 폼 초기화 함수
-  function resetReviewForm() {
-    // 별점 초기화
-    ratingInput.value = 0;
-    document.querySelectorAll(".rating-stars-review .star").forEach(s => s.classList.remove("active"));
-
-    const valSpan = document.querySelector(".caption-review .val");
-    const textSpan = document.querySelector(".caption-review-badge span > span:first-child");
-    if (valSpan) valSpan.textContent = "0";
-    if (textSpan) textSpan.textContent = "5점 중 0점";
-
-    // 태그 초기화
-    document.querySelectorAll('.tag_wrap.size_lg .tag.active').forEach(tag => {
-      tag.classList.remove("active");
-    });
-
-    // 텍스트 초기화
-    textarea.value = "";
-    const counter = document.querySelector(".byte_check .count");
-    if (counter) counter.textContent = "0";
-
-    // 버튼 비활성화
-    modalBtn.disabled = true;
-  }
-
-  // ✅ 유효성 검사 함수
-  function checkFormValid() {
-    const ratingVal = parseInt(ratingInput.value || "0");
-    const ratingValid = ratingVal > 0;
-    const tagSelected = document.querySelector('.tag_wrap.size_lg .tag.active') !== null;
-    const reviewLength = textarea.value.trim().length;
-    const reviewValid = reviewLength >= 10;
-
-    console.log("=== 유효성 검사 결과 ===");
-    console.log("⭐ 별점 (ratingInput.value):", ratingVal, "-> 유효?", ratingValid);
-    console.log("🏷️ 태그 선택됨?", tagSelected);
-    console.log("📝 리뷰 길이:", reviewLength, "-> 유효?", reviewValid);
-    console.log("🔒 버튼 활성화됨?", ratingValid && tagSelected && reviewValid);
-
-    modalBtn.disabled = !(ratingValid && tagSelected && reviewValid);
-  }
-
-  // 글자 수 반영 + 검사
-  textarea.addEventListener("input", () => {
-    const len = textarea.value.length;
-    const counter = document.querySelector(".byte_check .count");
-    if (counter) counter.textContent = len;
-    checkFormValid();
-  });
-
-  // 별점 클릭 시 검사
-  document.querySelectorAll(".rating-stars-review .star").forEach(star => {
-    star.addEventListener("click", () => {
-      checkFormValid();
-    });
-  });
-
-  // 태그 클릭 시 검사
-  document.querySelectorAll('.tag_wrap.size_lg .tag').forEach(tag => {
-    tag.addEventListener("click", () => {
-      checkFormValid();
-    });
-  });
-
-  // 버튼 클릭 시 알림 + 모달 닫기 + 초기화
-  modalBtn.addEventListener("click", () => {
-    // 유효하면 등록 처리
-    alert("리뷰 등록이 완료되었습니다");
-
-    // 폼 제출
-    const form = document.getElementById("reviewForm");
-      if (form) {
-        form.submit();
-      }
-
-    // 모달 닫기 및 초기화는 폼 제출 후 (선택사항)
-    modal?.classList.remove("active");
-    resetReviewForm();
-  });
-
-
-
-  // 모달 외부 닫힘 감지
-  modal?.addEventListener("click", (e) => {
-    if (e.target.id === 'reviewModal') {
-      modal.classList.remove("active");
-      resetReviewForm();
-    }
-  });
-
-  // Esc 키 눌렀을 때 닫기
-  document.addEventListener("keydown", e => {
-    if (e.key === 'Escape') {
-      modal?.classList.remove("active");
-      resetReviewForm();
-    }
-  });
-
-  // 닫기 버튼
-  document.getElementById("closeReviewBtn")?.addEventListener('click', () => {
-    modal?.classList.remove("active");
-    resetReviewForm();
-  });
-
-  // 🔄 초기 검사
-  checkFormValid();
-});
 
 
 /* 리뷰 답글 작성 */
@@ -524,4 +320,252 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   checkFormValid();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // 별점 바인딩 함수 (컨테이너별)
+  function bindStarRating(container) {
+    const stars = container.querySelectorAll(".rating-stars-review .star");
+    const input = container.querySelector("input[type='hidden'][name='rating']");
+    const valSpan = container.querySelector(".caption-review .val");
+    const textSpan = container.querySelector(".caption-review-badge span > span:first-child");
+    let currentValue = parseInt(input?.value || "0");
+
+    function updateStars(value) {
+      stars.forEach((s, idx) => {
+        s.classList.toggle("active", idx < value);
+      });
+      if (input) input.value = value;
+      if (valSpan) valSpan.textContent = value;
+      if (textSpan) textSpan.textContent = `5점 중 ${value}점`;
+      currentValue = value;
+    }
+
+    stars.forEach((star, idx) => {
+      const hoverValue = idx + 1;
+      star.addEventListener("mouseenter", function () {
+        stars.forEach((s, i) => {
+          s.classList.toggle("active", i < hoverValue);
+        });
+        if (input) input.value = hoverValue;
+        if (valSpan) valSpan.textContent = hoverValue;
+        if (textSpan) textSpan.textContent = `5점 중 ${hoverValue}점`;
+      });
+      star.addEventListener("mouseleave", function () {
+        updateStars(currentValue);
+      });
+      star.addEventListener("click", function () {
+        const newValue = idx + 1;
+        stars.forEach((s, i) => {
+          const shouldFade = (i < currentValue && i >= newValue) || (i >= currentValue && i < newValue);
+          if (shouldFade) s.classList.add("fading-out");
+        });
+        setTimeout(() => {
+          updateStars(newValue);
+          stars.forEach(s => s.classList.remove("fading-out"));
+        }, 120);
+      });
+    });
+    updateStars(currentValue);
+  }
+
+  // 폼 바인딩 함수 (작성/수정 모달 모두 사용)
+  function bindModalForm(modalId, formId, textareaId, ratingInputSelector, tagSelector, btnId) {
+    const modal = document.getElementById(modalId);
+    const form = document.getElementById(formId);
+    const modalBtn = modal.querySelector(`#${btnId}`);
+    const textarea = modal.querySelector(`#${textareaId}`);
+    const ratingInput = modal.querySelector(ratingInputSelector);
+
+    // 별점 세팅 함수
+    function setRating(value) {
+      ratingInput.value = value;
+      const stars = modal.querySelectorAll(".rating-stars-review .star");
+      stars.forEach((s, idx) => {
+        s.classList.toggle("active", idx < value);
+      });
+      const valSpan = modal.querySelector(".caption-review .val");
+      const textSpan = modal.querySelector(".caption-review-badge span > span:first-child");
+      if (valSpan) valSpan.textContent = value;
+      if (textSpan) textSpan.textContent = `5점 중 ${value}점`;
+    }
+
+    // 폼 초기화
+    function resetForm() {
+      setRating(0);
+      // 태그 초기화
+      modal.querySelectorAll('.tag_wrap.size_lg .tag.active').forEach(tag => tag.classList.remove("active"));
+      // textarea 초기화
+      if (textarea) textarea.value = "";
+      const counter = modal.querySelector(".byte_check .count");
+      if (counter) counter.textContent = "0";
+      // 버튼 비활성화
+      if (modalBtn) modalBtn.disabled = true;
+      // 태그 input 값도 초기화
+      const tagInput = modal.querySelector("input[name='tag']");
+      if (tagInput) tagInput.value = "";
+    }
+
+    // 폼 값 세팅 (수정 모달용)
+    function setFormData({ rating, tag, reviewText }) {
+      if (typeof rating !== "undefined") setRating(parseInt(rating));
+      // 태그
+      if (tag) {
+        modal.querySelectorAll('.tag_wrap.size_lg .tag').forEach(btn => {
+          const tagText = btn.querySelector('.text')?.textContent.trim();
+          if (tagText === tag) btn.classList.add("active");
+          else btn.classList.remove("active");
+        });
+        // input[name='tag'] 값도 세팅
+        const tagInput = modal.querySelector("input[name='tag']");
+        if (tagInput) tagInput.value = tag;
+      }
+      // 텍스트
+      if (textarea && typeof reviewText !== "undefined") {
+        textarea.value = reviewText;
+        const counter = modal.querySelector(".byte_check .count");
+        if (counter) counter.textContent = reviewText.length;
+      }
+      checkFormValid();
+    }
+
+    // 유효성 검사
+    function checkFormValid() {
+      const ratingVal = parseInt(ratingInput?.value || "0");
+      const ratingValid = ratingVal > 0;
+      const tagSelected = modal.querySelector('.tag_wrap.size_lg .tag.active') !== null;
+      const reviewLength = textarea?.value.trim().length || 0;
+      const reviewValid = reviewLength >= 10;
+      if (modalBtn) modalBtn.disabled = !(ratingValid && tagSelected && reviewValid);
+    }
+
+    // textarea 입력
+    if (textarea) {
+      textarea.addEventListener("input", () => {
+        const len = textarea.value.length;
+        const counter = modal.querySelector(".byte_check .count");
+        if (counter) counter.textContent = len;
+        checkFormValid();
+      });
+    }
+
+    // 별점 클릭
+    modal.querySelectorAll(".rating-stars-review .star").forEach(star => {
+      star.addEventListener("click", () => checkFormValid());
+    });
+
+    // 태그 클릭
+    modal.querySelectorAll('.tag_wrap.size_lg .tag').forEach(tag => {
+      tag.addEventListener("click", () => {
+        modal.querySelectorAll('.tag_wrap.size_lg .tag').forEach(btn => btn.classList.remove("active"));
+        tag.classList.add("active");
+        // input[name='tag'] 값도 변경
+        const tagInput = modal.querySelector("input[name='tag']");
+        if (tagInput) tagInput.value = tag.querySelector('.text')?.textContent.trim();
+        checkFormValid();
+      });
+    });
+
+    // 별점 바인딩
+    const ratingContainer = modal.querySelector('.rating-container');
+    if (ratingContainer) bindStarRating(ratingContainer);
+
+    // 외부에서 호출할 수 있게 반환
+    return { resetForm, setFormData, checkFormValid, setRating };
+  }
+
+  // === 작성 모달 바인딩 ===
+  const reviewModalApi = bindModalForm(
+    "reviewModal",          // 모달 ID
+    "reviewForm",           // 폼 ID
+    "review_comments",      // textarea ID
+    "input[name='rating']", // 별점 input selector
+    "input[name='tag']",    // 태그 input selector
+    "review_btn"            // 등록 버튼 ID
+  );
+
+  // === 수정 모달 바인딩 ===
+  const modifyModalApi = bindModalForm(
+    "modifyModal",
+    "modifyForm",
+    "modify_comments",
+    "input[name='rating']",
+    "input[name='tag']",
+    "modify_btn"
+  );
+
+  // 작성 모달 열기/닫기 버튼
+  document.getElementById("openReviewBtn")?.addEventListener('click', () => {
+    document.getElementById("reviewModal")?.classList.add('active');
+    reviewModalApi.resetForm();
+  });
+  document.getElementById("closeReviewBtn")?.addEventListener('click', () => {
+    document.getElementById("reviewModal")?.classList.remove('active');
+    reviewModalApi.resetForm();
+  });
+
+  // 수정 모달 열기 버튼: data-* 값 세팅
+  document.querySelectorAll('.modifyReviewBtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      let reviewData = {};
+      try {
+        reviewData = JSON.parse(btn.dataset.review);
+      } catch (err) {
+        alert("리뷰 데이터 파싱 오류!");
+        return;
+      }
+      const modal = document.getElementById("modifyModal");
+      modal?.classList.add('active');
+
+      // 별점, 태그, 내용 등 값 세팅
+      modifyModalApi.resetForm();
+      modifyModalApi.setFormData({
+        rating: reviewData.rating,
+        tag: reviewData.tag,
+        reviewText: reviewData.content
+      });
+
+      // review_id hidden input
+      const reviewIdInput = modal.querySelector("#modal_review_id");
+      if (reviewIdInput) reviewIdInput.value = reviewData.review_id;
+    });
+  });
+
+  document.getElementById("closeModifyBtn")?.addEventListener('click', () => {
+    document.getElementById("modifyModal")?.classList.remove('active');
+    modifyModalApi.resetForm();
+  });
+
+  // ESC로 모달 닫기
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById("reviewModal")?.classList.remove('active');
+      reviewModalApi.resetForm();
+      document.getElementById("modifyModal")?.classList.remove('active');
+      modifyModalApi.resetForm();
+    }
+  });
+
+  // ========== 여기서부터는 작성/수정 모달 각각 분리된 등록 버튼 이벤트! ==========
+
+  // 작성 모달 등록 버튼
+  document.getElementById('review_btn')?.addEventListener('click', function(e) {
+    if (this.disabled) {
+      e.preventDefault();
+      return;
+    }
+    alert("리뷰가 등록되었습니다."); // 작성에만!
+    document.getElementById('reviewForm').submit();
+  });
+
+  // 수정 모달 등록 버튼
+  document.getElementById('modify_btn')?.addEventListener('click', function(e) {
+    if (this.disabled) {
+      e.preventDefault();
+      return;
+    }
+    alert("리뷰가 수정되었습니다."); // 수정에만!
+    document.getElementById('modifyForm').submit();
+  });
+
 });

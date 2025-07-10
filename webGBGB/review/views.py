@@ -11,15 +11,11 @@ import json
 # Create your views here.
 def review_create(request):
     if request.method == 'POST':
-        member_id = request.session.get('user_id')
-        if not member_id:
-            messages.error(request, "로그인이 필요합니다.")
-            return redirect('/member/login/')
-        
         try:
+            member_id = request.session.get('user_id')
             member = Member.objects.get(id=member_id)  # Member 객체 가져오기
         except Member.DoesNotExist:
-            messages.error(request, "회원 정보가 없습니다.")
+            messages.error(request, "로그인이 필요합니다")
             return redirect('/member/login/')
 
 
@@ -105,3 +101,43 @@ def review_like(request):
         return JsonResponse({'success': True, 'likes': review.likes})
 
     return JsonResponse({'success': False, 'error': '잘못된 요청'}, status=400)
+
+def review_update(request):
+     if request.method == 'POST':        
+        try:
+            member_id = request.session.get('user_id')
+            member = Member.objects.get(id=member_id)  # Member 객체 가져오기
+        except Member.DoesNotExist:
+            messages.error(request, "로그인이 필요합니다")
+            return redirect('/member/login/')
+        
+        # if review.member_id.member_id != member.member_id:
+        #     messages.error(request, "본인이 작성한 리뷰만 수정할 수 있습니다.")
+
+        book_id = request.POST.get('book_id')
+        try:
+            book = Book.objects.get(book_id=book_id)  # Book 객체 가져오기
+        except Book.DoesNotExist:
+            messages.error(request, "책 정보가 없습니다.")
+            return redirect('/')
+        
+        review_id = request.POST.get('review_id', '')
+        rating = int(request.POST.get('rating', 0))
+        tag = request.POST.get('tag', '')
+        comments = request.POST.get('reviewText', '')
+        
+        review = Review.objects.get(review_id=review_id)
+        book.rating -= review.rating
+        
+        review.rating = rating
+        review.tag = tag
+        review.content = comments
+        review.save()
+        
+        book.rating += rating
+        book.save()
+
+        print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments)
+        
+        # 리뷰 저장 후
+        return redirect(f'/booksearch/detail/{book.book_id}/')
