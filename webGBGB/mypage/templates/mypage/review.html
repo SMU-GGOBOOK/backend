@@ -18,7 +18,7 @@
         <!--카테고리 바뀐부분 시작-->
           <div class="left_side">
               <ul class="category">
-                <li class="icon checked"><a href='{% url "mypage:review" %}'><i class="fa-solid fa-book"></i>내 리뷰<span>({{my_review_count}})</span></a></li>
+                <li class="icon checked"><a href='{% url "mypage:review" %}'><i class="fa-solid fa-book"></i>내 리뷰<span id="my_review_count">({{my_review_count}})</span></a></li>
                 <li class="icon"><a href='{% url "mypage:Bmark" %}'><i class="fa-solid fa-book-bookmark"></i>북마크<span>({{my_bookmark_count}})</span></a></li>
                 <li class="icon"><a href='{% url "mypage:mygroup" %}'><i class="fa-solid fa-rotate"></i>교환독서<span>({{my_group_count}})</span></a></li>
               </ul>

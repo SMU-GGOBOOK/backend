@@ -5,7 +5,7 @@ from django.db.models import F,Q
 from review.models import Review
 from member.models import Member
 from bookmark.models import Bookmark
-from shareReading.models import ReadingGroup
+from shareMain.models import ReadingGroup
 
 ## list : 현재 페이지의 리뷰 목록
 #list.paginator.num_pages : 전체 페이지 수
@@ -24,7 +24,7 @@ def review(request):
         member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
         my_review_count = Review.objects.filter(member_id=member).count()
         my_bookmark_count = Bookmark.objects.filter(member_id=member).count()
-        my_group_count = ReadingGroup.objects.filter(member=member).count()
+        # my_group_count = ReadingGroup.objects.filter(member=member).count()
         
         # my_group_count = ReadingGroup.objects.filter(member_id=member).count()
     except Member.DoesNotExist:
@@ -42,7 +42,7 @@ def review(request):
         'page': int(page),
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
-        "my_group_count": my_group_count
+        # "my_group_count": my_group_count
         
     }
 
@@ -59,14 +59,14 @@ def Bmark(request):
         member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
         my_review_count = Review.objects.filter(member_id=member).count()
         my_bookmark_count = Bookmark.objects.filter(member_id=member).count()
-        my_group_count = ReadingGroup.objects.filter(member=member).count()
+        # my_group_count = ReadingGroup.objects.filter(member_id=member).count()
     except Member.DoesNotExist:
         return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
 
     page = request.GET.get('page', 1)
     qs = Bookmark.objects.filter(member_id=member).order_by('-marked_date')  # member_id는 FK니까 객체로 필터
 
-    paginator = Paginator(qs, 5)
+    paginator = Paginator(qs, 12)
     paginated_bookmarks = paginator.get_page(page)
 
     context = {
@@ -74,7 +74,7 @@ def Bmark(request):
         'page': int(page),
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
-        "my_group_count": my_group_count
+        # "my_group_count": my_group_count
     }
     
     return render(request,'mypage/Bmark.html',context)
@@ -89,22 +89,23 @@ def mygroup(request):
         member = Member.objects.get(id=user_id)  # 문자열 ID 기준으로 조회
         my_review_count = Review.objects.filter(member_id=member).count()
         my_bookmark_count = Bookmark.objects.filter(member_id=member).count()
-        my_group_count = ReadingGroup.objects.filter(member=member).count()
+        # my_group_count = ReadingGroup.objects.filter(admin=member).count()
     except Member.DoesNotExist:
         return redirect(f'/member/login/?next={request.path}')  # 세션은 있는데 유저가 없을 경우도 예외 처리
 
     page = request.GET.get('page', 1)
     qs = ReadingGroup.objects.filter(member=member).order_by('-created_at')  # member_id는 FK니까 객체로 필터
-    
+    for g in qs:
+            g.membercount = g.member.count() +1
     paginator = Paginator(qs, 5)
-    paginated_reviews = paginator.get_page(page)
+    paginated_sharegroups = paginator.get_page(page)
 
     context = {
-        'sharegroups': paginated_reviews,
+        'sharegroups': paginated_sharegroups,
         'page': int(page),
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
-        "my_group_count": my_group_count
+        # "my_group_count": my_group_count
         
     }
     
@@ -154,7 +155,7 @@ def bookmark_delete(request):
     if request.method == 'POST':
         bookmark_id = request.POST.get('bookmark_id')
         if not bookmark_id:
-            return JsonResponse({'result': 'error', 'message': '리뷰 ID 없음'}, status=400)
+            return JsonResponse({'result': 'error', 'message': '북마크 ID 없음'}, status=400)
 
         print("삭제 요청 bookmark_id:", bookmark_id)
 

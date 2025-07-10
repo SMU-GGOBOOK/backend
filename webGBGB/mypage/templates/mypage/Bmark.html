@@ -17,7 +17,7 @@
         <div class="left_side">
             <ul class="category">
                 <li class="icon"><a href='{% url "mypage:review" %}'><i class="fa-solid fa-book"></i>내 리뷰<span>({{my_review_count}})</span></a></li>
-                <li class="icon checked"><i class="fa-solid fa-book-bookmark"></i>북마크<span>({{my_bookmark_count}})</span></li>
+                <li class="icon checked"><i class="fa-solid fa-book-bookmark"></i>북마크<span id="my_bookmark_count">({{my_bookmark_count}})</span></li>
                 <li class="icon"><a href='{% url "mypage:mygroup" %}'><i class="fa-solid fa-rotate"></i>교환독서<span>({{my_group_count}})</span></a></li>
             </ul>
         </div>
@@ -43,9 +43,9 @@
      
                 <section>
                     {% for b in bookmarks%}
-                    <div class="bookbox" data-id="{{b.bookmark_id}}">
+                    <div class="bookbox" data-id="{{b.bookmark_id}}" data-book-id="{{ b.book_id.book_id }}">
                         <div class="bookbox_cover">
-                            <button class="bookmarkBtn" data-bookmark-id="{{b.bookmark_id}}"><i class="fa-solid fa-bookmark"></i></button>
+                            <button class="bookmarkBtn" data-bookmark-id="{{b.bookmark_id}}" ><i class="fa-solid fa-bookmark"></i></button>
                             <img src={{b.book_id.cover}}>
                         </div>
                         <div class="booktitle">{{b.book_id.title}}</div>

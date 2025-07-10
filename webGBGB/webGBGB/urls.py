@@ -13,6 +13,7 @@ urlpatterns = [
     path('review/', include('review.urls')),
     path('member/', include('member.urls')),
     path('mypage/', include('mypage.urls')),
+    path('shareMain/', include('shareMain.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

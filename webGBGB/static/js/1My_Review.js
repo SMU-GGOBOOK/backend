@@ -1,28 +1,3 @@
-
-
-
-/*
-// 모든 삭제 버튼에 클릭 이벤트 연결
-document.querySelectorAll('.deleteBtn').forEach(button => {
-  button.addEventListener('click', function () {
-    const comment_item = this.closest('.comment_item');
-
-    // 리뷰박스에서 삭제버튼 클릭하면 삭제
-    if (comment_item) {
-      const shouldDelete = confirm("리뷰를 삭제하시겠습니까?");
-      if (shouldDelete) {
-        comment_item.remove();
-      }
-    }
-  });
-});*/
-
-
-
-
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
 
   /* 펼치기 */
@@ -72,23 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
-    //   // 모든 swiper-container 초기화
-    // document.querySelectorAll('.swiper-container').forEach((container, idx) => {
-    //   new Swiper(container, {
-    //     loop: true,
-    //     navigation: {
-    //       nextEl: container.closest('.comment_swiper_wrap').querySelector('.swiper-button-next'),
-    //       prevEl: container.closest('.comment_swiper_wrap').querySelector('.swiper-button-prev'),
-    //     },
-    //     pagination: {
-    //       el: container.closest('.comment_swiper_wrap').querySelector('.swiper-pagination'),
-    //       clickable: true,
-    //     },
-    //   });
-    // });
+   
 
-  // 리뷰박스 삭제 요청 및 삭제 스크립트
-$(document).on('click', '.deleteBtn', function() {
+
+// 리뷰박스 삭제 요청 및 삭제 스크립트
+$(document).on('click', '.deleteBtn', function () {
   const $commentItem = $(this).closest('.comment_item');
   const reviewId = $commentItem.data('id'); // HTML에서 data-id로 지정된 값
   const cToken = $('meta[name="csrf-token"]').attr('content');
@@ -100,25 +63,31 @@ $(document).on('click', '.deleteBtn', function() {
     type: 'post',
     headers: { 'X-CSRFToken': cToken },
     data: { 'review_id': reviewId },
-    success: function(data) {
+    success: function (data) {
       if (data.result === 'success') {
         $commentItem.remove(); // DOM에서 제거
+
+        // 리뷰 개수 갱신
+        const $countSpan = $("#my_review_count");
+        const currentCount = parseInt($countSpan.text().replace(/[^\d]/g, ''), 10); // 괄호 제외 숫자 추출
+        const newCount = currentCount - 1;
+
+        if (newCount <= 0) {
+          $countSpan.text('(0)');
+        } else {
+          $countSpan.text(`(${newCount})`);
+        }
       } else {
         alert('삭제 실패: ' + data.message);
       }
     },
-    error: function() {
+    error: function () {
       alert('서버 오류');
     }
   });
 });
 
-
-
-
-
-});
-
+});//맨위랑 연결
 
 
 
@@ -127,12 +96,32 @@ $(document).on('click', '.deleteBtn', function() {
 
 
 
-/* 리뷰 박스 클릭시 상세페이지 */
+
+
+
+
+
+
+
+
+
+
+
+
+//리뷰박스 클릭시 상세페이지 이동
+
+
 document.addEventListener('DOMContentLoaded', function () {
   console.log("✅ DOMContentLoaded 실행됨");
 
   document.addEventListener('click', function (e) {
     console.log("✅ document 클릭 감지됨");
+
+    // 삭제 버튼이면 상세페이지 이동 막기
+    if (e.target.closest('.deleteBtn')) {
+      console.log("삭제 버튼 클릭 - 이동 막음");
+      return;
+    }
 
     const commentItem = e.target.closest('.comment_item');
     console.log("👉 commentItem:", commentItem);
