@@ -44,6 +44,9 @@ def reply_create(request):
         
         print("넘어온 데이터 : ", member_id, comments)
         
+        messages.success(request, "답글이 등록되었습니다.")
+
+        
         return redirect(f'/booksearch/detail/{book.book_id}/')
 
 def reply_delete(request, reply_id):

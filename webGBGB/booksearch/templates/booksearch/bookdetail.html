@@ -65,7 +65,7 @@
                               </tr>
                               <tr>
                                 <th scope="row">쪽수</th>
-                                <td>{{book.page}}p</td>
+                                <td>{{book.page}}</td>
                               </tr>
                               <tr>
                                 <th scope="row">크기</th>
@@ -478,7 +478,7 @@
                           {% for reply in r.reply_list %}
                             <div class="reply_item" id="{{reply.reply_id}}">
                               <div class="user_info_box">
-                                <span class="info_item">{{reply.member_id.id}}</span>
+                                <span class="info_item">{{reply.member_id.name}}</span>
                                 <span class="gap"></span>
                                 <span class="info_item">{{reply.created_at|date:"Y.m.d H:i"}}</span>
                                 <span class="gap"></span>
@@ -511,6 +511,40 @@
                               </div>
                             </div>
                           {% endfor %}
+                          {% comment %} 댓글 수정 부분 {% endcomment %}
+                          {% comment %} <div class="modify_reply_item" id="{{reply.reply_id}}">
+                            <div class="modify_user_info_box">
+                              <span class="modify_info_item">{{reply.member_id.name}}</span>
+                              <span class="modify_gap"></span>
+                              <span class="modify_info_item">{{reply.created_at|date:"Y.m.d H:i"}}</span>
+                              <span class="modify_gap"></span>
+                              <span class="modify_info_item">수정</span>
+                              <span class="modify_gap"></span>
+                              <a href="/reply/delete/{{reply.reply_id}}/" class="modify_info_item">삭제</a>
+                              <span class="modify_gap"></span>
+                            </div>
+                            <div class="modify_reply_write_area active">
+                              <div class="modify_byte_check_wrap">
+                                <textarea class="form_textarea reply_comments" name="replyText" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                                <div class="modify_byte_check_footer">
+                                    <div class="modify_reply_byte_check">
+                                      <span class="count">0</span>
+                                      <span class="total">1000</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              <div class="modify_btn_wrap_home">
+                                <div class="modify_btn_wrap">
+                                  <button class="modify_btn_xs btn_primary cancle_btn" type="submit" style="background: #636363; color: #fafafa;"disabled="">
+                                    <span class="modify_text" style="font-weight: 500;">취소</span>
+                                  </button>
+                                  <button class="modify_btn_xs btn_primary reply_btn" type="submit" disabled="">
+                                    <span class="modify_text" style="font-weight: 500;">등록</span>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div> {% endcomment %}
                         </div>
                       </div> 
                     </div>

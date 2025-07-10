@@ -217,6 +217,194 @@ button[class^=btn_] .text, a[class^=btn_] .text {
 .byte_check_wrap .byte_check_footer .btn_wrap [class^=btn_] + [class^=btn_] {
     margin-left: 4px;
 }
+
+/* 답글(수정) 달기 */
+.reply_wrap .modify_reply_write_area.active {
+    display: block;
+}
+.reply_wrap .modify_reply_write_area {
+    display: none;
+}
+.modify_byte_check_wrap {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #d5d5d5;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 14px;
+    transition: background 0.2s ease-out, border-color 0.2s ease-out;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+.reply_wrap .modify_reply_write_area .modify_byte_check_wrap .form_textarea {
+    height: 40px;
+}
+
+.modify_byte_check_wrap .form_textarea {
+    border: none;
+    padding: 11px 14px 0;
+}
+/*댓글(수정) 작성 부분*/
+.form_textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 14px;
+    color: #1a1a1a;
+    border: 1px solid #d5d5d5;
+    border-radius: 7px;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.01em;
+    background-color: #fff;
+    box-sizing: border-box;
+    transition: background 0.2s ease-out, border-color 0.2s ease-out;
+    outline: 0;
+    overflow-y: auto;
+    resize: none;
+}
+.modify_byte_check_wrap .modify_byte_check_footer {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    padding: 10px 10px 10px 14px;
+    text-align: right;
+    transition: background 0.2s ease-out;
+}
+/* 글자 수(수정) */
+.modify_byte_check_wrap .modify_byte_check_footer .modify_reply_byte_check {
+    margin-top: 2px;
+}
+.modify_byte_check_wrap .modify_reply_byte_check {
+    display: inline-block;
+    line-height: 1;
+    font-size: 0;
+}
+.modify_byte_check_wrap .modify_reply_byte_check .count {
+    display: inline-block;
+    color: #2D7868;
+}
+.modify_byte_check_wrap .modify_reply_byte_check .total {
+    color: #636363;
+}
+.modify_byte_check_wrap .modify_reply_byte_check .count, .modify_byte_check_wrap .modify_reply_byte_check .total {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: -0.01em;
+}
+.modify_byte_check_wrap .modify_reply_byte_check .total:before {
+    content: "/";
+}
+.kbb-recent-contents *, :before, :after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #636363;
+}
+
+/* 답글(수정) 버튼 */
+.modify_byte_check_wrap .modify_byte_check_footer .modify_reply_byte_check + .modify_btn_wrap {
+    margin-left: 10px;
+}
+.modify_byte_check_wrap .modify_byte_check_footer .modify_btn_wrap {
+    display: inline-block;
+}
+.modify_btn_wrap_home {
+  text-align: left;          /* 인라인 요소 정렬 */
+  width: 100%;
+}
+.modify_btn_wrap {
+  display: flex;
+  justify-content: flex-end; /* 왼쪽 정렬 */
+  align-items: center;
+  gap: 10px;                    /* 버튼 간격 */
+  margin-bottom: 8px;
+}
+.modify_btn_wrap .modify_btn_xs {
+    width: 80px;
+    height: 35px;
+    margin-top: 5px;
+}
+a.modify_btn_xs, button.modify_btn_xs {
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    display: -webkit-inline-flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    height: 30px;
+    padding: 0 9px 1px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: -0.01em;
+}
+button[class^=btn_] .text, a[class^=btn_] .text {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+.modify_byte_check_wrap .modify_byte_check_footer .modify_btn_wrap [class^=btn_] + [class^=btn_] {
+    margin-left: 4px;
+}
+
+.modify_user_info_box .modify_info_item {
+    display: inline-block;
+    font-size: 13px;
+    line-height: 1;
+    vertical-align: middle;
+}
+.modify_user_info_box .modify_gap {
+    display: inline-block;
+    width: 1px;
+    height: 9px;
+    background-color: #1a1a1a;
+    margin: 0 8px;
+    vertical-align: middle;
+}
+.modify_user_info_box .modify_info_item {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+}
+.modify_user_info_box {
+    display: flex;
+    align-items: center;
+    color: #1a1a1a;
+    font-size: 0;
+}
+
 /* 리뷰 답글 리스트 */
 .reply_wrap .reply_list_area .reply_list .reply_item {
     margin-bottom: 18px;

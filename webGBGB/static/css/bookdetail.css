@@ -640,6 +640,30 @@ input, button, select, textarea {
     text-align: left;
 }
 
+.reply_wrap .reply_list_area .reply_list .modify_reply_item {
+    margin-bottom: 18px;
+}
+.reply_wrap .reply_list_area .modify_reply_item {
+    display: block;
+    position: relative;
+    padding: 20px 20px 21px 37px;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    border-radius: 7px;
+}
+.reply_wrap .reply_list_area .modify_reply_item:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 21px;
+    left: 20px;
+    width: 8px;
+    height: 9px;
+    background: url(/static/images/booksearch/arw_reply@2x.png) 0% 0% no-repeat;
+    background-size: 8px 9px;
+}
+
+
 /* 리뷰 헤더 - right area*/
 .comment_wrap .comment_list .comment_item .comment_header .right_area {
     flex: 0 auto;
