@@ -68,15 +68,6 @@
     <!-- Messages 표시 부분 여기까지 -->
   </header> 
   <hr class="fig-hr">
-  <!-- Messages 표시 부분 추가 -->
-  {% if messages %}
-    {% for message in messages %}
-      <script>
-        alert('{{ message }}');
-      </script>
-    {% endfor %}
-  {% endif %}
-  <!-- Messages 표시 부분 여기까지 -->
   <div class="fig-main">
 
   {% block content %}

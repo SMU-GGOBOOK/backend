@@ -434,6 +434,7 @@ def login(request):
             if user_pw == user.pw:
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
+                request.session['member_id'] = user.member_id  # 세션에 로그인 정보 저장(shareMain)
                 messages.success(request, '로그인 되었습니다.')
                 return redirect('/')
             else:

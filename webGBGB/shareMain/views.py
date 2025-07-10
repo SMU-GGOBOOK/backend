@@ -58,7 +58,7 @@ def Share_AddGroup(request):
     if request.method == 'POST':
         form = ReadingGroupForm(request.POST)
         if form.is_valid():
-            # ✅ 책 정보 꺼내기
+            # 책 정보 꺼내기
             isbn = form.cleaned_data['book_isbn']
             title = form.cleaned_data['book_title']
             author = form.cleaned_data['book_author']
@@ -69,24 +69,39 @@ def Share_AddGroup(request):
                     'form': form,
                     'error': '책을 선택해주세요.',
                 })
-            # ✅ Book DB 저장 or get
+            # Book DB 저장 or get
             book_obj, created = Book.objects.get_or_create(
                 ISBN=isbn,
                 defaults={
                     'title': title,
                     'author': author,
                     'cover': cover,
-                    'publisher': '',  # 필요시 추후 반영
+                    'publisher': '',
                     'book_url': '',
                     'pub_date': '',
                 }
             )
+            # 로그인한 유저 정보 가져오기
+            member_id = request.session.get('member_id')
+            if not member_id:
+                return redirect('member:login')  # 또는 로그인 페이지로
+            try:
+                member = Member.objects.get(member_id=member_id)
+            except Member.DoesNotExist:
+                return redirect('member:login')  # 세션에 이상 있으면 로그인 요구
+
+            # 그룹 생성
             group = form.save(commit=False)
             group.book = book_obj
+            group.admin = member  # 방장 지정
             group.save()
+
+            # 만든 사람도 참여자로 추가
+            group.member.add(member)
+
             return redirect('shareMain:Share_Main')
         else:
-            print("폼 오류:", form.errors)  # 👈 이거!
+            print("폼 오류:", form.errors)
             return render(request, 'shareMain/Share_AddGroup.html', {'form': form})
     else:
         form = ReadingGroupForm()
@@ -108,17 +123,20 @@ def Share_Main(request):
     else:
         groups = ReadingGroup.objects.all().order_by('-id')  # 전체 그룹 최신순 정렬
         
-    # 로그인 시 - 참여중인 그룹 표시 관련
-    join_groups = []  # 참여 중인 그룹
+    # 로그인 시 참여 중인 그룹 가져오기
+    join_groups = []
     member_id = request.session.get('member_id')
+
     if member_id:
+        print("세션에 저장된 member_id:", member_id)  # ← 디버그용
         try:
             member = Member.objects.get(member_id=member_id)
             join_groups = ReadingGroup.objects.filter(
                 Q(admin=member) | Q(member=member)
-            ).distinct()
+            ).distinct().order_by('-id')
+            print("참여 그룹 수:", join_groups.count())
         except Member.DoesNotExist:
-            pass  # 유효하지 않은 세션일 경우 아무것도 안 넘김
+            print("Member 객체 못 찾음")
 
     context = {
         'groups':groups,
