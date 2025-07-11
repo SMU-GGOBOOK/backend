@@ -28,7 +28,9 @@
                     <div class="left overflow-box">
                       <!-- 도서 표지 -->
                       <div class="cover-box">
-                        <img class="cover" src="{{book.cover}}" alt="{{book.title}}" style="width: 110%">
+                        <img class="cover" src="{{book.cover}}" 
+                        onerror="this.onerror=null;this.src='/static/image/booksearch/defaultimg.png';" 
+                        alt="{{book.title}}" style="width: 110%">
                       </div>
                     </div>
                     <div class="right">
@@ -36,13 +38,16 @@
                         <!-- 도서 제목 -->
                         <div class="title">
                           <h1>{{book.title}}</h1>
-                          <button onclick="toggleBookmark(this)" 
-                            class="bookmarkBtn{% if is_bookmarked %} active{% endif %}" data-book-id="{{ book.book_id }}">
-                            <i class="fa-{% if is_bookmarked %}solid{% else %}regular{% endif %} fa-bookmark"></i>
-                          </button>
+                          {% if member %}
+                            <button onclick="toggleBookmark(this)" 
+                              class="bookmarkBtn {% if b.book_id in bookmarks %} active{% endif %}" 
+                              data-book-id="{{ b.book_id }}">
+                              <i class="fa-{% if b.book_id in bookmarks %}solid{% else %}regular{% endif %} fa-bookmark"></i>
+                            </button>
+                          {% endif %}
 
+                          </div>
                           <hr>
-                        </div>
                         <!-- 도서 상세정보 -->
                         <div class="tbl_row_wrap">
                           <table class="tbl_row">
@@ -166,7 +171,16 @@
       <!-- 독서 그룹 영역 -->
       <div class="feed__content">
         <div class="chart_sReading_container sReading">
-          <div class="sReading_title">이 책이 주제인 교환 독서 그룹</div>
+          {% if book %}
+          <div class="sReading_wrap">
+            <div class="sReading_title">이 책이 주제인 교환 독서 그룹</div>
+            <div class="sReading_img">
+              <a href="/shareMain/Share_Main/?q={{ book.title }}">
+                <i class="fa-solid fa-plus" style="font-size: 25px;"></i>
+              </a>
+            </div>
+          </div>
+          {% endif %}
           <div class='sReading_body'>
             <table>
               {% if reading_group %} 
@@ -219,12 +233,14 @@
           </ul>
           <!-- 버튼 영역 -->
           <div class="right_area">
+            {% if member %}
             <button type="button"
             id="openReviewBtn"
             class="btn_sm btn_primary"
             data-book-id="{{ book.id }}"
             data-member-id="{{ request.user.id }}"
             >
+            {% endif %}
             <span class="ico_review">
               <i class="fa-solid fa-pen-to-square" style="color: #fafafa;"></i>
             </span>
@@ -386,88 +402,91 @@
                       </div>
                     </div>
 
-                    <!-- 답글달기 -->
-                    <div class="reply_wrap" style="display: none;">
-                      <form method="post" action="/reply/create/" class="replyForm" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input type="hidden" name="review_id" value="{{r.review_id }}">
-                        <div class="reply_write_area active">
-                          <div class="byte_check_wrap">
-                            <textarea class="form_textarea reply_comments" name="replyText" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                          <div class="byte_check_footer">
-                              <div class="reply_byte_check">
-                                <span class="count">0</span>
-                                <span class="total">1000</span>
+                    {% if member %}
+                      <!-- 답글달기 -->
+                      <div class="reply_wrap" style="display: none;">
+                        <form method="post" action="/reply/create/" class="replyForm" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <input type="hidden" name="review_id" value="{{r.review_id }}">
+                          <div class="reply_write_area active">
+                            <div class="byte_check_wrap">
+                              <textarea class="form_textarea reply_comments" name="replyText" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                            <div class="byte_check_footer">
+                                <div class="reply_byte_check">
+                                  <span class="count">0</span>
+                                  <span class="total">1000</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="btn_wrap_home">
+                              <div class="btn_wrap">
+                                <button class="btn_xs btn_primary reply_btn" type="submit" disabled="">
+                                  <span class="text" style="font-weight: 500;">등록</span>
+                                </button>
                               </div>
                             </div>
                           </div>
-                          <div class="btn_wrap_home">
-                            <div class="btn_wrap">
-                              <button class="btn_xs btn_primary reply_btn" type="submit" disabled="">
-                                <span class="text" style="font-weight: 500;">등록</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                      <div class="reply_list_area">
-                        <div class="reply_list">
-                          {% for reply in r.reply_list %}
-                            <div class="reply_item" id="{{reply.reply_id}}">
-                              <div class="user_info_box">
-                                <span class="info_item">{{reply.member_id.name}}</span>
-                                <span class="gap"></span>
-                                <span class="info_item">{{reply.created_at|date:"Y.m.d H:i"}}</span>
-                                <span class="gap"></span>
-                                {% if reply.member_id == member %}
-                                  <button type="button" class="modify_info_item reply-edit-btn" 
-                                  data-reply-id="{{reply.reply_id}}"
-                                  data-content="{{reply.content}}">
-                                  수정
-                                  </button>
+                        </form>
+                        <div class="reply_list_area">
+                          <div class="reply_list">
+                            {% for reply in r.reply_list %}
+                              <div class="reply_item" id="{{reply.reply_id}}">
+                                <div class="user_info_box">
+                                  <span class="info_item">{{reply.member_id.name}}</span>
                                   <span class="gap"></span>
-                                  <a href="/reply/delete/{{reply.reply_id}}/" class="info_item">삭제</a>
+                                  <span class="info_item">{{reply.created_at|date:"Y.m.d H:i"}}</span>
                                   <span class="gap"></span>
-                                {% endif %}
-                              </div>
-                              <div class="reply_contents" style="margin-top: 10px;">
-                                <div class="reply_text">{{reply.content}}</div>
-                                <div class="reply_write_area">
-                                  <div class="byte_check_wrap">
-                                    <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                                    <div class="byte_check_footer">
-                                      <div class="byte_check">
-                                        <span class="count">0</span>
-                                        <span class="total">1000</span>
-                                      </div>
-                                      <div class="btn_wrap">
-                                        <button class="btn_xs btn_light_gray" type="button">
-                                          <span class="text">취소</span>
-                                        </button>
-                                        <button class="btn_xs btn_primary disabled" type="submit">
-                                          <span class="text">등록</span>
-                                        </button>
+                                  {% if reply.member_id == member %}
+                                    <button type="button" class="modify_info_item reply-edit-btn" 
+                                    data-reply-id="{{reply.reply_id}}"
+                                    data-content="{{reply.content}}">
+                                    수정
+                                    </button>
+                                    <span class="gap"></span>
+                                    <a href="/reply/delete/{{reply.reply_id}}/" class="info_item">삭제</a>
+                                    <span class="gap"></span>
+                                  {% endif %}
+                                </div>
+                                <div class="reply_contents" style="margin-top: 10px;">
+                                  <div class="reply_text">{{reply.content}}</div>
+                                  <div class="reply_write_area">
+                                    <div class="byte_check_wrap">
+                                      <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                                      <div class="byte_check_footer">
+                                        <div class="byte_check">
+                                          <span class="count">0</span>
+                                          <span class="total">1000</span>
+                                        </div>
+                                        <div class="btn_wrap">
+                                          <button class="btn_xs btn_light_gray" type="button">
+                                            <span class="text">취소</span>
+                                          </button>
+                                          <button class="btn_xs btn_primary disabled" type="submit">
+                                            <span class="text">등록</span>
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          {% endfor %}
-                        </div>
-                      </div> 
-                    </div>
+                            {% endfor %}
+                          </div>
+                        </div> 
+                      </div>
+                    {% else %}
                     <div class="reply_wrap" style="display: none;">
                       <div class="comment_status_box">
                         <div class="login"></div>
                         <div class="comment_status_text">
                           답글 등록은 로그인 후 이용할 수 있습니다.
-                          <button class="btn_xxs btn_line_gray" type="button">
+                          <a href="/member/login/" class="btn_xxs btn_line_gray">
                             <span class="text">로그인</span>
-                          </button>
+                          </a>
                         </div>
                       </div>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
               {% endfor %}
@@ -920,8 +939,8 @@
               datasets: [{
                 label: '리뷰 태그별 개수',
                 data: tagCounts,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(97, 177, 230, 0.52)',
+                borderColor: 'rgba(97, 177, 230, 0.52)',
                 borderWidth: 1
               }]
             },

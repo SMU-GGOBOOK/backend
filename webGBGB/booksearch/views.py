@@ -14,34 +14,34 @@ import traceback
 from django.contrib import messages
 from shareMain.models import ReadingGroup
 import datetime
+import html
 
 
 def search(request):
     query = request.GET.get('query', '').strip() or '파이썬'
     query_lower = query.lower()
     total_count = 0
-    
-    try:
-        member_id = request.session.get('user_id')
-        member = Member.objects.get(id=member_id)  # Member 객체 가져오기
-    except Member.DoesNotExist:
-        messages.error(request, "로그인이 필요합니다")
-        return redirect('/member/login/')
-    
+
+    member_id = request.session.get('user_id')
+    member = None
     bookmarks = set()
-    if member:
-        from bookmark.models import Bookmark
-        bookmarks = set(
-            Bookmark.objects.filter(member_id=member.member_id)
-            .values_list('book_id', flat=True)
-        )
+    if member_id:
+        try:
+            member = Member.objects.get(id=member_id)
+            from bookmark.models import Bookmark
+            bookmarks = set(
+                Bookmark.objects.filter(member_id=member.member_id)
+                .values_list('book_id', flat=True)
+            )
+        except Member.DoesNotExist:
+            member = None
 
     # 1. API로 검색 결과 받아오기
     headers = {
         "Authorization": "KakaoAK 5262b6fed76275833a5b8806921d6af1"
     }
     max_apipage = 2
-    
+
     for apipage in range(1, max_apipage + 1):
         params = {
             "query": query,
@@ -58,9 +58,9 @@ def search(request):
         documents = data.get('documents', [])
 
         for doc in documents:
-            title = doc.get('title', '')
-            author = ", ".join(doc.get('authors', []))
-            publisher = doc.get('publisher', '')
+            title = html.unescape(doc.get('title', ''))
+            author = html.unescape(", ".join(doc.get('authors', [])))
+            publisher = html.unescape(doc.get('publisher', ''))
             thumbnail_url = doc.get('thumbnail', '')
             book_url = doc.get('url', '')
 
@@ -90,7 +90,6 @@ def search(request):
                     )
         if data.get('meta', {}).get('is_end'):
             break
-        apipage += 1
 
     # 2. Book DB에서 쿼리로 contains 검색
     book_qs = Book.objects.filter(
@@ -112,12 +111,11 @@ def search(request):
     block_start = block_num * block_size + 1
     block_end = min(block_start + block_size - 1, total_pages)
     page_range = range(block_start, block_end + 1)
-    
+
     has_prev_block = block_start > 1
     has_next_block = block_end < total_pages
     prev_block_page = block_start - 1
     next_block_page = block_end + 1
-
 
     context = {
         'books': page_obj,
@@ -134,15 +132,22 @@ def search(request):
         'has_next_block': has_next_block,
         'prev_block_page': prev_block_page,
         'next_block_page': next_block_page,
+        'member_id': member_id,  # 로그인 여부를 템플릿에서 확인 가능
     }
 
     return render(request, 'booksearch/booksearch.html', context)
 
 def detail(request, book_id):
     print("넘어온 book_id : ", book_id)
-    
-    user_id = request.session.get('user_id')
-    member = Member.objects.get(id=user_id)
+
+    member_id = request.session.get('user_id')
+    member = None
+
+    if member_id:
+        try:
+            member = Member.objects.get(id=member_id)
+        except Member.DoesNotExist:
+            member = None
 
     try:
         book = Book.objects.get(book_id=book_id)
@@ -159,7 +164,8 @@ def detail(request, book_id):
         user_liked_review_ids = set(
             ReviewLike.objects.filter(member_id=member).values_list('review_id', flat=True)
         )
-        
+
+
     total_count = reviews_qs.count()
     
     reading_group = ReadingGroup.objects.filter(book_id=book_id).order_by('-created_at')[:5]
@@ -208,8 +214,6 @@ def detail(request, book_id):
 
     # 북마크 여부 확인
     is_bookmarked = False
-    member_id = request.session.get('user_id')
-    member = Member.objects.get(id=member_id)
     if member:
         from bookmark.models import Bookmark
         is_bookmarked = Bookmark.objects.filter(book_id=book, member_id=member.member_id).exists()
@@ -296,7 +300,7 @@ def detail(request, book_id):
         'has_next_block': has_next_block,
         'prev_block_page': prev_block_page,
         'next_block_page': next_block_page,
-        'member':member,
+        'member': member,
         'user_liked_review_ids': user_liked_review_ids,
         'reading_group':reading_group,
     }

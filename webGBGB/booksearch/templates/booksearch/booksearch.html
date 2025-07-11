@@ -51,7 +51,9 @@
                       <i class="fa-{% if b.book_id in bookmarks %}solid{% else %}regular{% endif %} fa-bookmark"></i>
                     </button>
                     <a href="/booksearch/detail/{{b.book_id}}/" class="sui-book__cover-link">
-                      <img sui-book-cover="" class="sui-book-cover" tabindex="0" src="{{b.cover}}" alt="{{b.title}}">
+                      <img sui-book-cover="" class="sui-book-cover" tabindex="0" 
+                      src="{{b.cover}}" alt="{{b.title}}"
+                      onerror="this.onerror=null;this.src='/static/img/booksearch/defaultimg.png';" >
                     </a>
                   </div>
                   <a href="/booksearch/detail/{{b.book_id}}/" class="inform_a">

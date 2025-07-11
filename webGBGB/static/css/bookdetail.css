@@ -49,7 +49,10 @@ main {
 
 /* 제목 */
 .right .title {
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 세로 중앙 정렬 (선택사항) */
+    margin-bottom: 23px;
 }
 .right .title h1 {
     color: #1a1a1a;
@@ -84,10 +87,6 @@ main {
 }
 .fa-bookmark {
     font-size: 30px;
-    position: absolute;
-    margin-left: 5px;
-    top: 4px;
-    right: 10px;
     color: #2d7868;
 }
 
@@ -921,67 +920,6 @@ color: #2D7868 !important; /* 아이콘 색상 */
 color: #2D7868; /* 숫자 색상 */
 }
 
-
-/* 리뷰 속 사진 */
-
-/* 교환독서 메인페이지 */
-.feed__content{
-    /* border:1px solid black; */
-    margin:0 auto;
-    width:100%;
-    height:100%;
-    /* padding: 0 63px; */
-}
-
-/* 참여 중인 그룹 표시부분 */
-.feed__join{
-    padding: 20px 50px 25px;
-    border: 1px solid #ccccccBF;
-    border-radius: 7px;
-    margin-bottom: 100px;
-    background: white;
-    box-shadow: 0 4px 4px #ccccccBF;
-}
-.feed__join_title{
-    margin-bottom: 20px;
-    padding-left: 27px;
-    font-size: 25px;
-    font-weight: 700;
-    color: #1a1a1a;
-    align-items: center;
-}
-.feed__join_body{
-    display: flex;
-    justify-content: left;
-    align-items: center;
-}
-/* 참여 중인 그룹 1개씩 */
-.feed__join_body_item{
-    margin: 0 25px;
-    width:118px;
-    
-}
-.join_body_item_book{
-    display: flex;
-    width:118px;
-    height:172px;
-    object-fit: cover;
-}
-.join_body_item_book img{
-    width:100%;
-    height:100%;
-    object-fit: cover;
-    border-radius: 7px;
-    box-shadow: 0 4px 4px #797e8480;
-}
-.join_body_item_groupName{
-    margin-top: 10px;
-    height: 45px;
-    font-size: 15px;
-    font-weight: 400;
-    color: #636363;
-}
-
 /* 모달 팝업 */
 .modal {
     display: none; /* 초기 숨김 */
@@ -1009,11 +947,12 @@ color: #2D7868; /* 숫자 색상 */
     margin-bottom: 100px;
     display: flex;
     justify-content: space-between;
+    gap: 50px;
 }
 
 /* 참여 중인 그룹 표시부분 */
 .chart_sReading_container{
-    width:700px;
+    width:620px;
     padding: 25px;
     border: 1px solid #ccc;
     border-radius: 7px;
@@ -1022,15 +961,22 @@ color: #2D7868; /* 숫자 색상 */
     height: 360px;
 }
 
+.sReading_wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 세로 중앙 정렬 (선택사항) */
+}
+
 .sReading_title{
-    margin-bottom: 15px;
     padding-left: 27px;
     padding-right: 40px;
     font-size: 25px;
     font-weight: 700;
     color: #1a1a1a;
     align-items: center;
-    text-align: center;
+}
+.sReading_img{
+    margin-right: 10px;
 }
 .feed__join_body{
     display: flex;
