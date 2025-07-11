@@ -22,7 +22,7 @@
             <span>{{ member.name }}님 정보 수정</span>
         </div>
         <!-- form (updateFrm)-->
-        <form action="/member/update_process/" method="post" name="updateFrm">
+        <form action="{% url 'member:member_update_process' %}" method="post" name="updateFrm">
           {% csrf_token %}
             <table class="group_table">
                 <tbody>
