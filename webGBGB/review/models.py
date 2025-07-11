@@ -24,4 +24,10 @@ class ReviewImage(models.Model):
     def __str__(self):
         return f"{self.review_id}, {self.image}"
 
-    
+class ReviewLike(models.Model):
+    member_id = models.ForeignKey(Member,on_delete=models.CASCADE)
+    review_id = models.ForeignKey(Review, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('member_id', 'review_id')

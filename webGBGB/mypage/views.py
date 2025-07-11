@@ -41,8 +41,8 @@ def review(request):
         'page': int(page),
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
-        "my_group_count": my_group_count
-        
+        "my_group_count": my_group_count,
+        "user_id":user_id
     }
 
     return render(request, 'mypage/review.html', context)
@@ -74,7 +74,9 @@ def Bmark(request):
         'page': int(page),
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
-        "my_group_count": my_group_count
+        "my_group_count": my_group_count,
+        "user_id":user_id
+        
     }
     
     return render(request,'mypage/Bmark.html',context)
@@ -105,7 +107,9 @@ def mygroup(request):
         'page': int(page),
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
-        "my_group_count": my_group_count
+        "my_group_count": my_group_count,
+        "user_id":user_id
+        
         
     }
     

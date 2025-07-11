@@ -87,34 +87,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* 좋아요 */
   document.querySelectorAll('.btn_like').forEach(likeBtn => {
-    likeBtn.addEventListener('click', function() {
+    likeBtn.addEventListener('click', function () {
+      if (likeBtn.classList.contains('processing')) return; // 중복 클릭 방지
+      likeBtn.classList.add('processing');
+
       const reviewId = likeBtn.getAttribute('data-review-id');
-      let cToken = $('meta[name="csrf-token"]').attr('content');
+      let cToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
       const countEl = this.querySelector('.text');
       const icon = this.querySelector('i');
-      let count = parseInt(countEl?.textContent || '0');
-      const liked = this.classList.toggle('liked');
-      icon?.classList.toggle('fa-solid', liked);
-      icon?.classList.toggle('fa-regular', !liked);
-
-      if (countEl) countEl.textContent = liked ? count + 1 : count - 1;
-
 
       $.ajax({
         url: '/review/like/',
         type: 'post',
         headers: { 'Content-Type': 'application/json', 'X-CSRFToken': cToken },
-        data: JSON.stringify({ review_id: reviewId, delta: liked ? 1 : -1 }),
-        success: function(data) {
+        data: JSON.stringify({ review_id: reviewId }),
+        success: function (data) {
           if (data.likes !== undefined) {
-            countEl.textContent = data.likes; // 서버에서 최신값 받아서 반영!
-          }          
+            countEl.textContent = data.likes;
+          }
+          if (data.liked !== undefined) {
+            likeBtn.classList.toggle('liked', data.liked);
+            icon?.classList.toggle('fa-solid', data.liked);
+            icon?.classList.toggle('fa-regular', !data.liked);
+          }
         },
-        error: function(){
+        complete: function () {
+          likeBtn.classList.remove('processing');
         }
       });
     });
   });
+
 });
 
 // 답글달기 토글 JS

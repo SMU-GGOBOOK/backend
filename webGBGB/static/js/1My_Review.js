@@ -91,23 +91,6 @@ $(document).on('click', '.deleteBtn', function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //리뷰박스 클릭시 상세페이지 이동
 
 
@@ -120,6 +103,22 @@ document.addEventListener('DOMContentLoaded', function () {
     // 삭제 버튼이면 상세페이지 이동 막기
     if (e.target.closest('.deleteBtn')) {
       console.log("삭제 버튼 클릭 - 이동 막음");
+      return;
+    }
+    if (e.target.closest('.btn_more_body')) {
+      console.log("펼치기 버튼 클릭 - 이동 막음");
+      return;
+    }
+    if (e.target.closest('.comment_img_box')) {
+      console.log("리뷰이미지 클릭 - 이동 막음");
+      return;
+    }
+    if (e.target.closest('.btn_like')) {
+      console.log("좋아요 클릭 - 이동 막음");
+      return;
+    }
+    if (e.target.closest('.btn_reply')) {
+      console.log("댓글 클릭 - 이동 막음");
       return;
     }
 

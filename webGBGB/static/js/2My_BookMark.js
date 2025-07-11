@@ -4,7 +4,7 @@ $(document).on('click', '.bookmarkBtn', function () {
   const bookmarkId = $bookBox.data('id'); // HTML에서 data-id로 지정된 값
   const cToken = $('meta[name="csrf-token"]').attr('content');
 
-  if (!confirm('정말 삭제하시겠습니까?')) return;
+  if (!confirm('정말 북마크를 삭제하시겠습니까?')) return;
 
   $.ajax({
     url: '/mypage/bookmark_delete/',  // 백엔드 URL에 맞게 수정

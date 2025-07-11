@@ -29,13 +29,12 @@ main {
 .fig-main img, fieldset {
     border: 0;
 }
-.fig-main img {
-    vertical-align: middle;
-}
+
 .fig-main img {
     vertical-align: middle;
     border-radius: 7px;
     box-shadow: 0 4px 4px #797e8480;
+    height: 460px
 }
 
 /* 도서 상세 정보, 북마크, 리뷰 요약 */
@@ -997,4 +996,83 @@ color: #2D7868; /* 숫자 색상 */
 }
 .modal.active {
     display: block;
+}
+
+
+/* 리뷰 속 사진 */
+
+/* 교환독서 메인페이지 */
+.feed__content{
+    margin:0 auto;
+    width:100%;
+    height:100%;
+    margin-bottom: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 참여 중인 그룹 표시부분 */
+.chart_sReading_container{
+    width:700px;
+    padding: 25px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    background: white;
+    color:#1a1a1a;
+}
+
+.sReading_title{
+    margin-bottom: 15px;
+    padding-left: 27px;
+    padding-right: 40px;
+    font-size: 25px;
+    font-weight: 700;
+    color: #1a1a1a;
+    align-items: center;
+    text-align: center;
+}
+.feed__join_body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*----교환독서그룹----*/
+.sReading_body{
+    width:638px;
+    height:200px;
+    margin:0 auto;
+}
+
+.sReading_body table{
+    width:600px;
+    height:200px;
+    table-layout: fixed;
+    margin:0 auto;
+}
+
+.sReading_body th{   /*책 아이콘*/
+    width:60px;
+}
+
+.sReading_name{
+    width:350px;
+    max-width:350px;
+    padding-right:30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.sReading_date{
+    font-size: 14px;
+    color:#636363;
+    width:83px;
+}
+
+.sReading_member{
+    color:#2F80ED;
+    font-weight:600;
+    margin-right:10px;
+    width:55px;
 }

@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
-from review.models import Review
-from review.models import ReviewImage
+from review.models import Review, ReviewLike, ReviewImage
 from member.models import Member
 from booksearch.models import Book
 from django.contrib import messages
 from django.http import JsonResponse
 import json
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_protect
+
 
 
 # Create your views here.
@@ -83,24 +85,44 @@ def review_delete(request, review_id):
     
     return redirect(f'/booksearch/detail/{review.book_id.book_id}/')
 
+
+@csrf_protect
+@require_POST
 def review_like(request):
-    if request.method == 'POST':
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return JsonResponse({'error': '로그인이 필요합니다.'}, status=401)
+    try:
+        member = Member.objects.get(id=user_id)
+    except Member.DoesNotExist:
+        return JsonResponse({'error': '회원 정보가 없습니다.'}, status=404)
+
+    try:
         data = json.loads(request.body)
         review_id = data.get('review_id')
-        delta = data.get('delta')
+    except Exception:
+        return JsonResponse({'error': '잘못된 요청 데이터입니다.'}, status=400)
 
-        try:
-            review = Review.objects.get(review_id=review_id)
-        except Review.DoesNotExist:
-            return JsonResponse({'success': False, 'error': '리뷰 없음'}, status=404)
+    try:
+        review = Review.objects.get(pk=review_id)
+    except Review.DoesNotExist:
+        return JsonResponse({'error': '리뷰 정보가 없습니다.'}, status=404)
 
-        # 좋아요 토글 처리
-        review.likes = max(0, review.likes + int(delta))
+    # 좋아요 토글
+    like_obj, created = ReviewLike.objects.get_or_create(member_id=member, review_id=review)
+    if not created:
+        # 이미 좋아요 누른 상태 -> 취소
+        like_obj.delete()
+        review.likes = max(0, review.likes - 1)
         review.save()
+        liked = False
+    else:
+        # 좋아요 추가
+        review.likes += 1
+        review.save()
+        liked = True
 
-        return JsonResponse({'success': True, 'likes': review.likes})
-
-    return JsonResponse({'success': False, 'error': '잘못된 요청'}, status=400)
+    return JsonResponse({'liked': liked, 'likes': review.likes})
 
 def review_update(request):
      if request.method == 'POST':        
