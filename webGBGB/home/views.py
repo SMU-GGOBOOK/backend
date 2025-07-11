@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from booksearch.models import Book
-from shareReading.models import ReadingGroup
+from shareMain.models import ReadingGroup
 
 def index(request):
     try:

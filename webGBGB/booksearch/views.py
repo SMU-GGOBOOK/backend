@@ -8,11 +8,12 @@ from member.models import Member
 import urllib.parse
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from django.db.models import Q
+from django.db.models import F, Q
 from django.core.paginator import Paginator
 import traceback
 from django.contrib import messages
 from shareMain.models import ReadingGroup
+import datetime
 
 
 def search(request):
@@ -117,6 +118,7 @@ def search(request):
     prev_block_page = block_start - 1
     next_block_page = block_end + 1
 
+
     context = {
         'books': page_obj,
         'bookmarks': bookmarks,
@@ -160,14 +162,31 @@ def detail(request, book_id):
         
     total_count = reviews_qs.count()
     
-    reading_group = ReadingGroup.objects.filter(book_id=book_id)
+    reading_group = ReadingGroup.objects.filter(book_id=book_id).order_by('-created_at')[:5]
     if reading_group is None:
         # 원하는 처리 (예: None 처리)
         pass
     else:
         # 객체가 있을 때 처리
         pass
-        
+    
+    # --- 조회수 증가 및 쿠키 중복 방지 ---
+    user_identifier = request.META.get('REMOTE_ADDR', 'anonymous')
+    cookie_name = f'book_hit_{user_identifier}'
+    cookies = request.COOKIES.get(cookie_name, "")
+    cookies_list = cookies.split('|') if cookies else []
+
+    # 오늘 밤 23:59:59까지 쿠키 유지
+    tomorrow = datetime.datetime.now().replace(hour=23, minute=59, second=59)
+    expires = tomorrow.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
+
+    if str(book.book_id) not in cookies_list:
+        Book.objects.filter(book_id=book.book_id).update(views=F('views') + 1)
+        cookies_list.append(str(book.book_id))
+        new_cookie_val = '|'.join(cookies_list)
+    else:
+        new_cookie_val = cookies
+    
     page = int(request.GET.get('page',1))
     per_page = 5
     block_size = 5
@@ -281,5 +300,6 @@ def detail(request, book_id):
         'user_liked_review_ids': user_liked_review_ids,
         'reading_group':reading_group,
     }
-    return render(request, 'booksearch/bookdetail.html', context)
-
+    response = render(request, 'booksearch/bookdetail.html', context)
+    response.set_cookie(cookie_name, new_cookie_val, expires=expires)
+    return response

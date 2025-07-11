@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="https://kit.fontawesome.com/e1869b8eb9.js" crossorigin="anonymous"></script>
   <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css" rel="stylesheet">
@@ -13,7 +14,6 @@
   {% block extra_css %}
   <!-- 각 페이지별 추가 CSS 들어오는 자리 -->
   {% endblock %}
-  
  
 
 </head>
@@ -28,11 +28,11 @@
             <path d="M4.5 7h15M4.5 12h15M4.5 17h15" stroke="#2D7868" stroke-width="1.3"
             stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
-          <h4 class="fig-exchange-book"><a href="/shareReading/main/">교환 독서</a></h4>
+          <h4 class="fig-exchange-book"><a href="/shareMain/Share_Main/">교환 독서</a></h4>
         </div>
       </div>
 
-      <form action='/booksearch/search/' method='get' role="search" class="fig-searchform et3830u0">
+      <form action='/booksearch/search/' method='get' name='keyword' role="search" class="fig-searchform et3830u0">
         <div tabindex="-1" class="fig-tabindex">
           <div class="fig-q3rd3s et3830u1">
             <label class="fig-formlabel">
@@ -41,15 +41,14 @@
                 </path>
               </svg>
               <span class="fig-instant">인스턴트 검색</span>
-              <input type="text" name='query' maxlength="64" tabindex="-1" class="fig-forminput" value="">
+              <input type="text" name="query" maxlength="64" tabindex="-1" class="fig-forminput" value="">
             </label>
           </div>
         </div>
       </form>
-
       <div class="fig-right">
         {% if request.session.user_id %}
-          <a href="/mypage/reviewlist/" class="fig-r1">{{ request.session.user_name }}님</a>
+          <a href="/mypage/review/" class="fig-r1"><span>{{ request.session.user_name }}님</span></a>
           <a href="{% url 'member:logout' %}" class="fig-r2">로그아웃</a>
         {% else %}
           <a href="{% url 'member:join1' %}" class="fig-r1">회원가입</a>
@@ -140,7 +139,7 @@
     <!--리뷰수 아래부분-->
   </div>
   {% block extra_js %}
-  <!-- 각 페이지별 JS 들어오는 자리 -->
+  
   {% endblock %}
 </body>
 </html>

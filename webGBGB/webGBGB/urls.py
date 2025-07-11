@@ -13,7 +13,6 @@ urlpatterns = [
     path('bookmark/', include('bookmark.urls')),
     path('review/', include('review.urls')),
     path('reply/', include('reply.urls')),
-    path('shareReading/', include('shareReading.urls')),
     path('chart/', include('chart.urls')),
 
 ]
