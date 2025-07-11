@@ -47,7 +47,7 @@ def search(request):
             "size": 50,
             "page": apipage,
         }
-        response = requests.get("https://dapi.kakao.com/v3/search/book", headers=headers, params=params)
+        response = requests.get("https://dapi.kakao.com/v3/search/book?sort=accuracy", headers=headers, params=params)
         if response.status_code != 200:
             print("❌ API 오류:", response.status_code)
             print("에러 내용:", response.text)
@@ -73,7 +73,8 @@ def search(request):
             pub_date = pub_date_raw[:10] if pub_date_raw else None
 
             isbn_raw = doc.get('isbn', '')
-            isbn = isbn_raw.split()[-1] if isbn_raw else None
+            isbn_parts = isbn_raw.split() if isbn_raw else []
+            isbn = isbn_parts[-1] if isbn_parts else ''
 
             # 2. title 또는 author에 쿼리 포함되는 경우만 DB에 저장
             if query_lower in title.lower() or query_lower in author.lower():
@@ -94,7 +95,7 @@ def search(request):
     # 2. Book DB에서 쿼리로 contains 검색
     book_qs = Book.objects.filter(
         Q(title__icontains=query) | Q(author__icontains=query)
-    ).order_by('title')
+    )
 
     total_count = book_qs.count()
 
@@ -217,7 +218,9 @@ def detail(request, book_id):
                         dd = dl.find("dd", class_="cont")
                         if dd:
                             # 페이지수 추출
-                            page_rv = dd.get_text(" ", strip=True).split('|')[0].strip()
+                            text = dd.get_text(" ", strip=True)
+                            parts = text.split('|')
+                            page_rv = parts[0].strip() if parts else None
                             # 판형(사이즈) 추출
                             size_span = dd.find("span", class_="txt_tag")
                             size_rv = size_span.next_sibling.strip() if size_span and size_span.next_sibling else None

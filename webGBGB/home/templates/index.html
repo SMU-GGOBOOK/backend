@@ -10,47 +10,70 @@
     <div class="mainBanner">
       <div class="swiper myBannerSwiper">
         <div class="swiper-wrapper">
-          <!-- 슬라이드 1 -->
-          <div class="swiper-slide" style='background: #bba3c9;'>
+          {% if mainBanner %}
+          {% for m in mainBanner%}
+          <!-- 슬라이드 {{forloop.counter}} -->
+          <div class="swiper-slide">
+            <div class='mainBanner__image' style="background-image:url('{{m.mimg.url}}')"></div>
+            <div class='mainBanner__imagewhite'></div>
+            <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.1)"></div>
             <div class="mainBanner__center">
               <div class="mainBanner__center__text">
-                  <div class="mainBanner__center__title">내일 모든 걸 잊는다 해도<br> 가장 행복한 '오늘'을 줄게</div>
-                  <div class="mainBanner__center__subtitle">레이디 그레이<br>잊지 못할 여름향기</div>
-                </div>
-                <div  class='mainBanner__bookcover'><img src="/static/images/home/banner_1.jpg"></div>
-
+                <div class="mainBanner__center__title">{{m.mtitle}}<br>{{m.mtitle2}}</div>
+                <div class="mainBanner__center__subtitle">{{m.msubtitle}}<br>{{m.msubtitle2}}</div>
+              </div>
+              <div class='mainBanner__bookcover'><img src="{{m.mimg.url}}"></div>
             </div>
           </div>
-
-          <!-- 슬라이드 2 -->
-          <div class="swiper-slide" style="background: #b6c5d1;">
+          {% endfor %}
+          {% else %}
+          <!-- 슬라이드 1 -->
+          <div class="swiper-slide">
+            <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_1.jpg')"></div>
+            <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
+            <div class='mainBanner__imagewhite'></div>
             <div class="mainBanner__center">
-                <div class="mainBanner__center__text">
-                  <div class="mainBanner__center__title">똘병이의 스타성...<br>성공한 인형 똘병이</div>
-                  <div class="mainBanner__center__subtitle">똘병이가 좋아 내가 좋아?<br>불닭볶음면 닭 아닙니다</div>
-                </div>
-                <div class='mainBanner__bookcover'><img src="/static/images/home/banner_2.jpg"></div>
-
+              <div class="mainBanner__center__text">
+                <div class="mainBanner__center__title">내일 모든 걸 잊는다 해도<br> 가장 행복한 '오늘'을 줄게</div>
+                <div class="mainBanner__center__subtitle">레이디 그레이<br>잊지 못할 여름향기</div>
               </div>
+              <div class='mainBanner__bookcover'><img src="/static/images/home/banner_1.jpg"></div>
+            </div>
           </div>
-
+          <!-- 슬라이드 2 -->
+          <div class="swiper-slide">
+            <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_2.jpg')"></div>
+            <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
+            <div class='mainBanner__imagewhite'></div>
+            <div class="mainBanner__center">
+              <div class="mainBanner__center__text">
+                <div class="mainBanner__center__title">똘병이의 스타성...<br>성공한 인형 똘병이</div>
+                <div class="mainBanner__center__subtitle">똘병이가 좋아 내가 좋아?<br>불닭볶음면 닭 아닙니다</div>
+              </div>
+              <div class='mainBanner__bookcover'><img src="/static/images/home/banner_2.jpg"></div>
+            </div>
+          </div>
+          
           <!-- 슬라이드 3 -->
-          <div class="swiper-slide" style="background: #b2d6aa;">
+          <div class="swiper-slide">
+            <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_3.jpg')"></div>
+            <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
+            <div class='mainBanner__imagewhite'></div>
             <div class="mainBanner__center">
               <div class="mainBanner__center__text">
                   <div class="mainBanner__center__title">'어떻게 성공할 것이냐'에서<br> '어떻게 살 것이냐'로</div>
                   <div class="mainBanner__center__subtitle">삶은 성공이 아닌 성장의 이야기다<br>'리틀 미'의 가치를 되새기는 여정 </div>
                 </div>
-
                 <div class='mainBanner__bookcover'><img src="/static/images/home/banner_3.jpg"></div>
-
             </div>
           </div>
-        
+          {% endif %}
         </div>
 
         
         <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
       </div>
     </div>
 
