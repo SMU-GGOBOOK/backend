@@ -1,7 +1,3 @@
-// member_update.js
-
-// 기존 비밀번호 유효성 검사 및 일치 확인 로직은 유지합니다.
-// ... (Your existing password validation code) ...
 
 // 관심 분야 (해시태그) 기능 추가 시작
 const input = document.querySelector("input[name='group_keyword_input']");
