@@ -29,7 +29,14 @@ INSTALLED_APPS = [
     'base',
     'shareMain',
     'booksearch',
+    'home',
+    'cscenter',
+    'bookmark',
+    'review',
     'member',
+    'shareReading',
+    'reply',
+    'chart',
 ]
 
 MIDDLEWARE = [

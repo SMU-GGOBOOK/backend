@@ -169,20 +169,17 @@
           <div class="sReading_title">이 책이 주제인 교환 독서 그룹</div>
           <div class='sReading_body'>
             <table>
-              {% comment %} 
-              qs = ReadingGroup.objects.filter(book=book)  대충이렇게..
-              context = {'readingGroup':qs[0]} 이렇게 context보내주면될듯 {% endcomment %}
-              {% if readingGroup %} 
-              {% for r in readingGroup %}
-              <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
-                <td class='sReading_name'><a href='#'>{{r.group_name}}</a></td>
-                <td class='sReading_date'>{{r.created_at|date:'Y-m-d'}}</td>
-              </tr>
-              {% endfor %}
+              {% if reading_group %} 
+                {% for r in reading_group %}
+                <tr>
+                  <th><i class="fa-solid fa-book-open"></i></th>
+                  <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
+                  <td class='sReading_name'><a href='#'>{{r.group_name}}</a></td>
+                  <td class='sReading_date'>{{r.created_at|date:'Y-m-d'}}</td>
+                </tr>
+                {% endfor %}
               {% else %}
-              <tr>
+              {% comment %} <tr>
                 <th><i class="fa-solid fa-book-open"></i></th>
                 <td class='sReading_member'>[1/10]</td>
                 <td class='sReading_name'><a href='#'>test교환독서그룹11</a></td>
@@ -205,7 +202,7 @@
                 <td class='sReading_member'>[1/7]</td>
                 <td class='sReading_name'><a href='#'>TTst교환독서그룹4</a></td>
                 <td class='sReading_date'>2025-07-10</td>
-              </tr>
+              </tr> {% endcomment %}
               {% endif %}
             </table>
           </div>

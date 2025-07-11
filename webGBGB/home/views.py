@@ -5,7 +5,6 @@ from shareReading.models import ReadingGroup
 def index(request):
     try:
         pop_group = ReadingGroup.objects.all().order_by('-created_at')[:8]
-        
         review_top5 = Book.objects.all().order_by('-review_count')[:5]
         bookmark_top5 = Book.objects.all().order_by('-bookmark_count')[:5]
         views_top5 = Book.objects.all().order_by('-views')[:5]

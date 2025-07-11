@@ -5,7 +5,15 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('base.urls')),
+    path('',include('home.urls')),
     path('shareMain/',include('shareMain.urls')),
     path('member/', include('member.urls')),
+    path('cscenter/', include('cscenter.urls')),
+    path('booksearch/', include('booksearch.urls')),
+    path('bookmark/', include('bookmark.urls')),
+    path('review/', include('review.urls')),
+    path('reply/', include('reply.urls')),
+    path('shareReading/', include('shareReading.urls')),
+    path('chart/', include('chart.urls')),
+
 ]

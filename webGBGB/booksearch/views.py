@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 import traceback
 from django.contrib import messages
+from shareMain.models import ReadingGroup
 
 
 def search(request):
@@ -156,9 +157,16 @@ def detail(request, book_id):
         user_liked_review_ids = set(
             ReviewLike.objects.filter(member_id=member).values_list('review_id', flat=True)
         )
-
         
     total_count = reviews_qs.count()
+    
+    reading_group = ReadingGroup.objects.filter(pk=1).first()
+    if reading_group is None:
+        # 원하는 처리 (예: None 처리)
+        pass
+    else:
+        # 객체가 있을 때 처리
+        pass
     
     page = int(request.GET.get('page',1))
     per_page = 5
@@ -271,6 +279,7 @@ def detail(request, book_id):
         'next_block_page': next_block_page,
         'member':member,
         'user_liked_review_ids': user_liked_review_ids,
+        'reading_group':reading_group,
     }
     return render(request, 'booksearch/bookdetail.html', context)
 
