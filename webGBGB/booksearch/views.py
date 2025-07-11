@@ -1,26 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 from bs4 import BeautifulSoup
 from booksearch.models import Book
 from review.models import Review
-from review.models import ReviewImage
+# from reply.models import Reply
 from member.models import Member
 import urllib.parse
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from django.db.models import Q
+from django.core.paginator import Paginator
 import traceback
+from django.contrib import messages
 
 
 def search(request):
     query = request.GET.get('query', '').strip() or '파이썬'
     query_lower = query.lower()
-    books = []
     total_count = 0
-
-    member_id = request.session.get('user_id')
-    member = Member.objects.get(id=member_id)
-
+    
+    try:
+        member_id = request.session.get('user_id')
+        member = Member.objects.get(id=member_id)  # Member 객체 가져오기
+    except Member.DoesNotExist:
+        messages.error(request, "로그인이 필요합니다")
+        return redirect('/member/login/')
+    
     bookmarks = set()
     if member:
         from bookmark.models import Bookmark
@@ -41,7 +46,7 @@ def search(request):
             "size": 50,
             "page": apipage,
         }
-        response = requests.get("https://dapi.kakao.com/v3/search/book", headers=headers, params=params)
+        response = requests.get("https://dapi.kakao.com/v3/search/book?sort=accuracy", headers=headers, params=params)
         if response.status_code != 200:
             print("❌ API 오류:", response.status_code)
             print("에러 내용:", response.text)
@@ -67,7 +72,7 @@ def search(request):
             pub_date = pub_date_raw[:10] if pub_date_raw else None
 
             isbn_raw = doc.get('isbn', '')
-            isbn = isbn_raw.split()[-1] if isbn_raw else None
+            isbn = isbn_raw.split()[-1] if isbn_raw else "정보없음"
 
             # 2. title 또는 author에 쿼리 포함되는 경우만 DB에 저장
             if query_lower in title.lower() or query_lower in author.lower():
@@ -93,44 +98,79 @@ def search(request):
     total_count = book_qs.count()
 
     page = int(request.GET.get('page', 1))
-    per_page = 20
-    start = (page - 1) * per_page
-    end = start + per_page
-    page_books = book_qs[start:end]
+    per_page = 20  # 한 페이지에 20개
+    block_size = 5 # 한 블록에 5페이지
 
-    total_pages = (total_count + per_page - 1) // per_page
+    paginator = Paginator(book_qs, per_page)
+    page_obj = paginator.get_page(page)
+    total_pages = paginator.num_pages
 
-    block_size = 5
+    # 블록 계산
     block_num = (page - 1) // block_size
     block_start = block_num * block_size + 1
     block_end = min(block_start + block_size - 1, total_pages)
-
     page_range = range(block_start, block_end + 1)
+    
+    has_prev_block = block_start > 1
+    has_next_block = block_end < total_pages
+    prev_block_page = block_start - 1
+    next_block_page = block_end + 1
 
     context = {
-        'books': page_books,
+        'books': page_obj,
         'bookmarks': bookmarks,
         'query': query,
+        'page_obj': page_obj,
+        'paginator': paginator,
         'page_range': page_range,
         'block_start': block_start,
         'block_end': block_end,
-        'has_prev_block': block_start > 1,
-        'has_next_block': block_end < total_pages,
-        'prev_block_page': block_start - 1,
-        'next_block_page': block_end + 1,
+        'total_pages': total_pages,
         'total_count': f"{total_count:,}",
+        'has_prev_block': has_prev_block,
+        'has_next_block': has_next_block,
+        'prev_block_page': prev_block_page,
+        'next_block_page': next_block_page,
     }
 
     return render(request, 'booksearch/booksearch.html', context)
 
 def detail(request, book_id):
     print("넘어온 book_id : ", book_id)
+    
+    user_id = request.session.get('user_id')
+    member = Member.objects.get(id=user_id)
+
     try:
         book = Book.objects.get(book_id=book_id)
     except Book.DoesNotExist:
         return render(request, 'booksearch/404.html', status=404)
     
-    reviews = Review.objects.filter(book_id=book).prefetch_related('images').order_by('-created_at')
+    reviews_qs = Review.objects.filter(book_id=book).prefetch_related('images').order_by('-created_at')
+    for r in reviews_qs:
+        r.rating_percent = r.rating * 20
+        r.reply_list = Reply.objects.filter(review_id=r).order_by('created_at')
+        
+    total_count = reviews_qs.count()
+    
+    page = int(request.GET.get('page',1))
+    per_page = 5
+    block_size = 5
+    
+    paginator = Paginator(reviews_qs, per_page)
+    page_obj = paginator.get_page(page)
+    total_pages = paginator.num_pages
+
+    # 블록 계산
+    block_num = (page - 1) // block_size
+    block_start = block_num * block_size + 1
+    block_end = min(block_start + block_size - 1, total_pages)
+    page_range = range(block_start, block_end + 1)
+    
+    has_prev_block = block_start > 1
+    has_next_block = block_end < total_pages
+    prev_block_page = block_start - 1
+    next_block_page = block_end + 1
 
     # 북마크 여부 확인
     is_bookmarked = False
@@ -162,7 +202,7 @@ def detail(request, book_id):
                 soup = BeautifulSoup(browser.page_source, "lxml")
                 browser.quit()
 
-                page_rv, size_rv = None, None
+                page_rv, size_rv = "정보없음","정보없음"
 
                 data = soup.find("div", class_="wrap_cont")
                 if not data:
@@ -178,7 +218,7 @@ def detail(request, book_id):
                             page_rv = dd.get_text(" ", strip=True).split('|')[0].strip()
                             # 판형(사이즈) 추출
                             size_span = dd.find("span", class_="txt_tag")
-                            size_rv = size_span.next_sibling.strip() if size_span and size_span.next_sibling else None
+                            size_rv = size_span.next_sibling.strip() if size_span and size_span.next_sibling else "정보없음"
                         break  # 찾았으면 반복 종료
 
             except Exception as e:
@@ -189,7 +229,7 @@ def detail(request, book_id):
             updated = False
             if page_rv:
                 try:
-                    book.page = int(page_rv)
+                    book.page = page_rv
                     updated = True
                 except ValueError:
                     pass
@@ -199,11 +239,29 @@ def detail(request, book_id):
             if updated:
                 book.save()
         # end if hasattr(book, 'book_url') and book.book_url
+        
+    average = book.rating / book.review_count if book.review_count > 0 else 0
+    average_percent = average * 20
+
 
     # context 및 렌더링
     context = {
         'book': book,
-        'reviews': reviews,
+        'reviews': page_obj,
         'is_bookmarked': is_bookmarked,
+        'total_count': f"{total_count:,}",
+        'average':average,
+        'average_percent':average_percent,
+        'page_obj': page_obj,
+        'paginator': paginator,
+        'page_range': page_range,
+        'block_start': block_start,
+        'block_end': block_end,
+        'total_pages': total_pages,
+        'has_prev_block': has_prev_block,
+        'has_next_block': has_next_block,
+        'prev_block_page': prev_block_page,
+        'next_block_page': next_block_page,
+        'member':member,
     }
     return render(request, 'booksearch/bookdetail.html', context)

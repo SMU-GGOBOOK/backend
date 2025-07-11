@@ -97,7 +97,7 @@ def mygroup(request):
     qs = ReadingGroup.objects.filter(member=member).order_by('-created_at')  # member_id는 FK니까 객체로 필터
     for g in qs:
             g.membercount = g.member.count()
-    paginator = Paginator(qs, 5)
+    paginator = Paginator(qs,8)
     paginated_sharegroups = paginator.get_page(page)
 
     context = {

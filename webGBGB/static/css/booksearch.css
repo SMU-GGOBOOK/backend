@@ -185,16 +185,23 @@
 }
 
 /* 하단 부분 */
+.inform_a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+}
 .sui-book__inform-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 5px;
+    gap: 8px;
     padding: 10px 15px;
     height: 145px;
     width: 100%;
-    margin: 0 10px;
 }
+
+
 sui-book-title {
     color: #1a1a1a;
     font-size: 18px;
