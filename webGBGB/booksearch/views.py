@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from booksearch.models import Book
 from review.models import Review
-# from reply.models import Reply
+from reply.models import Reply
 from member.models import Member
 import urllib.parse
 from selenium import webdriver
@@ -265,3 +265,4 @@ def detail(request, book_id):
         'member':member,
     }
     return render(request, 'booksearch/bookdetail.html', context)
+

@@ -5,8 +5,8 @@ from booksearch.models import Book
 # Create your models here.
 class Review(models.Model):
     review_id = models.AutoField(primary_key=True) # db 설계에는 INT로 명시 
-    member_id = models.ForeignKey(Member,on_delete=models.DO_NOTHING)
-    book_id = models.ForeignKey(Book,on_delete=models.DO_NOTHING)
+    member_id = models.ForeignKey(Member,on_delete=models.CASCADE)
+    book_id = models.ForeignKey(Book,on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
     tag = models.CharField(max_length=20) 
     content = models.CharField(max_length=3000) 
