@@ -75,3 +75,26 @@ def reply_delete(request, reply_id):
     
     return redirect(f'/booksearch/detail/{reply.review_id.book_id.book_id}/')
         
+def reply_modify(request, reply_id):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        messages.error(request, "로그인이 필요합니다.")
+        return redirect('/member/login/')
+
+    member = Member.objects.get(id=user_id)
+    reply = Reply.objects.get(reply_id=reply_id)
+    
+    if reply.member_id.member_id != member.member_id:
+        messages.error(request, "본인이 작성한 리뷰만 수정할 수 있습니다.")
+        return redirect(f'/booksearch/detail/{reply.review_id.book_id.book_id}/')
+    
+    print(reply.member_id, member.member_id)
+    
+    content=request.POST.get("replymodifycontent", " ")
+    
+    reply.content = content
+    reply.save()
+    
+    
+    return redirect(f'/booksearch/detail/{reply.review_id.book_id.book_id}/')
+    

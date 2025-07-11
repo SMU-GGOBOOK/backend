@@ -639,6 +639,12 @@ input, button, select, textarea {
     position: relative;
     text-align: left;
 }
+.user_info_box .reply-edit-btn{
+    display: inline-block;
+    font-size: 13px;
+    line-height: 1;
+    vertical-align: middle;
+}
 
 .reply_wrap .reply_list_area .reply_list .modify_reply_item {
     margin-bottom: 18px;

@@ -569,3 +569,86 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+// 답글 수정 버튼 클릭 시
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('reply-edit-btn')) {
+    e.preventDefault();
+    const replyId = e.target.dataset.replyId;
+    const replyItem = document.getElementById(replyId);
+
+    // 기존 답글 내용 영역
+    const replyContents = replyItem.querySelector('.reply_contents');
+    const originalHtml = replyContents.innerHTML;
+
+    // 기존 답글 텍스트
+    const originalText = replyItem.querySelector('.reply_text').textContent.trim();
+
+    // 수정폼 HTML 생성 (form 태그로 감싸기)
+    const modifyFormHtml = `
+      <form class="replymodifyForm" method="post" action="/reply/modify/${replyId}/">
+        <input type="hidden" name="csrfmiddlewaretoken" value="${getCSRFToken()}">
+        <div class="modify_reply_write_area active">
+          <div class="modify_byte_check_wrap">
+            <textarea class="form_textarea reply_comments" name="replymodifycontent" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000">${originalText}</textarea>
+            <div class="modify_byte_check_footer">
+              <div class="modify_reply_byte_check">
+                <span class="count">${originalText.length}</span>
+                <span class="total">1000</span>
+              </div>
+            </div>
+          </div>
+          <div class="modify_btn_wrap_home">
+            <div class="modify_btn_wrap">
+              <button class="modify_btn_xs btn_primary cancle_btn" type="button" style="background: #636363; color: #fafafa;">
+                <span class="modify_text" style="font-weight: 500;">취소</span>
+              </button>
+              <button class="modify_btn_xs btn_primary reply_btn" type="submit" disabled>
+                <span class="modify_text" style="font-weight: 500;">등록</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    `;
+
+    // reply_contents 부분만 교체
+    replyContents.innerHTML = modifyFormHtml;
+
+    // 이벤트 바인딩
+    setTimeout(() => {
+      const textarea = replyContents.querySelector('textarea.reply_comments');
+      const regBtn = replyContents.querySelector('.reply_btn');
+      const cancelBtn = replyContents.querySelector('.cancle_btn');
+      const countSpan = replyContents.querySelector('.count');
+      const form = replyContents.querySelector(".replymodifyForm");
+
+      textarea.addEventListener('input', function() {
+        const val = textarea.value.trim();
+        regBtn.disabled = val.length < 1;
+        regBtn.classList.toggle('disabled', val.length < 1);
+        countSpan.textContent = val.length;
+      });
+
+      cancelBtn.addEventListener('click', function() {
+        replyContents.innerHTML = originalHtml;
+      });
+
+      // 폼 제출은 자동 (submit 버튼 클릭 시)
+      // 필요하면 form.addEventListener('submit', ...)에서 추가 검증 가능
+    }, 0);
+  }
+});
+
+// CSRF 토큰 함수
+function getCSRFToken() {
+  const name = "csrftoken";
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+      return decodeURIComponent(cookie.substring(name.length + 1));
+    }
+  }
+  return '';
+}

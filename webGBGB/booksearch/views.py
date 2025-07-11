@@ -137,6 +137,10 @@ def search(request):
 
 def detail(request, book_id):
     print("넘어온 book_id : ", book_id)
+    
+    user_id = request.session.get('user_id')
+    member = Member.objects.get(id=user_id)
+
     try:
         book = Book.objects.get(book_id=book_id)
     except Book.DoesNotExist:
@@ -258,6 +262,7 @@ def detail(request, book_id):
         'has_next_block': has_next_block,
         'prev_block_page': prev_block_page,
         'next_block_page': next_block_page,
+        'member':member,
     }
     return render(request, 'booksearch/bookdetail.html', context)
 
