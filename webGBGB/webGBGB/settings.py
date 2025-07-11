@@ -27,15 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base',
-    'home',
-    'cscenter',
+    'shareMain',
     'booksearch',
-    'bookmark',
-    'review',
     'member',
-    'shareReading',
-    'reply',
-    'chart',
 ]
 
 MIDDLEWARE = [

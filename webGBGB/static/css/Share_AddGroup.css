@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+body, input, select, textarea, button {
+  font-family: 'Noto Sans KR', sans-serif !important;
+}
+
+/* --------------------------------------- */
 /* 교환독서 그룹만들기 */
 .feed__content{
     margin-top: 82px;
@@ -10,10 +17,12 @@
     width: 1137px;
 }
 .feed__add_title{
+    /* padding-left: 15px; */
     font-size: 40px;
     font-weight: 700;
     color: #1a1a1a;
 }
+
 .feed__add_title i {
   font-size:35px;
   margin-right:8px;
@@ -110,22 +119,34 @@ form[name='addgroupFrm'] {
 }
 
 /* 책 선택 */
-.group_search {
-    width: 91%;
+/* 책 변경 tooltip */
+.tooltip_wrapper {
+  position: relative;
+  display: inline-block;
 }
-.group_search_button {
-  padding: 0;
-  width: 45px;
-  height: 45px;
-  font-size: 18px;
+.custom_tooltip {
   background-color: #f0f0f0;
-  color: #333;
+  position: absolute;
+  padding: 5px 10px;
+  height: 29px;
+  bottom: 8%;
+  left: 70%;
   border-radius: 7px;
-  border: none;
+  font-size: 14px;
+  color: #333;
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+  transition: opacity 0.1s ease-in;
+  transform: translateX(-50%);
+  z-index: 99;
   display: flex;
-  justify-content: center;
   align-items: center;
-  cursor: pointer;
+  justify-content: center;
+}
+.tooltip_wrapper:hover .custom_tooltip {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* 책 검색 모달 스타일 */
@@ -160,15 +181,15 @@ form[name='addgroupFrm'] {
   font-size: 25px;
 
 }
-
 .modal_close {
   position: absolute;
   top: 10px;
   right: 15px;
-  font-size: 22px;
+  font-size: 25px;
   background: none;
   border: none;
   cursor: pointer;
+  color: #2D7868;
 }
 
 /* 검색 input+버튼 정렬 */
@@ -198,7 +219,7 @@ form[name='addgroupFrm'] {
   cursor: pointer;
 }
 
-/* 결과 */
+/* 책 검색 결과 */
 .modal_results {
   max-height: 500px;
   overflow-y: auto;
@@ -275,15 +296,23 @@ form[name='addgroupFrm'] {
   border-radius: 7px;
   cursor: pointer;
 }
+
 /* 선택한 책 표시 */
-.selected_book_display {
+.selected_book_img_js img {
+  width: 118px;
+  height: 172px;
+  object-fit: cover;
+  border-radius: 7px;
+  box-shadow: 0 4px 4px #797e8480;
+}
+/* 책 선택 모달창 열기 전 */
+#selected-book-display {
   padding-right: 25px;
   height:176px;
   flex: 1;
   display: flex;
   /* justify-content: space-between; */
 }
-
 .selected_book_img {
   position: relative;
   display: inline-block;
@@ -295,17 +324,21 @@ form[name='addgroupFrm'] {
   border-radius: 7px;
   vertical-align: top;
   box-sizing: border-box;
-  background-size: 16px 16px;
-  background-image: url(../images/plusBtn.png);
-  background-position: center;
-  background-repeat: no-repeat;
+  /* background-image: url(../images/plusBtn.png); */
+  display: flex;               /* 💡 flex 사용 */
+  align-items: center;         /* 세로 중앙 */
+  justify-content: center;     /* 가로 중앙 */
+}
+.selected_book_img img {
+  width: 16px;
+  height: 16px;
 }
 
 .selected_book_text {
   margin: 0 20px;
 }
 .selected_book_text span {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   color: #1a1a1a;
 }
@@ -432,7 +465,7 @@ form[name='addgroupFrm'] {
 }
 
 
-/* ---- 하단 버튼 (취소,완료) ---- */
+/* 하단 버튼 (취소,완료) */
 .group_button {
     margin-top: 50px;
     display: flex;
@@ -456,4 +489,3 @@ form[name='addgroupFrm'] {
     background-color: #2D7868;
 }
 
-/* ------------------------------------------- */
