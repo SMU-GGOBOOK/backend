@@ -6,6 +6,7 @@ from review.models import Review
 from member.models import Member
 from bookmark.models import Bookmark
 from shareMain.models import ReadingGroup
+from django.views.decorators.csrf import csrf_exempt
 
 ## list : 현재 페이지의 리뷰 목록
 #list.paginator.num_pages : 전체 페이지 수
@@ -196,3 +197,20 @@ def mygroup_delete(request):
 
 
 
+@csrf_exempt
+def member_delete(request):
+    if request.method == 'POST':
+        # 로그인 여부 확인
+        member_id = request.session.get('member_id')
+        if not member_id:
+            return JsonResponse({'result': 'error', 'message': '로그인 정보가 없습니다.'}, status=401)
+
+        try:
+            member = Member.objects.get(member_id=member_id)
+            member.delete()
+            request.session.clear()  # 세션 초기화 (로그아웃 효과)
+            return JsonResponse({'result': 'success', 'message': '계정이 삭제되었습니다.'})
+        except Member.DoesNotExist:
+            return JsonResponse({'result': 'error', 'message': '회원 정보를 찾을 수 없습니다.'}, status=404)
+    else:
+        return JsonResponse({'result': 'error', 'message': 'POST 요청만 허용됩니다.'}, status=400)

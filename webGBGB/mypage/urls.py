@@ -10,6 +10,7 @@ urlpatterns = [
     path('review_delete/', views.review_delete,name='review_delete'),
     path('bookmark_delete/', views.bookmark_delete,name='bookmark_delete'),
     path('mygroup_delete/', views.mygroup_delete,name='mygroup_delete'),
+    path('member_delete/', views.member_delete,name='member_delete'),
 ]
 
 # urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
