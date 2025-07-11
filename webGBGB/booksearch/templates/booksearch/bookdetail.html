@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="/static/css/reply.css"/>
 <link rel="stylesheet" href="/static/css/review.css"/>
 <link rel="stylesheet" href="/static/css/paginator.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta name='csrf-token' content={{ csrf_token }} />
+
 {% endblock %}
 
 {% block content %}
@@ -137,10 +140,6 @@
                                   tabindex="-1">
                                   <span class="review_desc">(<span class="val">{{book.review_count}}</span>개의 리뷰)</span>
                                 </div>
-                                <div class="col_review">
-                                  <span class="review_quotes_text">재밌어요</span>
-                                  <span class="review_desc">(<span class="val">90%</span>의 구매자)</span>
-                                </div>
                               </div>
                             </div>
                           </div>
@@ -163,95 +162,59 @@
       <!-- 헤더 영역 -->
       <div class="title_wrap title_size_md has_btn" data-kbbfn-role="title">
       </div>
-      
-      <!-- 감성태그 overview 영역 -->
-      <!-- 그래프로 변경 예정 -->
-      <div class="klover_review_box">
-        <div class="klover_box_left">
-          
-        </div>
-      
-        <div class="klover_box_right">
-          
-        </div>
-      </div>
 
       <!-- 독서 그룹 영역 -->
       <div class="feed__content">
-        <div class="feed__join">
-            <div class="feed__join_title">
-                <span>이 책이 주제인 교환 독서 그룹</span>
-            </div>
-            <div class="feed__join_body">
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/32379/9/cover150/8954695175_1.jpg" alt="귀하의 노고에 감사드립니다 - 월급사실주의 2023">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        [📚수북플러스] 2. 귀하의 노고에 감...
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/36249/44/cover150/k692038529_1.jpg" alt="다르게 걷기">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        책 증정 [박산호 x 조영주] 인터뷰
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/35872/76/cover150/k362037780_1.jpg" alt="">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        [ Do it! 오라클로 배우는 SQL 입문 ]
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/36582/74/cover150/k232039558_1.jpg" alt="">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        어린왕자
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/32379/9/cover150/8954695175_1.jpg" alt="귀하의 노고에 감사드립니다 - 월급사실주의 2023">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        [📚수북플러스] 2. 귀하의 노고에 감...
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/36249/44/cover150/k692038529_1.jpg" alt="다르게 걷기">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        책 증정 [박산호 x 조영주] 인터뷰
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/35872/76/cover150/k362037780_1.jpg" alt="">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        [ Do it! 오라클로 배우는 SQL 입문 ]
-                    </div>
-                </div>
-                <div class="feed__join_body_item">
-                    <div class="join_body_item_book">
-                        <img src="https://image.aladin.co.kr/product/36582/74/cover150/k232039558_1.jpg" alt="">
-                    </div>
-                    <div class="join_body_item_groupName">
-                        어린왕자
-                    </div>
-                </div>
-
-            </div>
+        <div class="chart_sReading_container sReading">
+          <div class="sReading_title">이 책이 주제인 교환 독서 그룹</div>
+          <div class='sReading_body'>
+            <table>
+              {% comment %} 
+              qs = ReadingGroup.objects.filter(book=book)  대충이렇게..
+              context = {'readingGroup':qs[0]} 이렇게 context보내주면될듯 {% endcomment %}
+              {% if readingGroup %} 
+              {% for r in readingGroup %}
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
+                <td class='sReading_name'><a href='#'>{{r.group_name}}</a></td>
+                <td class='sReading_date'>{{r.created_at|date:'Y-m-d'}}</td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[1/10]</td>
+                <td class='sReading_name'><a href='#'>test교환독서그룹11</a></td>
+                <td class='sReading_date'>2025-07-10</td>
+              </tr>
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[2/10]</td>
+                <td class='sReading_name'><a href='#'>ttttest교환독서그룹2222222</a></td>
+                <td class='sReading_date'>2025-07-10</td>
+              </tr>
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[3/5]</td>
+                <td class='sReading_name'><a href='#'>TEST교환독서그룹3333333333333333333333333333333333333333333</a></td>
+                <td class='sReading_date'>2025-07-10</td>
+              </tr>
+              <tr>
+                <th><i class="fa-solid fa-book-open"></i></th>
+                <td class='sReading_member'>[1/7]</td>
+                <td class='sReading_name'><a href='#'>TTst교환독서그룹4</a></td>
+                <td class='sReading_date'>2025-07-10</td>
+              </tr>
+              {% endif %}
+            </table>
+          </div>
+        </div>
+        <div class="chart_sReading_container chartdraw">
+          <canvas id="tagChart"</canvas>
         </div>
       </div>
-      
+
       <style>
         .comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box .thumb_count {
           display: inline-block;
@@ -438,9 +401,9 @@
                           </span>
                         </button>
                         <div class="right_area">
-                          <button class="btn_like" type="button" data-review-id="{{r.review_id}}">
-                            <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
-                            <span class="text">{{r.likes}}</span>
+                          <button class="btn_like{% if r.review_id in user_liked_review_ids %} liked{% endif %}" data-review-id="{{ r.review_id }}">
+                            <i class="fa{% if r.review_id in user_liked_review_ids %}-solid{% else %}-regular{% endif %} fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
+                            <span class="text">{{ r.likes }}</span>
                           </button>
                           <button class="btn_reply" type="button">
                               <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
@@ -639,7 +602,7 @@
                           <span class="hidden">닫기</span>
                       </button>
                   </div>
-                  {% if book %}                  
+                  {% if book %}              
                   <form method="post" action="/review/create/" id="reviewForm" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="dialog_contents">
@@ -953,6 +916,64 @@
       </div>
     </div>
   </div>
+
+  <script>
+
+    let cToken = $('meta[name="csrf-token"]').attr('content');
+
+    console.log(cToken)
+
+    function drawTagBarChart(bookId){
+      $.ajax({
+        url:'/chart/chajax/',
+        type:'post',
+        headers:{'X-CSRFToken':cToken},
+        data:{'bookId':bookId},
+        success: function(data){
+          console.log(data)
+          // data.tag_counts = { "집중돼요": 3, "도움돼요": 0, ... }
+          let tagLabels = ["집중돼요", "도움돼요", "쉬웠어요", "최고예요", "추천해요"];
+          let tagCounts = tagLabels.map(tag => data.tag_counts[tag]);
+
+          // 차트 그리기 코드
+          let oldChart = Chart.getChart('tagChart');
+          if (oldChart) oldChart.destroy();
+
+          const ctx = document.getElementById('tagChart');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: tagLabels,
+              datasets: [{
+                label: '리뷰 태그별 개수',
+                data: tagCounts,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              indexAxis: 'y',          // 이 옵션이 가로형 바 차트의 핵심!
+              scales: {
+                x: { beginAtZero: true }
+              }
+            }
+          });
+        },
+        error: function() {
+          alert('태그 차트 불러오기 실패');
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // bookId가 템플릿 변수로 전달된 경우
+      {% if book %}
+        drawTagBarChart({{ book.book_id }});
+      {% endif %}
+    });
+  </script>      
+
   {% endblock %}
 
 {% block extra_js %}

@@ -14,6 +14,7 @@ urlpatterns = [
     path('reply/', include('reply.urls')),
     path('member/', include('member.urls')),
     path('shareReading/', include('shareReading.urls')),
+    path('chart/', include('chart.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

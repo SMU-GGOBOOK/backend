@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 import requests
 from bs4 import BeautifulSoup
 from booksearch.models import Book
-from review.models import Review
+from review.models import Review, ReviewLike
 from reply.models import Reply
 from member.models import Member
 import urllib.parse
@@ -151,6 +151,13 @@ def detail(request, book_id):
         r.rating_percent = r.rating * 20
         r.reply_list = Reply.objects.filter(review_id=r).order_by('created_at')
         
+    user_liked_review_ids = set()
+    if member:
+        user_liked_review_ids = set(
+            ReviewLike.objects.filter(member_id=member).values_list('review_id', flat=True)
+        )
+
+        
     total_count = reviews_qs.count()
     
     page = int(request.GET.get('page',1))
@@ -263,6 +270,7 @@ def detail(request, book_id):
         'prev_block_page': prev_block_page,
         'next_block_page': next_block_page,
         'member':member,
+        'user_liked_review_ids': user_liked_review_ids,
     }
     return render(request, 'booksearch/bookdetail.html', context)
 

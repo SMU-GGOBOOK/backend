@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'member',
     'shareReading',
     'reply',
+    'chart',
 ]
 
 MIDDLEWARE = [
