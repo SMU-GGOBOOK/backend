@@ -160,14 +160,14 @@ def detail(request, book_id):
         
     total_count = reviews_qs.count()
     
-    reading_group = ReadingGroup.objects.filter(pk=1).first()
+    reading_group = ReadingGroup.objects.filter(book_id=book_id)
     if reading_group is None:
         # 원하는 처리 (예: None 처리)
         pass
     else:
         # 객체가 있을 때 처리
         pass
-    
+        
     page = int(request.GET.get('page',1))
     per_page = 5
     block_size = 5

@@ -1019,6 +1019,7 @@ color: #2D7868; /* 숫자 색상 */
     border-radius: 7px;
     background: white;
     color:#1a1a1a;
+    height: 360px;
 }
 
 .sReading_title{
@@ -1049,6 +1050,8 @@ color: #2D7868; /* 숫자 색상 */
     height:200px;
     table-layout: fixed;
     margin:0 auto;
+    border-collapse: separate;
+    border-spacing: 0 25px;
 }
 
 .sReading_body th{   /*책 아이콘*/

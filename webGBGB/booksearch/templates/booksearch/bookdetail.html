@@ -171,7 +171,7 @@
             <table>
               {% if reading_group %} 
                 {% for r in reading_group %}
-                <tr>
+                <tr class="reading_tr">
                   <th><i class="fa-solid fa-book-open"></i></th>
                   <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
                   <td class='sReading_name'><a href='#'>{{r.group_name}}</a></td>
@@ -179,30 +179,6 @@
                 </tr>
                 {% endfor %}
               {% else %}
-              {% comment %} <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[1/10]</td>
-                <td class='sReading_name'><a href='#'>test교환독서그룹11</a></td>
-                <td class='sReading_date'>2025-07-10</td>
-              </tr>
-              <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[2/10]</td>
-                <td class='sReading_name'><a href='#'>ttttest교환독서그룹2222222</a></td>
-                <td class='sReading_date'>2025-07-10</td>
-              </tr>
-              <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[3/5]</td>
-                <td class='sReading_name'><a href='#'>TEST교환독서그룹3333333333333333333333333333333333333333333</a></td>
-                <td class='sReading_date'>2025-07-10</td>
-              </tr>
-              <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[1/7]</td>
-                <td class='sReading_name'><a href='#'>TTst교환독서그룹4</a></td>
-                <td class='sReading_date'>2025-07-10</td>
-              </tr> {% endcomment %}
               {% endif %}
             </table>
           </div>
