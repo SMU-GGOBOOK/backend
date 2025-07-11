@@ -5,8 +5,8 @@ from member.models import Member
 class ReadingGroup(models.Model):
     group_name = models.CharField(max_length=100) # 그룹명
     max_member = models.IntegerField(default=10)  # 최대 참여인원수
-    admin = models.ForeignKey(Member, on_delete=models.CASCADE,related_name='owned_groups')  # 세션아이디 로그인중인 유저로 방장 설정
-    member = models.ManyToManyField(Member,related_name='reading_groups',blank=True)  # 방장 제외 나머지 멤버가 들어옴, null이어도 ok
+    admin = models.ForeignKey(Member, on_delete=models.CASCADE,related_name='admin_reading_groups')  # 세션아이디 로그인중인 유저로 방장 설정
+    member = models.ManyToManyField(Member,related_name='member_reading_groups',blank=True)  # 방장 제외 나머지 멤버가 들어옴, null이어도 ok
     description = models.TextField(blank=True)  # 그룹소개글
     book = models.ForeignKey(Book, on_delete=models.CASCADE, default=1)  # book모델 연결
     tag = models.CharField(max_length=50, blank=True, null=True)  # 해시태그

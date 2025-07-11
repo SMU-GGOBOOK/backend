@@ -42,53 +42,162 @@ document.addEventListener("DOMContentLoaded", function () {
         closeModal();
     });
 
-    // 책 검색
+    // =========================
+    // 책 검색 및 페이지네이터
+    // =========================
+
+    // 책 검색 AJAX + 렌더링
+    function searchBooks(query, page=1) {
+        fetch(`${AJAX_SEARCH_URL}?query=${encodeURIComponent(query)}&page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                const books = data.books || [];
+                const pagination = data.pagination || {};
+                let html = "";
+
+                if (books.length === 0) {
+                    html = "<p style='text-align:center; padding: 20px; font-size:16px; color:#636363;'>검색 결과가 없습니다.</p>";
+                } else {
+                    html = books.map(book => `
+                        <div class="modal_result"
+                             data-title="${book.title}"
+                             data-author="${book.author}"
+                             data-cover="${book.cover}"
+                             data-isbn="${book.isbn}">
+                          <div class="modal_book_item">
+                            <img src="${book.cover}" alt="${book.title}" />
+                          </div>
+                          <div class="modal_book_info">
+                            <h3>${book.title}</h3>
+                            <p><strong>저자:</strong> ${book.author}</p>
+                            <p><strong>출판사:</strong> ${book.publisher}</p>
+                            <p class="modal_description"> ${book.contents}</p>
+                          </div>
+                          <div class="modal_book_select">
+                            <button type="button" class="modal_book_select_btn">선택</button>
+                          </div>
+                        </div>
+                    `).join("");
+                }
+
+                // 페이지네이터 추가
+                html += renderBookPagination(pagination, query);
+
+                results.innerHTML = html;
+                results.scrollTop = 0;  // 검색 결과 스크롤 맨 위로 이동
+            })
+            .catch(error => {
+                console.error("책 검색 오류:", error);
+                results.innerHTML = "<p>검색 중 오류가 발생했습니다.</p>";
+            });
+    }
+
+    // 페이지네이터 HTML 생성 함수
+    function renderBookPagination(pagination, query) {
+        if (!pagination || !pagination.num_pages || pagination.num_pages <= 1) return "";
+
+        let html = '<div class="pg-container"><div class="paginator">';
+        // 이전 버튼
+        html += '<div class="pg-btns">';
+        if (pagination.has_previous) {
+            html += `<button type="button" class="book-page-btn" data-page="1" data-query="${query}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+                    <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+                </svg>
+            </button>`;
+            html += `<button type="button" class="book-page-btn" data-page="${pagination.previous_page_number}" data-query="${query}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+                </svg>
+            </button>`;
+        } else {
+            html += `<button type="button" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+                    <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+                </svg>
+            </button>
+            <button type="button" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+                </svg>
+            </button>`;
+        }
+        html += '</div>';
+
+        // 페이지 번호
+        html += '<div class="pg-numbers">';
+        pagination.page_range.forEach(p => {
+            if (p === pagination.current_page) {
+                html += `<a class="active">${p}</a>`;
+            } else {
+                html += `<a href="#" class="book-page-btn" data-page="${p}" data-query="${query}">${p}</a>`;
+            }
+        });
+        html += '</div>';
+
+        // 다음 버튼
+        html += '<div class="pg-btns">';
+        if (pagination.has_next) {
+            html += `<button type="button" class="book-page-btn" data-page="${pagination.next_page_number}" data-query="${query}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+                </svg>
+            </button>`;
+            html += `<button type="button" class="book-page-btn" data-page="${pagination.num_pages}" data-query="${query}">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+                    <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+                </svg>
+            </button>`;
+        } else {
+            html += `<button type="button" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+                </svg>
+            </button>
+            <button type="button" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+                    <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+                </svg>
+            </button>`;
+        }
+        html += '</div></div></div>';
+
+        return html;
+    }
+
+    // 검색 버튼 클릭 시
     searchBtn.addEventListener("click", function () {
         const query = input.value.trim();
         if (!query) {
             results.innerHTML = "<p>검색어를 입력해주세요.</p>";
             return;
         }
-        fetch(`${AJAX_SEARCH_URL}?query=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(data => {
-                const books = data.books || [];
-                if (books.length === 0) {
-                    results.innerHTML =
-                        "<p style='text-align:center; padding: 20px; font-size:16px; color:#636363;'>검색 결과가 없습니다.</p>";
-                    return;
-                }
-                results.innerHTML = books.map(book => `
-                  <div class="modal_result"
-                       data-title="${book.title}"
-                       data-author="${book.author}"
-                       data-cover="${book.cover}"
-                       data-isbn="${book.isbn}">
-                    <div class="modal_book_item">
-                      <img src="${book.cover}" alt="${book.title}" />
-                    </div>
-                    <div class="modal_book_info">
-                      <h3>${book.title}</h3>
-                      <p><strong>저자:</strong> ${book.author}</p>
-                      <p><strong>출판사:</strong> ${book.publisher}</p>
-                    </div>
-                    <div class="modal_book_select">
-                      <button type="button" class="modal_book_select_btn">선택</button>
-                    </div>
-                  </div>
-                `).join("");
-            })
-            .catch(error => {
-                console.error("책 검색 오류:", error);
-                results.innerHTML = "<p>검색 중 오류가 발생했습니다.</p>";
-            });
+        searchBooks(query, 1);
     });
+
+    // 엔터로 검색
     input.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
             e.preventDefault();
             searchBtn.click();
         }
     });
+
+    // 페이지네이터 클릭 이벤트 (이벤트 위임)
+    results.addEventListener("click", function(e) {
+        const btn = e.target.closest(".book-page-btn");
+        if (btn) {
+            e.preventDefault();
+            const page = parseInt(btn.dataset.page);
+            const query = btn.dataset.query;
+            searchBooks(query, page);
+        }
+    });
+
 
     // 책 선택 시 - form hidden input에 삽입 + UI 표시
     results.addEventListener("click", function (e) {
