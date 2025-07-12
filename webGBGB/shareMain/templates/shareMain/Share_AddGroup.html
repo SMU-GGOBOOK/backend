@@ -16,7 +16,7 @@
               <span>교환독서 그룹 만들기</span>
           </div>
           <!-- form (addgroupFrm)-->
-          <form action="{% url 'shareMain:Share_AddGroup' %}" method="post" name="addgroupFrm" id="addgroupFrm" novalidate>
+          <form action="{% url 'shareMain:Share_AddGroup' %}" method="post" name="addgroupFrm" id="addgroupFrm">
             {% csrf_token %}
             <!-- 📌 숨겨진 input들로 책 정보 전달 -->
             <input type="hidden" id="id_book_title" name="book_title">
@@ -24,7 +24,6 @@
             <input type="hidden" id="id_book_cover" name="book_cover">
             <input type="hidden" id="id_book_isbn" name="book_isbn">
             <input type="hidden" id="id_tag" name="tag">
-            <input type="hidden" id="id_book_publisher" name="book_publisher">
               <table class="group_table">
                 <tbody>
                   <!-- 그룹명 -->
@@ -33,7 +32,7 @@
                       <label>그룹명</label>
                       <span>*</span>
                     </th>
-                    <td><input type="text" name="group_name" class="group_name" placeholder="그룹명을 입력해주세요."></td>
+                    <td><input type="text" name="group_name" class="group_name" placeholder="그룹명을 입력해주세요." required></td>
                   </tr>
                   <!-- 그룹 인원 -->
                   <tr>
@@ -43,7 +42,7 @@
                     </th>
                     <td>
                       <div class="member">
-                        <select id="max_member" name="max_member" >
+                        <select id="max_member" name="max_member" required >
                           <option>2</option>
                           <option>3</option>
                           <option>4</option>
@@ -65,7 +64,7 @@
                       <span>*</span>
                     </th>
                     <td>
-                      <textarea name="description" class="group_description" rows="4" placeholder="그룹 소개글을 입력해주세요."></textarea>
+                      <textarea name="description" class="group_description" rows="4" placeholder="그룹 소개글을 입력해주세요." required></textarea>
                     </td>
                   </tr>
                   <!-- 책 선택 -->
@@ -160,43 +159,43 @@
                     <th><label>관련 해시태그</label></th>
                     <td>
                         <div class="group_keyword">
-                          <div class="group_keyword_input">
-                            <input type="text" name="tag_input" placeholder="직접 입력 (ex. 시) ">
-                            <button type="button" class="add_tag_btn">
-                              <i class="fa-solid fa-plus"></i>
-                            </button>
-                          </div>
-                          <div class="group_keyword_output">
-                              <!-- 생성된 태그가 여기에 들어감 -->
-                          </div>
-                          <!-- 폼 제출용 hidden input -->
-                          <input type="hidden" name="tag" id="group_keywords_hidden">
-                          <div class="tags">
-                              <a href=#>#시</a>
-                              <a href=#>#소설</a>
-                              <a href=#>#에세이</a>
-                              <a href=#>#인문</a>
-                              <a href=#>#경제</a>
-                              <a href=#>#자기계발</a>
-                              <a href=#>#과학</a>
-                              <a href=#>#청소년</a>
-                              <a href=#>#역사</a>
-                              <a href=#>#철학</a>
-                              <a href=#>#심리</a>
-                              <a href=#>#상담</a>
-                              <a href=#>#편하게이야기</a>
-                              <a href=#>#우리끼리</a>
-                              <a href=#>#독서초보환영</a>
-                              <a href=#>#미션</a>
-                              <a href=#>#글쓰기</a>
-                              <a href=#>#세계문학</a>
-                              <a href=#>#스토리텔링</a>
-                              <a href=#>#여행</a>
-                              <a href=#>#잡지</a>                                          
-                              <a href=#>#베스트셀러</a>
-                              <a href=#>#고전</a>
-                              <a href=#>#신간</a>
-                          </div>
+                            <div class="group_keyword_input">
+                                <input type="text" name="tag" placeholder="직접 입력 (ex. 시) ">
+                                <div class="add_tag_btn">
+                                    <i class="fa-solid fa-plus"></i>
+                                </div>
+                            </div>
+                            <div class="group_keyword_output">
+                                <!-- 생성된 태그가 여기에 들어감 -->
+                            </div>
+                            <!-- 폼 제출용 hidden input -->
+                            <input type="hidden" name="tag" id="group_keywords_hidden">
+                            <div class="tags">
+                                <a href=#>#시</a>
+                                <a href=#>#소설</a>
+                                <a href=#>#에세이</a>
+                                <a href=#>#인문</a>
+                                <a href=#>#경제</a>
+                                <a href=#>#자기계발</a>
+                                <a href=#>#과학</a>
+                                <a href=#>#청소년</a>
+                                <a href=#>#역사</a>
+                                <a href=#>#철학</a>
+                                <a href=#>#심리</a>
+                                <a href=#>#상담</a>
+                                <a href=#>#편하게이야기</a>
+                                <a href=#>#우리끼리</a>
+                                <a href=#>#독서초보환영</a>
+                                <a href=#>#미션</a>
+                                <a href=#>#글쓰기</a>
+                                <a href=#>#세계문학</a>
+                                <a href=#>#스토리텔링</a>
+                                <a href=#>#여행</a>
+                                <a href=#>#잡지</a>                                          
+                                <a href=#>#베스트셀러</a>
+                                <a href=#>#고전</a>
+                                <a href=#>#신간</a>
+                            </div>
                         </div>
                     </td>
                   </tr>
@@ -207,7 +206,7 @@
                         <span>*</span>
                     </th>
                     <td>
-                        <select id="is_public" name="is_public">
+                        <select id="is_public" name="is_public" required>
                             <option value="0">공개</option>
                             <option value="1">비공개</option>
                         </select>

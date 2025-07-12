@@ -27,15 +27,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base',
-    'shareMain',
-    'booksearch',
     'home',
     'cscenter',
+    'booksearch',
     'bookmark',
     'review',
     'member',
+    'mypage',
+    'shareMain',
     'reply',
-    'chart',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +75,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'OPTIONS' : {
+            'timeout' : 10,
+        }
     }
 }
 

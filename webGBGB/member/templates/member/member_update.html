@@ -4,6 +4,9 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/join2.css' %} ">
 <link rel="stylesheet" type="text/css" href="{% static 'css/Share_AddGroup.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/member_delete.css' %}">
+<meta name="csrf-token" content="{{ csrf_token }}">
+
 {% endblock %}
 {% block title %}회원정보수정{% endblock %}
 {% block content %}
@@ -20,6 +23,9 @@
     <div class="feed__add">
         <div class="feed__add_title">
             <span>{{ member.name }}님 정보 수정</span>
+            <div class='deletebox'>
+            <button type="button" id='member_delete'>계정삭제</button>
+            </div>
         </div>
         <!-- form (updateFrm)-->
         <form action="/member/update_process/" method="post" name="updateFrm">
@@ -161,4 +167,5 @@
 {% block extra_js %}
 
 <script src="{% static 'js/member_update.js' %}"></script>
+<script src="{% static 'js/member_delete.js' %}"></script>
 {% endblock %}
