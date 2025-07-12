@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'mypage',
     'shareMain',
     'reply',
+    'chart',
 ]
 
 MIDDLEWARE = [
