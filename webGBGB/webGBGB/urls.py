@@ -14,5 +14,6 @@ urlpatterns = [
     path('review/', include('review.urls')),
     path('reply/', include('reply.urls')),
     path('chart/', include('chart.urls')),
-
 ]
+
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

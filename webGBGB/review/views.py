@@ -85,7 +85,6 @@ def review_delete(request, review_id):
     
     return redirect(f'/booksearch/detail/{review.book_id.book_id}/')
 
-
 @csrf_protect
 @require_POST
 def review_like(request):
@@ -147,19 +146,31 @@ def review_update(request):
         rating = int(request.POST.get('rating', 0))
         tag = request.POST.get('tag', '')
         comments = request.POST.get('reviewText', '')
-        
+
         review = Review.objects.get(review_id=review_id)
+        # 기존 이미지 삭제 (원하는 경우)
+        ReviewImage.objects.filter(review_id=review).delete()
+
+        # 새 이미지 저장 (최대 3장)
+        images = request.FILES.getlist('review_image', '')  # 단일 이미지 (ImageField 단일)
+        for i, img in enumerate(images):
+            if i>=3:
+                break
+            ReviewImage.objects.create(review_id=review, image=img)
+
+        print("FILES:", request.FILES)
+        print("IMAGES:", images)
+
+        # 평점 갱신
         book.rating -= review.rating
-        
         review.rating = rating
         review.tag = tag
         review.content = comments
         review.save()
-        
         book.rating += rating
         book.save()
 
-        print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments)
+        print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments, images)
         
         # 리뷰 저장 후
         return redirect(f'/booksearch/detail/{book.book_id}/')
