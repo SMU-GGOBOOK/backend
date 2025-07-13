@@ -79,11 +79,15 @@ def member_update_process(request):
         member.genres = genres
         
         member.save()
+
+        request.session['user_name'] = member.name
+
         
         messages.success(request, '회원정보가 성공적으로 수정되었습니다.')
         return redirect('/')
     
     return redirect('/member/login/')
+
 
 
 # 비밀번호 찾기

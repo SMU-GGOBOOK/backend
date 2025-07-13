@@ -28,7 +28,7 @@
             </div>
         </div>
         <!-- form (updateFrm)-->
-        <form action="/member/update_process/" method="post" name="updateFrm">
+        <form action="{% url 'member:member_update_process' %}" method="post" name="updateFrm">
           {% csrf_token %}
             <table class="group_table">
                 <tbody>

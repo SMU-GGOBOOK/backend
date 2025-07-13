@@ -121,6 +121,10 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log("댓글 클릭 - 이동 막음");
       return;
     }
+    if (e.target.closest('.comment_thumb_box')) {
+      console.log("이미지 클릭 - 이동 막음");
+      return;
+    }
 
     const commentItem = e.target.closest('.comment_item');
     console.log("👉 commentItem:", commentItem);

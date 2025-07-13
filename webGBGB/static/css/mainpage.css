@@ -13,7 +13,48 @@
     margin: 0 auto;
     box-shadow: 0 4px 8px #f0f0f0;
 }
+
+.swiper-slide{
+    overflow:hidden;
+}
+
+
+.mainBanner__imagewhite{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index:3;
+    background-size: cover;
+    background-position: center;
+    background-color:rgba(255,255,255, 0.1);
+}
+
+.mainBanner__backdrop{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+}
+.mainBanner__image{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index:1;
+    transform: scale(1.1);
+    background-size: cover;
+    background-position: center;
+    filter: blur(14px);
+}
+
+
 .mainBanner__center{
+    z-index:4;
     position:relative;
     height:100%;
     width:1300px;
@@ -53,15 +94,25 @@
     opacity: 1;
 }
 
+.swiper-button-next, .swiper-button-prev{
+    color:#2d7868;
+    transform: scale(0.7);
+}
+
+
 
 .mainBanner__bookcover{
     width:180px; height:252px; margin-right:100px; border-radius: 7px;
     overflow:hidden;
+    object-fit: cover;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .mainBanner__bookcover>img{
     width:100%;
+    height:252px;
+    object-fit: cover;
+    object-position: center;
 }
 
 
@@ -93,6 +144,10 @@
 .bVUVO8nJ {
     margin-top: 15px;
     text-align: center;
+}
+
+.bVUVO8nJ i{
+    margin-right:5px;
 }
 
 
@@ -161,9 +216,11 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    max-height: 48px;
-    line-height: 24px;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width:230px;
+    height:24px;
 }
 
 .rating{

@@ -49,12 +49,22 @@
 
       <div class="fig-right">
         {% if request.session.user_id %}
-          <a href="/mypage/review/" class="fig-r1">{{ request.session.user_name }}님</a>
+          <div class="user-dropdown">
+            <a href="#" class="fig-r1" onclick="toggleDropdown(event)">
+              <span>{{ request.session.user_name }}</span>님
+            </a>
+            <div id="dropdownMenu" class="dropdown-content">
+              <a href="/mypage/review/">내가 쓴 리뷰</a>
+              <a href="/mypage/Bmark/">내 북마크</a>
+              <a href="/mypage/mygroup/">내 교환독서 그룹</a>
+            </div>
+          </div>
           <a href="{% url 'member:logout' %}" class="fig-r2">로그아웃</a>
         {% else %}
           <a href="{% url 'member:join1' %}" class="fig-r1">회원가입</a>
           <a href="{% url 'member:login' %}" class="fig-r2">로그인</a>
         {% endif %}
+        <a href="{% url 'cscenter:list' %}" class="fig-r2">고객센터</a>
       </div>
 
     </nav>
@@ -139,6 +149,7 @@
     </div>
     <!--리뷰수 아래부분-->
   </div>
+  <script src='/static/js/base_dropdown.js'></script>
   {% block extra_js %}
   <!-- 각 페이지별 JS 들어오는 자리 -->
   {% endblock %}
