@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+<p>{{member}}</p>
 
 <h2 style="text-align: center; font-size: 27px; padding-top: 10px;">
   <span style="color: #2D7868; font-weight: bold; font-size: 27px;">{{query}}</span>
@@ -45,11 +46,13 @@
               <sui-book class="{{b.title}}">
                 <div class="sui-book__box">
                   <div class="sui-book__cover-box">
+                    {% if member %}
                     <button onclick="toggleBookmark(this)" 
-                            class="bookmarkBtn {% if b.book_id in bookmarks %} active{% endif %}" 
-                            data-book-id="{{ b.book_id }}">
+                      class="bookmarkBtn {% if b.book_id in bookmarks %} active{% endif %}" 
+                      data-book-id="{{ b.book_id }}">
                       <i class="fa-{% if b.book_id in bookmarks %}solid{% else %}regular{% endif %} fa-bookmark"></i>
                     </button>
+                    {% endif %}
                     <a href="/booksearch/detail/{{b.book_id}}/" class="sui-book__cover-link">
                       <img sui-book-cover="" class="sui-book-cover" tabindex="0" 
                       src="{{b.cover}}" alt="{{b.title}}"

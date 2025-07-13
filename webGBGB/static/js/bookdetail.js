@@ -359,19 +359,39 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ========== 이미지 썸네일 클릭 시 Swiper 보기 ==========
-    document.querySelectorAll('.comment_thumb_box').forEach(box => {
-        box.addEventListener('click', () => {
-            const item = box.closest('.comment_item');
-            if (item) {
-                item.classList.add('overflow', 'active');
-                const thumb = item.querySelector('.comment_thumb_box');
-                const swiper = item.querySelector('.comment_swiper_wrap');
-                if (thumb) thumb.style.display = 'none';
-                if (swiper) swiper.style.display = 'block';
-            }
-        });
+  // ========== 이미지 썸네일 클릭 시 Swiper 보기 ==========
+  document.querySelectorAll('.comment_thumb_box').forEach(box => {
+    box.addEventListener('click', () => {
+      const item = box.closest('.comment_item');
+      if (!item) return;
+
+      const thumb = item.querySelector('.comment_thumb_box');
+      const swiper = item.querySelector('.comment_swiper_wrap');
+      const moreBtn = item.querySelector('.btn_more_body');
+      const moreBtnText = moreBtn ? moreBtn.querySelector('.text') : null;
+      const icon = moreBtn ? moreBtn.querySelector('i') : null;
+
+      // 이미 열려 있으면 닫기
+      if (item.classList.contains('active')) {
+        item.classList.remove('overflow', 'active');
+        if (thumb) thumb.style.display = 'block';
+        if (swiper) swiper.style.display = 'none';
+        if (moreBtn) moreBtn.classList.remove('active');
+
+      } else {
+        // 닫혀 있으면 열기
+        item.classList.add('overflow', 'active');
+        if (thumb) thumb.style.display = 'none';
+        if (swiper) swiper.style.display = 'block';
+        if (moreBtn) moreBtn.classList.add('active');
+        if (moreBtnText) moreBtnText.textContent = '접기';
+        if (icon) {
+          icon.classList.add('fa-circle-arrow-up');
+          icon.classList.remove('fa-circle-arrow-down');
+        }
+      }
     });
+  });
 
     // ========== 좋아요 ==========
     document.querySelectorAll('.btn_like').forEach(likeBtn => {

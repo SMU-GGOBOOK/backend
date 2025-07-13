@@ -132,7 +132,7 @@ def search(request):
         'has_next_block': has_next_block,
         'prev_block_page': prev_block_page,
         'next_block_page': next_block_page,
-        'member_id': member_id,  # 로그인 여부를 템플릿에서 확인 가능
+        'member': member,  # 로그인 여부를 템플릿에서 확인 가능
     }
 
     return render(request, 'booksearch/booksearch.html', context)

@@ -152,7 +152,7 @@ def review_update(request):
         ReviewImage.objects.filter(review_id=review).delete()
 
         # 새 이미지 저장 (최대 3장)
-        images = request.FILES.getlist('review_image', '')  # 단일 이미지 (ImageField 단일)
+        images = request.FILES.getlist('modify_review_img')
         for i, img in enumerate(images):
             if i>=3:
                 break
