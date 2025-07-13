@@ -143,9 +143,15 @@ def detail(request, book_id):
     member_id = request.session.get('user_id')
     member = None
 
+    bookmarks = set()
     if member_id:
         try:
             member = Member.objects.get(id=member_id)
+            from bookmark.models import Bookmark
+            bookmarks = set(
+                Bookmark.objects.filter(member_id=member.member_id)
+                .values_list('book_id', flat=True)
+            )
         except Member.DoesNotExist:
             member = None
 
@@ -286,7 +292,7 @@ def detail(request, book_id):
     context = {
         'book': book,
         'reviews': page_obj,
-        'is_bookmarked': is_bookmarked,
+        'bookmarks': bookmarks,
         'total_count': f"{total_count:,}",
         'average':average,
         'average_percent':average_percent,

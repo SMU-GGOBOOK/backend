@@ -40,9 +40,9 @@
                           <h1>{{book.title}}</h1>
                           {% if member %}
                             <button onclick="toggleBookmark(this)" 
-                              class="bookmarkBtn {% if b.book_id in bookmarks %} active{% endif %}" 
-                              data-book-id="{{ b.book_id }}">
-                              <i class="fa-{% if b.book_id in bookmarks %}solid{% else %}regular{% endif %} fa-bookmark"></i>
+                              class="bookmarkBtn {% if book.book_id in bookmarks %} active{% endif %}" 
+                              data-book-id="{{ book.book_id }}">
+                              <i class="fa-{% if book.book_id in bookmarks %}solid{% else %}regular{% endif %} fa-bookmark"></i>
                             </button>
                           {% endif %}
 
@@ -705,7 +705,7 @@
                                                           <li class="list_item">
                                                               <span class="file_item">
                                                                   <span class="btn_box">
-                                                                      <input id="review_img" type="file" name="review_image" multiple>
+                                                                      <input id="review_img" type="file" name="review_image" multiple style="display:none">
                                                                       <label for="review_img">
                                                                           <span class="hidden">첨부파일 추가</span>
                                                                       </label>
@@ -868,7 +868,7 @@
                                                     </div>
                                                     <div class="form_cont">
                                                         <ul class="file_list">
-                                                          <input id="review_img" type="file" name="modify_review_image" multiple accept="image/*">
+                                                          <input id="review_img" type="file" name="modify_review_image" multiple accept="image/*" style="display:none">
                                                         <ul class="modify_file_list">
                                                             <li class="list_item">
                                                                 <span class="file_item">
