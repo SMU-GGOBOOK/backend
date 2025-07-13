@@ -585,20 +585,22 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         document.getElementById('reviewForm').submit();
-    });
-
-    document.getElementById('modify_btn')?.addEventListener('click', function(e) {
+        alert("리뷰가 등록되었습니다.")
+      });
+      
+      document.getElementById('modify_btn')?.addEventListener('click', function(e) {
         const modal = document.getElementById("modifyModal");
         const rating = modal.querySelector("input[name='rating']").value;
         const tag = modal.querySelector("input[name='tag']").value;
         const textarea = modal.querySelector("#modify_comments");
         const reviewText = textarea ? textarea.value.trim() : "";
-
+        
         if (!rating || rating === "0" || !tag || reviewText.length < 10) {
-            alert("별점, 태그, 리뷰 10글자 이상을 모두 입력해야 합니다.");
-            return;
+          alert("별점, 태그, 리뷰 10글자 이상을 모두 입력해야 합니다.");
+          return;
         }
         document.getElementById('modifyForm').submit();
+        alert("리뷰가 수정되었습니다.")
     });
 
 
