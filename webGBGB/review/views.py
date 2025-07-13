@@ -124,42 +124,49 @@ def review_like(request):
     return JsonResponse({'liked': liked, 'likes': review.likes})
 
 def review_update(request):
-     if request.method == 'POST':        
+    if request.method == 'POST':        
         try:
             member_id = request.session.get('user_id')
-            member = Member.objects.get(id=member_id)  # Member 객체 가져오기
+            member = Member.objects.get(id=member_id)
         except Member.DoesNotExist:
             messages.error(request, "로그인이 필요합니다")
             return redirect('/member/login/')
-        
-        # if review.member_id.member_id != member.member_id:
-        #     messages.error(request, "본인이 작성한 리뷰만 수정할 수 있습니다.")
 
         book_id = request.POST.get('book_id')
         try:
-            book = Book.objects.get(book_id=book_id)  # Book 객체 가져오기
+            book = Book.objects.get(book_id=book_id)
         except Book.DoesNotExist:
             messages.error(request, "책 정보가 없습니다.")
             return redirect('/')
-        
+
         review_id = request.POST.get('review_id', '')
         rating = int(request.POST.get('rating', 0))
         tag = request.POST.get('tag', '')
         comments = request.POST.get('reviewText', '')
 
         review = Review.objects.get(review_id=review_id)
-        # 기존 이미지 삭제 (원하는 경우)
-        ReviewImage.objects.filter(review_id=review).delete()
 
-        # 새 이미지 저장 (최대 3장)
-        images = request.FILES.getlist('modify_review_img')
+        # 1. 기존 이미지를 클라이언트가 남기기로 한 목록만 유지
+        #    (hidden input으로 넘어온 기존 이미지 파일명/경로)
+        existing_images = request.POST.getlist('existing_images')  # ['img1.jpg', ...]
+
+        # 2. 현재 DB에 저장된 모든 이미지 목록
+        db_images = ReviewImage.objects.filter(review_id=review)
+
+        # 3. DB에 있는데 클라이언트가 남기지 않은 이미지는 삭제
+        for db_img in db_images:
+            # db_img.image.name 또는 db_img.image.url (필요에 따라)
+            if db_img.image.name not in existing_images and db_img.image.url not in existing_images:
+                db_img.delete()
+
+        # 4. 새로 업로드된 이미지 저장 (최대 3장까지)
+        images = request.FILES.getlist('modify_review_image')
+        # 현재 남아있는 이미지 개수
+        current_img_count = ReviewImage.objects.filter(review_id=review).count()
         for i, img in enumerate(images):
-            if i>=3:
+            if current_img_count + i >= 3:
                 break
             ReviewImage.objects.create(review_id=review, image=img)
-
-        print("FILES:", request.FILES)
-        print("IMAGES:", images)
 
         # 평점 갱신
         book.rating -= review.rating
@@ -170,7 +177,6 @@ def review_update(request):
         book.rating += rating
         book.save()
 
-        print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments, images)
-        
-        # 리뷰 저장 후
+        print("넘어온 데이터 : ", member_id, book_id, rating, tag, comments, images, existing_images)
+
         return redirect(f'/booksearch/detail/{book.book_id}/')

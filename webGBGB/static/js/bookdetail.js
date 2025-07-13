@@ -169,7 +169,6 @@ function bindModalForm(modalId, formId, textareaId, ratingInputSelector, tagSele
     return { resetForm, setFormData, checkFormValid, setRating };
 }
 
-// ======================= 수정 모달 이미지 미리보기 관리 =======================
 // ======================= 수정 모달 이미지 미리보기 관리 (리팩토링) =======================
 document.addEventListener('DOMContentLoaded', function () {
   const fileList = document.querySelector('.modify_file_list');
@@ -179,6 +178,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function generateId() {
     return 'file_' + Math.random().toString(36).slice(2);
+  }
+
+  // DataTransfer를 이용해 input.files 동기화
+  function syncInputFiles() {
+    const fileInput = document.querySelector('input[type="file"][name="modify_review_image"]');
+    if (!fileInput) return;
+    const dt = new DataTransfer();
+    modifyAttachedFiles.forEach(f => {
+      if (f.file) dt.items.add(f.file);
+    });
+    fileInput.files = dt.files;
+  }
+
+  // 기존 이미지 hidden input 추가 함수
+  function updateExistingImageInputs() {
+    const container = document.getElementById('existingImagesInputs');
+    if (!container) return;
+    container.innerHTML = '';
+    modifyAttachedFiles.forEach(fileData => {
+      if (!fileData.file && fileData.url) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'existing_images';
+        input.value = fileData.url;
+        container.appendChild(input);
+      }
+    });
   }
 
   function updateModifyAttachVal() {
@@ -196,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
     li.innerHTML = `
       <span class="file_item ${attached ? 'attached' : ''}">
         <span class="btn_box">
-          <input id="${id}" type="file" name="review_image" multiple />
+          <input id="${id}" type="file" name="modify_review_image" multiple />
           <label for="${id}"><span class="hidden">첨부파일 추가</span></label>
           <span class="attach_img_box" style="display:${attached ? 'inline-block' : 'none'};">
             <span class="attach_img_view" style="background-image: url('${imgSrc}');"></span>
@@ -212,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const attachBox = li.querySelector('.attach_img_box');
     const fileItem = li.querySelector('.file_item');
 
+    // 새로 추가한 이미지(첨부) 처리
     if (!attached) {
       input.addEventListener('change', () => {
         const file = input.files[0];
@@ -233,40 +260,39 @@ document.addEventListener('DOMContentLoaded', function () {
           attachBox.style.display = 'inline-block';
           preview.style.backgroundImage = `url('${e.target.result}')`;
 
-          // 필요한 경우 오른쪽에 새 btn_box 추가
-          const listItems = fileList.querySelectorAll('.list_item');
-          if (modifyAttachedFiles.length < MAX_FILES) {
-            const lastItem = listItems[listItems.length - 1];
-            if (lastItem && lastItem === li) {
-              const newBox = createModifyBtnBox(false, '');
-              fileList.appendChild(newBox);
-            }
-          }
-          updateModifyAttachVal();
+          // 미리보기 다시 그리기
+          renderModifyFileList();
+          syncInputFiles(); // 추가!
         };
         reader.readAsDataURL(file);
       });
     }
 
     removeBtn.addEventListener('click', () => {
-      if (attached) {
-        // 삭제할 이미지의 url로 인덱스 찾기
-        const bgImage = preview.style.backgroundImage;
-        const url = bgImage.slice(5, -2); // url('...')에서 ...만 추출
-        const idx = modifyAttachedFiles.findIndex(f => f.url === url);
-        if (idx !== -1) modifyAttachedFiles.splice(idx, 1);
+      // 미리보기의 backgroundImage에서 url 추출
+      const bgImage = preview.style.backgroundImage;
+      const url = bgImage.slice(5, -2); // url('...')에서 ...만 추출
 
+      // modifyAttachedFiles에서 해당 url을 가진 객체 찾기
+      const idx = modifyAttachedFiles.findIndex(f => f.url === url);
+      if (idx !== -1) {
+        modifyAttachedFiles.splice(idx, 1);
+        renderModifyFileList();
+        syncInputFiles(); // 추가!
+        return;
+      }
+
+      // 혹시 못 찾으면 attached별로 기존 로직도 실행
+      if (attached) {
         const allItems = Array.from(fileList.querySelectorAll('.list_item'));
         const currentIndex = allItems.indexOf(li);
         const nextLi = li.nextElementSibling;
         const lastLi = allItems[allItems.length - 1];
 
-        // 오른쪽에 빈 div 있는지 체크
         const hasRightEmptyDiv =
           nextLi &&
           !nextLi.querySelector('.file_item').classList.contains('attached');
 
-        // 맨 끝이 빈 div인지 체크
         const lastIsEmpty =
           lastLi &&
           !lastLi.querySelector('.file_item').classList.contains('attached');
@@ -292,6 +318,8 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         }
         updateModifyAttachVal();
+        updateExistingImageInputs();
+        syncInputFiles(); // 추가!
       }
     });
 
@@ -302,6 +330,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function setModifyAttachedFiles(imageUrls = []) {
     modifyAttachedFiles = imageUrls.map(url => ({ file: null, url }));
     renderModifyFileList();
+    syncInputFiles(); // 추가!
   }
 
   // 리스트 렌더링
@@ -314,6 +343,8 @@ document.addEventListener('DOMContentLoaded', function () {
       fileList.appendChild(createModifyBtnBox(false, ''));
     }
     updateModifyAttachVal();
+    updateExistingImageInputs();
+    syncInputFiles(); // 추가!
   }
 
   // 최초 렌더링
@@ -322,8 +353,18 @@ document.addEventListener('DOMContentLoaded', function () {
   updateModifyAttachVal();
 
   // 필요시 외부에서 setModifyAttachedFiles(imageUrls) 호출로 초기값 세팅 가능
-});
+  window.setModifyAttachedFiles = setModifyAttachedFiles;
+  window.renderModifyFileList = renderModifyFileList;
 
+  // 폼 submit 직전에 hidden input 갱신
+  const form = document.getElementById('modifyForm');
+  if (form) {
+    form.addEventListener('submit', function () {
+      updateExistingImageInputs();
+      syncInputFiles(); // 추가!
+    });
+  }
+});
 
 // ========== DOMContentLoaded에서 모든 기능 바인딩 ==========
 document.addEventListener("DOMContentLoaded", () => {
@@ -359,40 +400,39 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-  // ========== 이미지 썸네일 클릭 시 Swiper 보기 ==========
-  document.querySelectorAll('.comment_thumb_box').forEach(box => {
-    box.addEventListener('click', () => {
-      const item = box.closest('.comment_item');
-      if (!item) return;
+    // ========== 이미지 썸네일 클릭 시 Swiper 보기 ==========
+    document.querySelectorAll('.comment_thumb_box').forEach(box => {
+      box.addEventListener('click', () => {
+        const item = box.closest('.comment_item');
+        if (!item) return;
 
-      const thumb = item.querySelector('.comment_thumb_box');
-      const swiper = item.querySelector('.comment_swiper_wrap');
-      const moreBtn = item.querySelector('.btn_more_body');
-      const moreBtnText = moreBtn ? moreBtn.querySelector('.text') : null;
-      const icon = moreBtn ? moreBtn.querySelector('i') : null;
+        const thumb = item.querySelector('.comment_thumb_box');
+        const swiper = item.querySelector('.comment_swiper_wrap');
+        const moreBtn = item.querySelector('.btn_more_body');
+        const moreBtnText = moreBtn ? moreBtn.querySelector('.text') : null;
+        const icon = moreBtn ? moreBtn.querySelector('i') : null;
 
-      // 이미 열려 있으면 닫기
-      if (item.classList.contains('active')) {
-        item.classList.remove('overflow', 'active');
-        if (thumb) thumb.style.display = 'block';
-        if (swiper) swiper.style.display = 'none';
-        if (moreBtn) moreBtn.classList.remove('active');
+        // 이미 열려 있으면 닫기
+        if (item.classList.contains('active')) {
+          item.classList.remove('overflow', 'active');
+          if (thumb) thumb.style.display = 'block';
+          if (swiper) swiper.style.display = 'none';
+          if (moreBtn) moreBtn.classList.remove('active');
 
-      } else {
-        // 닫혀 있으면 열기
-        item.classList.add('overflow', 'active');
-        if (thumb) thumb.style.display = 'none';
-        if (swiper) swiper.style.display = 'block';
-        if (moreBtn) moreBtn.classList.add('active');
-        if (moreBtnText) moreBtnText.textContent = '접기';
-        if (icon) {
-          icon.classList.add('fa-circle-arrow-up');
-          icon.classList.remove('fa-circle-arrow-down');
+        } else {
+          // 닫혀 있으면 열기
+          item.classList.add('overflow', 'active');
+          if (thumb) thumb.style.display = 'none';
+          if (swiper) swiper.style.display = 'block';
+          if (moreBtn) moreBtn.classList.add('active');
+          if (moreBtnText) moreBtnText.textContent = '접기';
+          if (icon) {
+            icon.classList.add('fa-circle-arrow-up');
+            icon.classList.remove('fa-circle-arrow-down');
+          }
         }
-      }
+      });
     });
-  });
-
     // ========== 좋아요 ==========
     document.querySelectorAll('.btn_like').forEach(likeBtn => {
         likeBtn.addEventListener('click', function () {
@@ -440,7 +480,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function checkFormValid() {
             const reviewLength = textarea.value.trim().length;
-            const reviewValid = reviewLength >= 10;
+            const reviewValid = reviewLength >= 1;
             replyBtn.disabled = !reviewValid;
             if (countSpan) countSpan.textContent = reviewLength;
         }
@@ -481,26 +521,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelectorAll('.modifyReviewBtn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            let reviewData = {};
-            try { reviewData = JSON.parse(btn.dataset.review); }
-            catch (err) { alert("리뷰 데이터 파싱 오류!"); return; }
-            const modal = document.getElementById("modifyModal");
-            modal?.classList.add('active');
-            const imageUrls = btn.dataset.images
-                ? btn.dataset.images.split(',').filter(Boolean)
-                : [];
-            modifyModalApi.resetForm();
-            modifyModalApi.setFormData({
-                rating: reviewData.rating,
-                tag: reviewData.tag,
-                reviewText: reviewData.content,
-                imageUrls: imageUrls
-            });
-            const reviewIdInput = modal.querySelector("#modal_review_id");
-            if (reviewIdInput) reviewIdInput.value = reviewData.review_id;
+      btn.addEventListener('click', function() {
+        let reviewData = {};
+        try { reviewData = JSON.parse(btn.dataset.review); }
+        catch (err) { alert("리뷰 데이터 파싱 오류!"); return; }
+        const modal = document.getElementById("modifyModal");
+        modal?.classList.add('active');
+        const imageUrls = btn.dataset.images
+          ? btn.dataset.images.split(',').filter(Boolean)
+          : [];
+        modifyModalApi.resetForm();
+        modifyModalApi.setFormData({
+          rating: reviewData.rating,
+          tag: reviewData.tag,
+          reviewText: reviewData.content,
+          imageUrls: imageUrls
         });
+        // 기존 이미지 세팅
+        if (typeof window.setModifyAttachedFiles === 'function') {
+          window.setModifyAttachedFiles(imageUrls);
+        }
+        const reviewIdInput = modal.querySelector("#modal_review_id");
+        if (reviewIdInput) reviewIdInput.value = reviewData.review_id;
+      });
     });
+
 
     document.getElementById("closeModifyBtn")?.addEventListener('click', () => {
         document.getElementById("modifyModal")?.classList.remove('active');
