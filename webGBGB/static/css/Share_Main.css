@@ -17,6 +17,7 @@ body, input, select, textarea, button {
 
 /* 참여 중인 그룹 표시부분 */
 .feed__join{
+    margin-bottom: 70px;
     padding: 20px 50px 25px;
     border: 1px solid #f0f0f0;
     border-radius: 7px;
@@ -75,7 +76,7 @@ body, input, select, textarea, button {
 
 /* 꼬북꼬북 교환독서 그룹 목록 */
 .feed__tabs{
-    margin: 70px 0 50px;
+    margin: 25px 0 60px;
     padding-left: 10px;
     height: 38px;
     display: flex;
