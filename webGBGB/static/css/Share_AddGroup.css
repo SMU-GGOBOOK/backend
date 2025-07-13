@@ -270,13 +270,11 @@ form[name='addgroupFrm'] {
   color: #636363;
   text-align: justify; /* 양쪽 정렬 */
   line-height: 1.5;     /* 줄간격 여유 */
-
-  overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;     /* 최대 3줄만 표시 */
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
-  
+  overflow: hidden;
 }
 .modal_book_select {
   padding:0 5px;

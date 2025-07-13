@@ -66,10 +66,14 @@ body, input, select, textarea, button {
     font-size: 15px;
     font-weight: 400;
     color: #636363;
+    display: flex;
+}
+.join_body_item_groupName i {
+    margin: 4px 4px 0 0;
+
 }
 
-
-/* 꼬북꼬북 교환독서 그룹 List */
+/* 꼬북꼬북 교환독서 그룹 목록 */
 .feed__tabs{
     margin: 70px 0 50px;
     padding-left: 10px;
@@ -80,7 +84,7 @@ body, input, select, textarea, button {
 }
 .feed__tabs_title{
     padding-bottom: 5px;
-    height: 45px;
+    width: 62%;
     font-size: 35px;
     font-weight: 700;
     color: #1a1a1a;
@@ -91,7 +95,6 @@ body, input, select, textarea, button {
 .feed__tabs_search{
     display: flex;
     align-items: center;
-    margin-left: 560px;
     padding: 15px;
     width: 400px;
     height: 45px;
@@ -107,6 +110,7 @@ body, input, select, textarea, button {
     border: none;
     outline: none;
     padding-left:11px;
+    width: 100%;
     font-size: 15px;
     font-weight: 400;
 }
@@ -125,6 +129,15 @@ body, input, select, textarea, button {
     justify-content: center;
     cursor: pointer;
 }
+
+/* 그룹 목록-검색창-검색결과 없을 경우  */
+.feed__list p {
+    text-align: center;
+    padding: 100px;
+    font-size: 20px;
+    color: #636363;
+}
+
 /* 그룹 목록 */
 .feed__preview{
     border-left: 2px solid #A0A0A0;
@@ -136,7 +149,8 @@ body, input, select, textarea, button {
     align-items: center;            /* 세로 중앙정렬 원하면 */
 }
 .feed__preview_text {
-    height:100%;
+    width: 80%;
+    height: 100%;
     display: flex;
     flex-direction: column;           /* 세로 방향으로 정렬 */
 }
@@ -151,17 +165,38 @@ body, input, select, textarea, button {
     cursor: pointer;
 }
 .group_name{
-    padding: 20px 0 25px;
+    padding: 18px 0;
     font-size: 22px;
     font-weight: 700;
     color: #1a1a1a;
+    display: flex;
     align-items: center;
 }
-.group_leader{
+.group_name i {
+    margin-right: 8px;
+    padding-top: 1px;
+} /* 비공개 아이콘 */
+
+.group_ellipsis_1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;     /* 최대 1줄 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;     /* 단어 중간도 줄바꿈 허용 */
+}
+.group_ellipsis_2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;     /* 최대 2줄 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;     /* 단어 중간도 줄바꿈 허용 */
+}
+.group_leader {
     font-size: 14px;
     font-weight: 400;
     color: #636363;
-    display: flex;
 }
 .group_leader img{
     margin-right:5px;

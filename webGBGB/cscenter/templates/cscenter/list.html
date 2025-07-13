@@ -18,13 +18,13 @@
         <div class="content-area">
             <p class="big_title">공지사항</p>
 
-
- 
-
-
-
             <div class='searchWrap'>
+              {% if search == 1 %}
+              <div class="ntc_count">검색결과 <span>{{notice.count}}</span>건</div>
+              {% else %}
               <div class="ntc_count"><span>{{notice.count}}</span>건</div>
+              {% endif %}
+              
               <form action='/cscenter/list/' name='ntc_searchFrm' method='get' role="search" class="fig-searchform et3830u0">
                 <div tabindex="-1" class="fig-tabindex">
                   <div class="fig-q3rd3s et3830u1">

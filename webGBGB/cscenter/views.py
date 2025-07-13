@@ -20,7 +20,7 @@ def list(request):
         # 페이지 분기
         paginator = Paginator(qs,10) # 100->10개씩 쪼개서 전달해줌
         noticeList = paginator.get_page(page)  # 현재페이지에 해당되는 게시글 전달
-        context = {'notice':qs,'list':noticeList,'page':page}
+        context = {'notice':qs,'list':noticeList,'page':page,'search':0}
         return render(request, 'cscenter/list.html', context)
     else:   # 검색으로 넘어온 경우
         # 게시글 전체 가져오기  and:& or:| not:~
@@ -31,7 +31,7 @@ def list(request):
         paginator = Paginator(qs,10)
         noticeList = paginator.get_page(page)
        # 게시글 10개, 현재페이지 보냄
-        context = {'notice':qs,'list':noticeList,'page':page}
+        context = {'notice':qs,'list':noticeList,'page':page,'search':1}
         return render(request,'cscenter/list.html',context)
 
 def view(request,ntcno):
