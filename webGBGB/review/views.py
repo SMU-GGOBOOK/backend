@@ -13,12 +13,8 @@ from django.views.decorators.csrf import csrf_protect
 # Create your views here.
 def review_create(request):
     if request.method == 'POST':
-        try:
-            member_id = request.session.get('user_id')
-            member = Member.objects.get(id=member_id)  # Member 객체 가져오기
-        except Member.DoesNotExist:
-            messages.error(request, "로그인이 필요합니다")
-            return redirect('/member/login/')
+        member_id = request.session.get('user_id')
+        member = Member.objects.get(id=member_id)  # Member 객체 가져오기
 
 
         book_id = request.POST.get('book_id')
@@ -69,11 +65,7 @@ def review_delete(request, review_id):
     
     rating = review.rating
     book = review.book_id
-    
-    if review.member_id.member_id != member.member_id:
-        messages.error(request, "본인이 작성한 리뷰만 삭제할 수 있습니다.")
-        return redirect(f'/booksearch/detail/{review.book_id.book_id}/')
-    
+        
     print(review.member_id, member.member_id)
     review.delete()
     
@@ -89,8 +81,6 @@ def review_delete(request, review_id):
 @require_POST
 def review_like(request):
     user_id = request.session.get('user_id')
-    if not user_id:
-        return JsonResponse({'error': '로그인이 필요합니다.'}, status=401)
     try:
         member = Member.objects.get(id=user_id)
     except Member.DoesNotExist:
@@ -124,14 +114,18 @@ def review_like(request):
     return JsonResponse({'liked': liked, 'likes': review.likes})
 
 def review_update(request):
-    if request.method == 'POST':        
-        try:
-            member_id = request.session.get('user_id')
-            member = Member.objects.get(id=member_id)
-        except Member.DoesNotExist:
-            messages.error(request, "로그인이 필요합니다")
-            return redirect('/member/login/')
+    # 로그인한 유저 정보 가져오기
+    member_id = request.session.get('member_id')
+    if not member_id:
+        messages.warning(request, '로그인이 필요합니다.')
+        return redirect('member:login')  # 로그인 페이지로
+    try:
+        member = Member.objects.get(member_id=member_id)
+    except Member.DoesNotExist:
+        return redirect('member:login')  # 세션에 이상 있으면 로그인 요구
 
+    if request.method == 'POST':        
+        
         book_id = request.POST.get('book_id')
         try:
             book = Book.objects.get(book_id=book_id)

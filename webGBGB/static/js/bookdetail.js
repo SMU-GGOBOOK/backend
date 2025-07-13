@@ -1,42 +1,42 @@
-// 북마크 버튼 js
-function toggleBookmark(button) {
-    const bookId = button.getAttribute('data-book-id');
-    if (!bookId) {
-        alert("book_id가 없습니다!");
-        return;
-    }
+  // ========== 북마크 버튼 ==========
+  function toggleBookmark(button) {
+      const bookId = button.getAttribute('data-book-id');
+      if (!bookId) {
+          alert("book_id가 없습니다!");
+          return;
+      }
 
-    let cToken = $('meta[name="csrf-token"]').attr('content');
-    const icon = button.querySelector('i');
-    if (!icon) {
-        console.warn('아이콘 없음');
-        return;
-    }
+      let cToken = $('meta[name="csrf-token"]').attr('content');
+      const icon = button.querySelector('i');
+      if (!icon) {
+          console.warn('아이콘 없음');
+          return;
+      }
 
-    $.ajax({
-        url: '/bookmark/create/',
-        type: 'post',
-        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': cToken },
-        data: JSON.stringify({ book_id: bookId }),
-        success: function(data) {
-            if (data.bookmarked !== undefined) {
-                icon.classList.remove('fa-solid', 'fa-regular');
-                icon.classList.add(data.bookmarked ? 'fa-solid' : 'fa-regular');
-                button.classList.toggle('active', data.bookmarked);
-            }
-        },
-        error: function() {
-        }
-    });
+      $.ajax({
+          url: '/bookmark/create/',
+          type: 'post',
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': cToken },
+          data: JSON.stringify({ book_id: bookId }),
+          success: function(data) {
+              if (data.bookmarked !== undefined) {
+                  icon.classList.remove('fa-solid', 'fa-regular');
+                  icon.classList.add(data.bookmarked ? 'fa-solid' : 'fa-regular');
+                  button.classList.toggle('active', data.bookmarked);
+              }
+          },
+          error: function() {
+          }
+      });
 
-    // 애니메이션 효과는 성공 후에 처리하는 게 더 자연스러울 수 있습니다.
-    icon.classList.add('fading-out');
-    setTimeout(() => {
-        icon.classList.remove('fading-out');
-    }, 100);
-}
+      // 애니메이션 효과는 성공 후에 처리하는 게 더 자연스러울 수 있습니다.
+      icon.classList.add('fading-out');
+      setTimeout(() => {
+          icon.classList.remove('fading-out');
+      }, 100);
+  }
 
-  // 별점 바인딩 함수 (컨테이너별)
+  // ========== 별점 바인딩 함수 (컨테이너별) ==========
   function bindStarRating(container) {
     const stars = container.querySelectorAll(".rating-stars-review .star");
     const input = container.querySelector("input[type='hidden'][name='rating']");
@@ -81,6 +81,7 @@ function toggleBookmark(button) {
     });
     updateStars(currentValue);
   }
+  
 // ======================= 작성/수정 모달 폼 바인딩 =======================
 function bindModalForm(modalId, formId, textareaId, ratingInputSelector, tagSelector, btnId) {
     const modal = document.getElementById(modalId);
@@ -106,7 +107,7 @@ function bindModalForm(modalId, formId, textareaId, ratingInputSelector, tagSele
         if (textarea) textarea.value = "";
         const counter = modal.querySelector(".byte_check .count");
         if (counter) counter.textContent = "0";
-        if (modalBtn) modalBtn.disabled = true;
+        // if (modalBtn) modalBtn.disabled = true;
         const tagInput = modal.querySelector("input[name='tag']");
         if (tagInput) tagInput.value = "";
     }
@@ -140,7 +141,7 @@ function bindModalForm(modalId, formId, textareaId, ratingInputSelector, tagSele
         const tagSelected = modal.querySelector('.tag_wrap.size_lg .tag.active') !== null;
         const reviewLength = textarea?.value.trim().length || 0;
         const reviewValid = reviewLength >= 10;
-        if (modalBtn) modalBtn.disabled = !(ratingValid && tagSelected && reviewValid);
+        // if (modalBtn) modalBtn.disabled = !(ratingValid && tagSelected && reviewValid);
     }
 
     if (textarea) {
@@ -433,6 +434,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+
     // ========== 좋아요 ==========
     document.querySelectorAll('.btn_like').forEach(likeBtn => {
         likeBtn.addEventListener('click', function () {
@@ -473,19 +475,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ========== 댓글/답글 폼 유효성 검사 ==========
     document.querySelectorAll('.reply_wrap').forEach(area => {
-        const replyBtn = area.querySelector(".reply_btn");
-        const textarea = area.querySelector(".reply_comments");
-        const countSpan = area.querySelector('.reply_byte_check .count');
-        const form = area.querySelector(".replyForm");
+      const replyBtn = area.querySelector(".reply_btn");
+      const textarea = area.querySelector(".reply_comments");
+      const countSpan = area.querySelector('.reply_byte_check .count');
+      const form = area.querySelector(".replyForm");
 
-        function checkFormValid() {
-            const reviewLength = textarea.value.trim().length;
-            const reviewValid = reviewLength >= 1;
-            replyBtn.disabled = !reviewValid;
-            if (countSpan) countSpan.textContent = reviewLength;
-        }
+      function checkFormValid() {
+          if (!textarea || !replyBtn) return;
+          const reviewLength = textarea.value.trim().length;
+          const reviewValid = reviewLength >= 1;
+          replyBtn.disabled = !reviewValid;
+          if (countSpan) countSpan.textContent = reviewLength;
+      }
 
-        textarea.addEventListener("input", checkFormValid);
+      if (textarea) {
+          textarea.addEventListener("input", checkFormValid);
+          checkFormValid();
+      }
         checkFormValid();
 
         function resetReplyForm() {
@@ -493,11 +499,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (countSpan) countSpan.textContent = "0";
             replyBtn.disabled = true;
         }
-
-        replyBtn.addEventListener("click", () => {
-            if (form) form.submit();
-            resetReplyForm();
-        });
+      if (replyBtn) {
+          replyBtn.addEventListener("click", () => {
+              if (form) form.submit();
+              resetReplyForm();
+          });
+      }
     });
 
     // ========== 작성/수정 모달 바인딩 ==========
@@ -510,8 +517,14 @@ document.addEventListener("DOMContentLoaded", () => {
         "input[name='rating']", "input[name='tag']", "modify_btn"
     );
 
-    // ========== 작성/수정 모달 열기/닫기 ==========
+    // ========== 작성 모달 열기/닫기 ==========
     document.getElementById("openReviewBtn")?.addEventListener('click', () => {
+        const memberId = document.getElementById("openReviewBtn").dataset.memberId;
+        if (!memberId || memberId === "None") {
+            alert("로그인 후 이용 가능합니다.");
+            window.location.href = "/member/login/";
+            return;
+        }
         document.getElementById("reviewModal")?.classList.add('active');
         reviewModalApi.resetForm();
     });
@@ -519,7 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("reviewModal")?.classList.remove('active');
         reviewModalApi.resetForm();
     });
-
+    // ========== 수정 모달 열기/닫기 ==========
     document.querySelectorAll('.modifyReviewBtn').forEach(btn => {
       btn.addEventListener('click', function() {
         let reviewData = {};
@@ -545,13 +558,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (reviewIdInput) reviewIdInput.value = reviewData.review_id;
       });
     });
-
-
     document.getElementById("closeModifyBtn")?.addEventListener('click', () => {
         document.getElementById("modifyModal")?.classList.remove('active');
         modifyModalApi.resetForm();
     });
-
+    // ========== esc로 모달 닫기 ==========
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
             document.getElementById("reviewModal")?.classList.remove('active');
@@ -561,245 +572,273 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // ========== 작성/수정 모달 등록 버튼 ==========
     document.getElementById('review_btn')?.addEventListener('click', function(e) {
-        if (this.disabled) { e.preventDefault(); return; }
-        alert("리뷰가 등록되었습니다.");
+        const modal = document.getElementById("reviewModal");
+        const rating = modal.querySelector("input[name='rating']").value;
+        const tag = modal.querySelector("input[name='tag']").value;
+        const textarea = modal.querySelector("#review_comments");
+        const reviewText = textarea ? textarea.value.trim() : "";
+
+        if (!rating || rating === "0" || !tag || reviewText.length < 10) {
+            alert("별점, 태그, 리뷰 10글자 이상을 모두 입력해야 합니다.");
+            return;
+        }
         document.getElementById('reviewForm').submit();
     });
 
     document.getElementById('modify_btn')?.addEventListener('click', function(e) {
-        if (this.disabled) { e.preventDefault(); return; }
-        alert("리뷰가 수정되었습니다.");
+        const modal = document.getElementById("modifyModal");
+        const rating = modal.querySelector("input[name='rating']").value;
+        const tag = modal.querySelector("input[name='tag']").value;
+        const textarea = modal.querySelector("#modify_comments");
+        const reviewText = textarea ? textarea.value.trim() : "";
+
+        if (!rating || rating === "0" || !tag || reviewText.length < 10) {
+            alert("별점, 태그, 리뷰 10글자 이상을 모두 입력해야 합니다.");
+            return;
+        }
         document.getElementById('modifyForm').submit();
     });
+
 
     // ========== 수정 모달 이미지 최초 렌더 ==========
     renderModifyFileList();
 });
 
-// 모달 팝업 내 사진 추가
-document.addEventListener('DOMContentLoaded', function () {
-  const fileList = document.querySelector('.file_list');
-  const MAX_FILES = 3;
+  // ========== 모달 팝업 내 사진 추가 ==========
+  document.addEventListener('DOMContentLoaded', function () {
+    const fileList = document.querySelector('.file_list');
+    const MAX_FILES = 3;
 
-  let attachedFiles = [];
+    let attachedFiles = [];
 
-  function generateId() {
-    return 'file_' + Math.random().toString(36).slice(2);
-  }
+    function generateId() {
+      return 'file_' + Math.random().toString(36).slice(2);
+    }
 
-  function updateAttachVal() {
-    const valElem = document.querySelector('.file_attach_val .total');
-    if (valElem) {
-      valElem.textContent = ` / ${MAX_FILES}`;
-      const currentValElem = valElem.previousElementSibling;
-      if (currentValElem && currentValElem.classList.contains('val')) {
-        currentValElem.textContent = attachedFiles.length;
+    function updateAttachVal() {
+      const valElem = document.querySelector('.file_attach_val .total');
+      if (valElem) {
+        valElem.textContent = ` / ${MAX_FILES}`;
+        const currentValElem = valElem.previousElementSibling;
+        if (currentValElem && currentValElem.classList.contains('val')) {
+          currentValElem.textContent = attachedFiles.length;
+        }
       }
     }
-  }
 
-  function createBtnBox(attached = false, imgSrc = '') {
-    const id = generateId();
+    function createBtnBox(attached = false, imgSrc = '') {
+      const id = generateId();
 
-    const li = document.createElement('li');
-    li.classList.add('list_item');
-    li.innerHTML = `
-      <span class="file_item ${attached ? 'attached' : ''}">
-        <span class="btn_box">
-          <input id="${id}" type="file" name="review_image" multiple/>
-          <label for="${id}"><span class="hidden">첨부파일 추가</span></label>
-          <span class="attach_img_box" style="display:${attached ? 'inline-block' : 'none'};">
-            <span class="attach_img_view" style="background-image: url('${imgSrc}');"></span>
-            <button class="btn_remove_img" type="button"><span class="hidden">첨부파일 삭제</span></button>
+      const li = document.createElement('li');
+      li.classList.add('list_item');
+      li.innerHTML = `
+        <span class="file_item ${attached ? 'attached' : ''}">
+          <span class="btn_box">
+            <input id="${id}" type="file" name="review_image" multiple/>
+            <label for="${id}"><span class="hidden">첨부파일 추가</span></label>
+            <span class="attach_img_box" style="display:${attached ? 'inline-block' : 'none'};">
+              <span class="attach_img_view" style="background-image: url('${imgSrc}');"></span>
+              <button class="btn_remove_img" type="button"><span class="hidden">첨부파일 삭제</span></button>
+            </span>
           </span>
         </span>
-      </span>
-    `;
+      `;
 
-    const input = li.querySelector('input[type="file"]');
-    const removeBtn = li.querySelector('.btn_remove_img');
-    const preview = li.querySelector('.attach_img_view');
-    const attachBox = li.querySelector('.attach_img_box');
-    const fileItem = li.querySelector('.file_item');
+      const input = li.querySelector('input[type="file"]');
+      const removeBtn = li.querySelector('.btn_remove_img');
+      const preview = li.querySelector('.attach_img_view');
+      const attachBox = li.querySelector('.attach_img_box');
+      const fileItem = li.querySelector('.file_item');
 
-    input.addEventListener('change', () => {
-      const file = input.files[0];
-      if (!file) return;
+      input.addEventListener('change', () => {
+        const file = input.files[0];
+        if (!file) return;
 
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-      if (!allowedTypes.includes(file.type)) {
-        alert('이미지 파일(JPG, PNG, GIF)만 업로드 가능합니다.');
-        input.value = '';
-        return;
-      }
+        if (!allowedTypes.includes(file.type)) {
+          alert('이미지 파일(JPG, PNG, GIF)만 업로드 가능합니다.');
+          input.value = '';
+          return;
+        }
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const imgUrl = e.target.result;
-        attachedFiles.push(imgUrl);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const imgUrl = e.target.result;
+          attachedFiles.push(imgUrl);
 
-        // 1. 현재 btn_box를 attached로 변경
-        fileItem.classList.add('attached');
-        attachBox.style.display = 'inline-block';
-        preview.style.backgroundImage = `url('${imgUrl}')`;
+          // 1. 현재 btn_box를 attached로 변경
+          fileItem.classList.add('attached');
+          attachBox.style.display = 'inline-block';
+          preview.style.backgroundImage = `url('${imgUrl}')`;
 
-        // 2. 필요한 경우 오른쪽에 새 btn_box 추가
-        const listItems = fileList.querySelectorAll('.list_item');
-        if (attachedFiles.length < MAX_FILES) {
-          const lastItem = listItems[listItems.length - 1];
-          if (lastItem && lastItem === li) {
-            const newBox = createBtnBox(false, '');
-            fileList.appendChild(newBox);
+          // 2. 필요한 경우 오른쪽에 새 btn_box 추가
+          const listItems = fileList.querySelectorAll('.list_item');
+          if (attachedFiles.length < MAX_FILES) {
+            const lastItem = listItems[listItems.length - 1];
+            if (lastItem && lastItem === li) {
+              const newBox = createBtnBox(false, '');
+              fileList.appendChild(newBox);
+            }
+          }
+
+          updateAttachVal();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      removeBtn.addEventListener('click', () => {
+        const bgImage = preview.style.backgroundImage;
+        const url = bgImage.slice(5, -2);
+        const index = attachedFiles.indexOf(url);
+        if (index !== -1) attachedFiles.splice(index, 1);
+
+        const allItems = Array.from(fileList.querySelectorAll('.list_item'));
+        const currentIndex = allItems.indexOf(li);
+        const nextLi = li.nextElementSibling;
+        const lastLi = allItems[allItems.length - 1];
+
+        // 오른쪽에 빈 사진추가 div 있는지 체크
+        const hasRightEmptyDiv =
+          nextLi &&
+          !nextLi.querySelector('.file_item').classList.contains('attached');
+
+        // 맨 끝이 빈 사진 추가 div인지 체크
+        const lastIsEmpty =
+          lastLi &&
+          !lastLi.querySelector('.file_item').classList.contains('attached');
+
+        if (hasRightEmptyDiv) {
+          // 오른쪽에 빈 div 있으면 무조건 자기 삭제만
+          fileList.removeChild(li);
+        } else {
+          if (currentIndex === 0) {
+            // 첫 번째 div 삭제
+            fileList.removeChild(li);
+            // 맨 끝에 사진 추가 div 없으면 새로 추가
+            if (!lastIsEmpty && attachedFiles.length < MAX_FILES) {
+              fileList.appendChild(createBtnBox(false, ''));
+            }
+          } else if (currentIndex === 1) {
+            // 두 번째 div 삭제
+            fileList.removeChild(li);
+            // 오른쪽에 빈 div 없으면 맨 끝에 새로 추가
+            if (!hasRightEmptyDiv && attachedFiles.length < MAX_FILES) {
+              fileList.appendChild(createBtnBox(false, ''));
+            }
+          } else if (currentIndex === 2) {
+            // 세 번째 div: attached 제거, 내용 비우기
+            fileItem.classList.remove('attached');
+            preview.style.backgroundImage = '';
+            attachBox.style.display = 'none';
+            input.value = '';
           }
         }
 
         updateAttachVal();
-      };
-      reader.readAsDataURL(file);
-    });
-
-    removeBtn.addEventListener('click', () => {
-      const bgImage = preview.style.backgroundImage;
-      const url = bgImage.slice(5, -2);
-      const index = attachedFiles.indexOf(url);
-      if (index !== -1) attachedFiles.splice(index, 1);
-
-      const allItems = Array.from(fileList.querySelectorAll('.list_item'));
-      const currentIndex = allItems.indexOf(li);
-      const nextLi = li.nextElementSibling;
-      const lastLi = allItems[allItems.length - 1];
-
-      // 오른쪽에 빈 사진추가 div 있는지 체크
-      const hasRightEmptyDiv =
-        nextLi &&
-        !nextLi.querySelector('.file_item').classList.contains('attached');
-
-      // 맨 끝이 빈 사진 추가 div인지 체크
-      const lastIsEmpty =
-        lastLi &&
-        !lastLi.querySelector('.file_item').classList.contains('attached');
-
-      if (hasRightEmptyDiv) {
-        // 오른쪽에 빈 div 있으면 무조건 자기 삭제만
-        fileList.removeChild(li);
-      } else {
-        if (currentIndex === 0) {
-          // 첫 번째 div 삭제
-          fileList.removeChild(li);
-          // 맨 끝에 사진 추가 div 없으면 새로 추가
-          if (!lastIsEmpty && attachedFiles.length < MAX_FILES) {
-            fileList.appendChild(createBtnBox(false, ''));
-          }
-        } else if (currentIndex === 1) {
-          // 두 번째 div 삭제
-          fileList.removeChild(li);
-          // 오른쪽에 빈 div 없으면 맨 끝에 새로 추가
-          if (!hasRightEmptyDiv && attachedFiles.length < MAX_FILES) {
-            fileList.appendChild(createBtnBox(false, ''));
-          }
-        } else if (currentIndex === 2) {
-          // 세 번째 div: attached 제거, 내용 비우기
-          fileItem.classList.remove('attached');
-          preview.style.backgroundImage = '';
-          attachBox.style.display = 'none';
-          input.value = '';
-        }
-      }
-
-      updateAttachVal();
-    });
+      });
 
 
-    return li;
-  }
+      return li;
+    }
 
-  // 초기 1개 빈 박스 생성
-  fileList.innerHTML = '';
-  fileList.appendChild(createBtnBox(false, ''));
-  updateAttachVal();
-});
+    // 초기 1개 빈 박스 생성
+    fileList.innerHTML = '';
+    fileList.appendChild(createBtnBox(false, ''));
+    updateAttachVal();
+  });
 
-// 답글 수정 버튼 클릭 시
-document.addEventListener('click', function(e) {
-  if (e.target.classList.contains('reply-edit-btn')) {
-    e.preventDefault();
-    const replyId = e.target.dataset.replyId;
-    const replyItem = document.getElementById(replyId);
+  // ========== 답글 수정 버튼 클릭 시 ==========
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('reply-edit-btn')) {
+      e.preventDefault();
+      const replyId = e.target.dataset.replyId;
+      const replyItem = document.getElementById(replyId);
 
-    // 기존 답글 내용 영역
-    const replyContents = replyItem.querySelector('.reply_contents');
-    const originalHtml = replyContents.innerHTML;
+      // 기존 답글 내용 영역
+      const replyContents = replyItem.querySelector('.reply_contents');
+      const originalHtml = replyContents.innerHTML;
 
-    // 기존 답글 텍스트
-    const originalText = replyItem.querySelector('.reply_text').textContent.trim();
+      // 기존 답글 텍스트
+      const originalText = replyItem.querySelector('.reply_text').textContent.trim();
 
-    // 수정폼 HTML 생성 (form 태그로 감싸기)
-    const modifyFormHtml = `
-      <form class="replymodifyForm" method="post" action="/reply/modify/${replyId}/">
-        <input type="hidden" name="csrfmiddlewaretoken" value="${getCSRFToken()}">
-        <div class="modify_reply_write_area active">
-          <div class="modify_byte_check_wrap">
-            <textarea class="form_textarea reply_comments" name="replymodifycontent" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000">${originalText}</textarea>
-            <div class="modify_byte_check_footer">
-              <div class="modify_reply_byte_check">
-                <span class="count">${originalText.length}</span>
-                <span class="total">1000</span>
+      // 수정폼 HTML 생성 (form 태그로 감싸기)
+      const modifyFormHtml = `
+        <form class="replymodifyForm" method="post" action="/reply/modify/${replyId}/">
+          <input type="hidden" name="csrfmiddlewaretoken" value="${getCSRFToken()}">
+          <div class="modify_reply_write_area active">
+            <div class="modify_byte_check_wrap">
+              <textarea class="form_textarea reply_comments" name="replymodifycontent" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000">${originalText}</textarea>
+              <div class="modify_byte_check_footer">
+                <div class="modify_reply_byte_check">
+                  <span class="count">${originalText.length}</span>
+                  <span class="total">1000</span>
+                </div>
+              </div>
+            </div>
+            <div class="modify_btn_wrap_home">
+              <div class="modify_btn_wrap">
+                <button class="modify_btn_xs btn_primary cancle_btn" type="button" style="background: #636363; color: #fafafa;">
+                  <span class="modify_text" style="font-weight: 500;">취소</span>
+                </button>
+                <button class="modify_btn_xs btn_primary reply_btn" type="submit" disabled>
+                  <span class="modify_text" style="font-weight: 500;">등록</span>
+                </button>
               </div>
             </div>
           </div>
-          <div class="modify_btn_wrap_home">
-            <div class="modify_btn_wrap">
-              <button class="modify_btn_xs btn_primary cancle_btn" type="button" style="background: #636363; color: #fafafa;">
-                <span class="modify_text" style="font-weight: 500;">취소</span>
-              </button>
-              <button class="modify_btn_xs btn_primary reply_btn" type="submit" disabled>
-                <span class="modify_text" style="font-weight: 500;">등록</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-    `;
+        </form>
+      `;
 
-    // reply_contents 부분만 교체
-    replyContents.innerHTML = modifyFormHtml;
+      // reply_contents 부분만 교체
+      replyContents.innerHTML = modifyFormHtml;
 
-    // 이벤트 바인딩
-    setTimeout(() => {
-      const textarea = replyContents.querySelector('textarea.reply_comments');
-      const regBtn = replyContents.querySelector('.reply_btn');
-      const cancelBtn = replyContents.querySelector('.cancle_btn');
-      const countSpan = replyContents.querySelector('.count');
-      const form = replyContents.querySelector(".replymodifyForm");
+      // 이벤트 바인딩
+      setTimeout(() => {
+        const textarea = replyContents.querySelector('textarea.reply_comments');
+        const regBtn = replyContents.querySelector('.reply_btn');
+        const cancelBtn = replyContents.querySelector('.cancle_btn');
+        const countSpan = replyContents.querySelector('.count');
+        const form = replyContents.querySelector(".replymodifyForm");
 
-      textarea.addEventListener('input', function() {
-        const val = textarea.value.trim();
-        regBtn.disabled = val.length < 1;
-        regBtn.classList.toggle('disabled', val.length < 1);
-        countSpan.textContent = val.length;
-      });
+        textarea.addEventListener('input', function() {
+          const val = textarea.value.trim();
+          regBtn.disabled = val.length < 1;
+          regBtn.classList.toggle('disabled', val.length < 1);
+          countSpan.textContent = val.length;
+        });
 
-      cancelBtn.addEventListener('click', function() {
-        replyContents.innerHTML = originalHtml;
-      });
+        cancelBtn.addEventListener('click', function() {
+          replyContents.innerHTML = originalHtml;
+        });
 
-      // 폼 제출은 자동 (submit 버튼 클릭 시)
-      // 필요하면 form.addEventListener('submit', ...)에서 추가 검증 가능
-    }, 0);
+        // 폼 제출은 자동 (submit 버튼 클릭 시)
+        // 필요하면 form.addEventListener('submit', ...)에서 추가 검증 가능
+      }, 0);
+    }
+  });
+
+  // ==================== CSRF 토큰 함수 ====================
+  function getCSRFToken() {
+    const name = "csrftoken";
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        return decodeURIComponent(cookie.substring(name.length + 1));
+      }
+    }
+    return '';
   }
+
+  document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('.btn_view_img').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const url = btn.getAttribute('data-img-url');
+      if (url) window.open(url, '_blank');
+    });
+  });
 });
 
-// CSRF 토큰 함수
-function getCSRFToken() {
-  const name = "csrftoken";
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-      return decodeURIComponent(cookie.substring(name.length + 1));
-    }
-  }
-  return '';
-}

@@ -233,14 +233,12 @@
           </ul>
           <!-- 버튼 영역 -->
           <div class="right_area">
-            {% if member %}
             <button type="button"
             id="openReviewBtn"
             class="btn_sm btn_primary"
             data-book-id="{{ book.id }}"
-            data-member-id="{{ request.user.id }}"
+            data-member-id="{{ member.member_id }}"
             >
-            {% endif %}
             <span class="ico_review">
               <i class="fa-solid fa-pen-to-square" style="color: #fafafa;"></i>
             </span>
@@ -363,7 +361,8 @@
                                   {% for img in r.images.all %}
                                     <li class="swiper-slide">
                                       <div class="comment_img_box" style="background-image: url('{{ img.image.url }}');">
-                                        <button class="btn_view_img" type="button">
+                                        <button class="btn_view_img" type="button"
+                                        data-img-url="{{img.image.url}}">
                                           <img src="{{ img.image.url }}">
                                         </button>
                                       </div>
@@ -732,7 +731,7 @@
                               </div>
                             </div>
                             <div class="dialog_footer">
-                                <button class="btn_md btn_primary" id="review_btn" type="submit" disabled="">
+                                <button class="btn_md btn_primary" id="review_btn" type="button">
                                 <span class="text">등록</span>
                               </button>
                             </div>
@@ -899,7 +898,7 @@
                                 </div>
                               </div>
                               <div class="dialog_footer">
-                                  <button class="btn_md btn_primary" id="modify_btn" type="submit" disabled="">
+                                  <button class="btn_md btn_primary" id="modify_btn" type="button">
                                   <span class="text">수정</span>
                                 </button>
                               </div>

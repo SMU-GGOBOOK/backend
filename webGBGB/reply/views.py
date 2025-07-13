@@ -9,15 +9,8 @@ from review.models import Review
 def reply_create(request):
     if request.method == 'POST':
         member_id = request.session.get('user_id')
-        if not member_id:
-            messages.error(request, "로그인이 필요합니다.")
-            return redirect('/member/login/')
         
-        try:
-            member = Member.objects.get(id=member_id)  # Member 객체 가져오기
-        except Member.DoesNotExist:
-            messages.error(request, "회원 정보가 없습니다.")
-            return redirect('/member/login/')
+        member = Member.objects.get(id=member_id)  # Member 객체 가져오기
         
         review_id = request.POST.get('review_id')
         try:
@@ -51,9 +44,6 @@ def reply_create(request):
 
 def reply_delete(request, reply_id):
     user_id = request.session.get('user_id')
-    if not user_id:
-        messages.error(request, "로그인이 필요합니다.")
-        return redirect('/member/login/')
 
     member = Member.objects.get(id=user_id)
     reply = Reply.objects.get(reply_id=reply_id)
@@ -77,9 +67,6 @@ def reply_delete(request, reply_id):
         
 def reply_modify(request, reply_id):
     user_id = request.session.get('user_id')
-    if not user_id:
-        messages.error(request, "로그인이 필요합니다.")
-        return redirect('/member/login/')
 
     member = Member.objects.get(id=user_id)
     reply = Reply.objects.get(reply_id=reply_id)
