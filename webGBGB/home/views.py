@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from booksearch.models import Book
-from shareReading.models import ReadingGroup
+from shareMain.models import ReadingGroup
 from home.models import Mainbanner
 
 def index(request):
