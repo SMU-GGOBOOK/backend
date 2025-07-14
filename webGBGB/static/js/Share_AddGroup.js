@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tagLinks = document.querySelectorAll(".tags a"); // 추천 해시태그 리스트
     const addedTags = new Set();
     const MAX_TAGS = 8;
-    const HANGUL_REGEX = /^[가-힣]+$/;
+    const TAG_REGEX = /^[가-힣a-zA-Z0-9]+$/;  // 한글, 영어, 숫자만 입력 가능 (공백,특수문자 불가)
 
     function updateHiddenInput() {
         hiddenInput.value = Array.from(addedTags).join(",");
@@ -296,8 +296,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function addTagFromInput() {
         const value = tagInput.value.trim();
         if (!value) return;
-        if (!HANGUL_REGEX.test(value)) {
-            alert("한글만 입력 가능합니다.");
+        if (!TAG_REGEX.test(value)) {
+            alert("공백, 특수문자는 입력할 수 없습니다.");
             tagInput.value = "";
             return;
         }
