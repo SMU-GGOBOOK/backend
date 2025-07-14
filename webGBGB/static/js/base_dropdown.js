@@ -1,4 +1,3 @@
-
 function toggleDropdown(event) {
     event.preventDefault();
     const dropdown = document.getElementById('dropdownMenu');

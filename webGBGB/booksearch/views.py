@@ -116,6 +116,13 @@ def search(request):
     has_next_block = block_end < total_pages
     prev_block_page = block_start - 1
     next_block_page = block_end + 1
+    
+    print("page:", page)
+    print("total_pages:", total_pages)
+    print("block_start:", block_start)
+    print("block_end:", block_end)
+    print("has_prev_block:", has_prev_block)
+    print("has_next_block:", has_next_block)
 
     context = {
         'books': page_obj,
@@ -182,27 +189,19 @@ def detail(request, book_id):
         # 객체가 있을 때 처리
         pass
     
-    # --- 조회수 증가 및 쿠키 중복 방지 ---
-    user_identifier = request.META.get('REMOTE_ADDR', 'anonymous')
-    cookie_name = f'book_hit_{user_identifier}'
-    cookies = request.COOKIES.get(cookie_name, "")
-    cookies_list = cookies.split('|') if cookies else []
+    print("조회수 증가 book_id:", book.book_id)
+    updated = Book.objects.filter(book_id=book.book_id).update(views=F('views') + 1)
+    print("조회수 증가 update 결과:", updated)    
+    book.refresh_from_db()
 
-    # 오늘 밤 23:59:59까지 쿠키 유지
-    tomorrow = datetime.datetime.now().replace(hour=23, minute=59, second=59)
-    expires = tomorrow.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
+    page_str = request.GET.get('page', '1')
+    try:
+        page = int(page_str)
+    except (TypeError, ValueError):
+        page = 1
+    per_page = 5  # 한 페이지에 5개
+    block_size = 5 # 한 블록에 5페이지
 
-    if str(book.book_id) not in cookies_list:
-        Book.objects.filter(book_id=book.book_id).update(views=F('views') + 1)
-        cookies_list.append(str(book.book_id))
-        new_cookie_val = '|'.join(cookies_list)
-    else:
-        new_cookie_val = cookies
-    
-    page = int(request.GET.get('page',1))
-    per_page = 5
-    block_size = 5
-    
     paginator = Paginator(reviews_qs, per_page)
     page_obj = paginator.get_page(page)
     total_pages = paginator.num_pages
@@ -212,11 +211,18 @@ def detail(request, book_id):
     block_start = block_num * block_size + 1
     block_end = min(block_start + block_size - 1, total_pages)
     page_range = range(block_start, block_end + 1)
-    
+
     has_prev_block = block_start > 1
     has_next_block = block_end < total_pages
     prev_block_page = block_start - 1
     next_block_page = block_end + 1
+    
+    print("page:", page)
+    print("total_pages:", total_pages)
+    print("block_start:", block_start)
+    print("block_end:", block_end)
+    print("has_prev_block:", has_prev_block)
+    print("has_next_block:", has_next_block)
 
     # 북마크 여부 확인
     is_bookmarked = False
@@ -311,5 +317,4 @@ def detail(request, book_id):
         'reading_group':reading_group,
     }
     response = render(request, 'booksearch/bookdetail.html', context)
-    response.set_cookie(cookie_name, new_cookie_val, expires=expires)
     return response
