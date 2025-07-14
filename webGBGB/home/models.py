@@ -9,6 +9,7 @@ class Mainbanner(models.Model):
     mimg = models.ImageField(upload_to='mainBanner')
     primary = models.IntegerField(default=0)
     mdate = models.DateTimeField(auto_now=True)
+    murl = models.CharField(max_length=1000,default='#')
     
     def __str__(self):
         return f'{self.mno}, {self.mtitle}'

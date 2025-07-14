@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from booksearch.models import Book
-from shareReading.models import ReadingGroup
+from shareMain.models import ReadingGroup
 from home.models import Mainbanner
 
 def index(request):
     try:
-        pop_group = ReadingGroup.objects.all().order_by('-created_at')[:8]
+        pop_group = ReadingGroup.objects.filter(is_public=0).order_by('-created_at')[:8]
         review_top5 = Book.objects.all().order_by('-review_count')[:5]
         bookmark_top5 = Book.objects.all().order_by('-bookmark_count')[:5]
         views_top5 = Book.objects.all().order_by('-views')[:5]

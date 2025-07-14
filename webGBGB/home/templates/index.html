@@ -14,58 +14,66 @@
           {% for m in mainBanner%}
           <!-- 슬라이드 {{forloop.counter}} -->
           <div class="swiper-slide">
-            <div class='mainBanner__image' style="background-image:url('{{m.mimg.url}}')"></div>
-            <div class='mainBanner__imagewhite'></div>
-            <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.1)"></div>
-            <div class="mainBanner__center">
-              <div class="mainBanner__center__text">
-                <div class="mainBanner__center__title">{{m.mtitle}}<br>{{m.mtitle2}}</div>
-                <div class="mainBanner__center__subtitle">{{m.msubtitle}}<br>{{m.msubtitle2}}</div>
+            <a href='{{m.murl}}'>
+              <div class='mainBanner__image' style="background-image:url('{{m.mimg.url}}')"></div>
+              <div class='mainBanner__imagewhite'></div>
+              <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.1)"></div>
+              <div class="mainBanner__center">
+                <div class="mainBanner__center__text">
+                  <div class="mainBanner__center__title">{{m.mtitle}}<br>{{m.mtitle2}}</div>
+                  <div class="mainBanner__center__subtitle">{{m.msubtitle}}<br>{{m.msubtitle2}}</div>
+                </div>
+                <div class='mainBanner__bookcover'><img src="{{m.mimg.url}}"></div>
               </div>
-              <div class='mainBanner__bookcover'><img src="{{m.mimg.url}}"></div>
-            </div>
+            </a>
           </div>
           {% endfor %}
           {% else %}
           <!-- 슬라이드 1 -->
           <div class="swiper-slide">
-            <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_1.jpg')"></div>
-            <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
-            <div class='mainBanner__imagewhite'></div>
-            <div class="mainBanner__center">
-              <div class="mainBanner__center__text">
-                <div class="mainBanner__center__title">내일 모든 걸 잊는다 해도<br> 가장 행복한 '오늘'을 줄게</div>
-                <div class="mainBanner__center__subtitle">레이디 그레이<br>잊지 못할 여름향기</div>
+            <a href="#">
+              <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_1.jpg')"></div>
+              <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
+              <div class='mainBanner__imagewhite'></div>
+              <div class="mainBanner__center">
+                <div class="mainBanner__center__text">
+                  <div class="mainBanner__center__title">내일 모든 걸 잊는다 해도<br> 가장 행복한 '오늘'을 줄게</div>
+                  <div class="mainBanner__center__subtitle">레이디 그레이<br>잊지 못할 여름향기</div>
+                </div>
+                <div class='mainBanner__bookcover'><img src="/static/images/home/banner_1.jpg"></div>
               </div>
-              <div class='mainBanner__bookcover'><img src="/static/images/home/banner_1.jpg"></div>
-            </div>
+            </a>
           </div>
           <!-- 슬라이드 2 -->
           <div class="swiper-slide">
-            <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_2.jpg')"></div>
-            <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
-            <div class='mainBanner__imagewhite'></div>
-            <div class="mainBanner__center">
-              <div class="mainBanner__center__text">
-                <div class="mainBanner__center__title">똘병이의 스타성...<br>성공한 인형 똘병이</div>
-                <div class="mainBanner__center__subtitle">똘병이가 좋아 내가 좋아?<br>불닭볶음면 닭 아닙니다</div>
+            <a href='#'>
+              <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_2.jpg')"></div>
+              <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
+              <div class='mainBanner__imagewhite'></div>
+              <div class="mainBanner__center">
+                <div class="mainBanner__center__text">
+                  <div class="mainBanner__center__title">똘병이의 스타성...<br>성공한 인형 똘병이</div>
+                  <div class="mainBanner__center__subtitle">똘병이가 좋아 내가 좋아?<br>불닭볶음면 닭 아닙니다</div>
+                </div>
+                <div class='mainBanner__bookcover'><img src="/static/images/home/banner_2.jpg"></div>
               </div>
-              <div class='mainBanner__bookcover'><img src="/static/images/home/banner_2.jpg"></div>
-            </div>
+            </a>
           </div>
           
           <!-- 슬라이드 3 -->
           <div class="swiper-slide">
-            <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_3.jpg')"></div>
-            <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
-            <div class='mainBanner__imagewhite'></div>
-            <div class="mainBanner__center">
-              <div class="mainBanner__center__text">
-                  <div class="mainBanner__center__title">'어떻게 성공할 것이냐'에서<br> '어떻게 살 것이냐'로</div>
-                  <div class="mainBanner__center__subtitle">삶은 성공이 아닌 성장의 이야기다<br>'리틀 미'의 가치를 되새기는 여정 </div>
-                </div>
-                <div class='mainBanner__bookcover'><img src="/static/images/home/banner_3.jpg"></div>
-            </div>
+            <a href='#'>
+              <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_3.jpg')"></div>
+              <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
+              <div class='mainBanner__imagewhite'></div>
+              <div class="mainBanner__center">
+                <div class="mainBanner__center__text">
+                    <div class="mainBanner__center__title">'어떻게 성공할 것이냐'에서<br> '어떻게 살 것이냐'로</div>
+                    <div class="mainBanner__center__subtitle">삶은 성공이 아닌 성장의 이야기다<br>'리틀 미'의 가치를 되새기는 여정 </div>
+                  </div>
+                  <div class='mainBanner__bookcover'><img src="/static/images/home/banner_3.jpg"></div>
+              </div>
+            </a>
           </div>
           {% endif %}
         </div>
@@ -116,70 +124,17 @@
             </div>
           {% endfor %}
           {% else %}
+          {% for i in "x"|rjust:"8" %}
             <div class="feed__join_body_item">
                 <div class="join_body_item_book">
-                    <img src="/static/images/home/exchange_1.jpg" alt="[예술과 중력가속도] 낙하 끝의 비상">
+                    <img src="/static/images/Illustration28.png" alt="[꼬북꼬북] 교환독서 그룹 준비중">
                 </div>
                 <div class="join_body_item_groupName">
-                    [예술과 중력가속도] 낙하 끝의 비상
+                    [꼬북꼬북] 교환독서 그룹 준비중
+                    
                 </div>
             </div>
-            <div class="feed__join_body_item">
-                <div class="join_body_item_book">
-                    <img src="/static/images/home/exchange_2.jpg" alt="[7인의 집행관] 당신은 유죄인가?">
-                </div>
-                <div class="join_body_item_groupName">
-                    [7인의 집행관] 당신은 유죄인가?
-                </div>
-            </div>
-            <div class="feed__join_body_item">
-                <div class="join_body_item_book">
-                    <img src="/static/images/home/exchange_3.jpg" alt="[도리언 그레이의 초상] 현대 루키즘">
-                </div>
-                <div class="join_body_item_groupName">
-                    [도리언 그레이의 초상] 현대 루키즘
-                </div>
-            </div>
-            <div class="feed__join_body_item">
-                <div class="join_body_item_book">
-                    <img src="/static/images/home/exchange_4.jpg" alt="유령해마">
-                </div>
-                <div class="join_body_item_groupName">
-                    유령해마
-                </div>
-            </div>
-            <div class="feed__join_body_item">
-                <div class="join_body_item_book">
-                    <img src="/static/images/home/exchange_5.jpg" alt="외계인으로부터지구를지키는101가지방법">
-                </div>
-                <div class="join_body_item_groupName">
-                    외계인으로부터지구를지키는101...
-                </div>
-            </div>
-            <div class="feed__join_body_item">
-                <div class="join_body_item_book">
-                    <img src="/static/images/home/exchange_6.jpg" alt="[종의 기원담] 우리는 어디에서 오는가">
-                </div>
-                <div class="join_body_item_groupName">
-                  [종의 기원담] 우리는 어디에서 오는...
-                </div>
-            </div>
-            <div class="feed__join_body_item">
-                <div class="join_body_item_book">
-                    <img src="/static/images/home/exchange_7.jpg" alt="지옥행급행열차출발합니다">
-                </div>
-                <div class="join_body_item_groupName">
-                  지옥행급행열차출발합니다
-                </div>
-            </div>
-            <div class="feed__join_body_item">
-                <div class="join_body_item_book">
-                    <img src="/static/images/home/exchange_8.jpg" alt="[이방인] 카뮈가 말하는 부조리">
-                </div>
-                <div class="join_body_item_groupName">
-                  [이방인] 카뮈가 말하는 부조리
-                </div>
-            </div>
+            {% endfor %}
           {% endif %}
         </div>
     </div>
@@ -194,6 +149,7 @@
     <div class="CIirP0cq">
       <div class="listWrapper">
         <ul>
+          {% if review %}
           {% for r in review %}
           <li class="w_exposed_cell">
             <a title="{{r.title}}">
@@ -208,7 +164,22 @@
             </a>
           </li>
           {% endfor %}
-
+          {% else %}
+          {% for i in "x"|rjust:"5" %}
+          <li class="w_exposed_cell">
+            <a title="준비중입니다">
+              <div class="book-cover-container">
+                <a><img class='book__cover' alt="준비중입니다" src="/static/images/Illustration28.png"></a>
+                <div class="rank">{{forloop.counter}}</div>
+              </div>
+              <div class="bVUVO8nJ">
+                <div class="book__title">준비중입니다</div>
+                <div class="rating"><i class="fa-solid fa-comment-dots"></i>0</div>
+              </div>
+            </a>
+          </li>
+          {% endfor %}
+          {% endif %}
         </ul>
       </div>
     </div>
@@ -220,7 +191,7 @@
     <div class="CIirP0cq">
       <div class="listWrapper">
         <ul>
-
+          {% if views %}
           {% for v in views %}
           <li class="w_exposed_cell">
             <a title="{{v.title}}">
@@ -235,6 +206,22 @@
             </a>
           </li>
           {% endfor %}
+          {% else %}
+          {% for i in "x"|rjust:"5" %}
+          <li class="w_exposed_cell">
+            <a title="준비중입니다">
+              <div class="book-cover-container">
+                <a><img class='book__cover' alt="준비중입니다" src="/static/images/Illustration28.png"></a>
+                <div class="rank">{{forloop.counter}}</div>
+              </div>
+              <div class="bVUVO8nJ">
+                <div class="book__title">준비중입니다</div>
+                <div class="rating"><i class="fa-solid fa-chart-simple"></i>0</div>
+              </div>
+            </a>
+          </li>
+          {% endfor %}
+          {% endif %}
 
         </ul>
       </div>
@@ -246,7 +233,7 @@
     <div class="CIirP0cq">
       <div class="listWrapper">
         <ul>
-
+          {% if bookmark %}
           {% for b in bookmark %}
           <li class="w_exposed_cell">
             <a title="{{b.title}}">
@@ -261,6 +248,22 @@
             </a>
           </li>
           {% endfor %}
+          {% else %}
+          {% for i in "x"|rjust:"5" %}
+          <li class="w_exposed_cell">
+            <a title="준비중입니다">
+              <div class="book-cover-container">
+                <a><img class='book__cover' alt="준비중입니다" src="/static/images/Illustration28.png"></a>
+                <div class="rank">{{forloop.counter}}</div>
+              </div>
+              <div class="bVUVO8nJ">
+                <div class="book__title">준비중입니다</div>
+                <div class="rating"><i class="fa-solid fa-bookmark"></i>0</div>
+              </div>
+            </a>
+          </li>
+          {% endfor %}
+          {% endif %}
 
         </ul>
       </div>

@@ -28,14 +28,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'base',
     'home',
-    'cscenter',
-    'booksearch',
     'bookmark',
-    'review',
-    'reply',
+    'booksearch',
+    'cscenter',
     'member',
-    'shareReading',
     'mypage',
+    'reply',
+    'review',
+    'shareMain',
 
 ]
 
