@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-4&bajmgb*6@9r6c*65ld)g8g$l^m4auauv0b%00651gh(6!dl4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -27,8 +27,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base',
-    
-
+    'home',
+    'cscenter',
+    'booksearch',
+    'bookmark',
+    'review',
+    'member',
+    'mypage',
+    'shareMain',
+    'reply',
+    'chart',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +76,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'OPTIONS' : {
+            'timeout' : 10,
+        }
     }
 }
 
