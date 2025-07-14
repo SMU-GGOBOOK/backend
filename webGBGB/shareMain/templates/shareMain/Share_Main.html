@@ -103,7 +103,9 @@
                     <!-- -->
                 </div>
                 <div class="feed__preview_book">
-                    <img src="{{ group.book.cover }}" alt="책 이미지"/>
+                    <a href="/booksearch/detail/{{group.book.book_id}}">
+                        <img src="{{ group.book.cover }}" alt="책 이미지"/>
+                    </a>
                 </div>
             </div>
             {% endfor %}
