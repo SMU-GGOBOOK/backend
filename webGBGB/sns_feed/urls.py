@@ -14,9 +14,9 @@ urlpatterns = [
     path('posts/<int:post_pk>/comments/', CommentListView.as_view(), name='comment-list'),
     path('profile/upload/', ProfileUploadView.as_view(), name='profile-upload'), # 프로필 업로드
 
-    # GroupChatRoom 관련 API
-    path('chatroom/<int:pk>/', ChatRoomDetailView.as_view(), name='chatroom-detail'),
-    path('chatroom/<int:pk>/join/', ChatRoomJoinView.as_view(), name='chatroom-join'),
+    # # GroupChatRoom 관련 API
+    # path('chatroom/<int:pk>/', ChatRoomDetailView.as_view(), name='chatroom-detail'),
+    # path('chatroom/<int:pk>/join/', ChatRoomJoinView.as_view(), name='chatroom-join'),
 
     # 앱 내에서 HTML 뷰를 직접 라우팅할 경우
     # path('sns/', sns_html_view, name='sns-page'),
