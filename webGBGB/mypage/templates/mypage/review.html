@@ -18,7 +18,7 @@
         <!--카테고리 바뀐부분 시작-->
           <div class="left_side">
               <ul class="category">
-                <li class="icon checked"><a href='{% url "mypage:review" %}'><i class="fa-solid fa-book"></i>내 리뷰<span>({{my_review_count}})</span></a></li>
+                <li class="icon checked"><a href='{% url "mypage:review" %}'><i class="fa-solid fa-book"></i>내 리뷰<span id="my_review_count">({{my_review_count}})</span></a></li>
                 <li class="icon"><a href='{% url "mypage:Bmark" %}'><i class="fa-solid fa-book-bookmark"></i>북마크<span>({{my_bookmark_count}})</span></a></li>
                 <li class="icon"><a href='{% url "mypage:mygroup" %}'><i class="fa-solid fa-rotate"></i>교환독서<span>({{my_group_count}})</span></a></li>
               </ul>
@@ -38,7 +38,7 @@
                     <div class="user_name">
                       <span><!--<i class="fa-solid fa-user-lock"></i>*-->차단한 사용자</span>
                       <span class="user_name_gap"> | </span>
-                      <span>정보수정 · 계정삭제</span>
+                      <a href='{% url "member:member_update" user_id %}'><span>정보수정 · 계정삭제</span></a>
                     </div> 
                 </div>
               </div>
@@ -48,9 +48,7 @@
                       <!--여기에 북디테일 html 연결-->
                       
                     {% for r in reviews %}
-                      <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" 
-                      data-reviewtitle="{{ r.book_id.title }}"  data-reviewauthor="{{ r.book_id.author }}"
-                      data-id="{{r.review_id}}">
+                      <div class="comment_item{% if r.images.exists or r.content|length > 150 %} overflow{% endif %}" data-id="{{r.review_id}}" data-book-id="{{ r.book_id.book_id }}">
                         <div class="comment_all">
                           <div class="comment_header">
                             <div class="left_area">
@@ -167,7 +165,7 @@
                           </div>
                           <div class="comment_footer">
                             <div class="comment_util_box">
-                              <button class="btn_more_body" type="button" data-btn-toggle="">
+                              <button class="btn_more_body" type="button" data-btn-toggle style="display: block;">
                                 <span class="text">펼치기</span>
                                 <span class="ico_arw">
                                   <i class="fa-solid fa-circle-arrow-down"></i>
@@ -175,7 +173,7 @@
                               </button>
                               <div class="right_area">
                                 <button class="btn_like" type="button">
-                                  <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
+                                  <i class="fa-regular fa-thumbs-up"  aria-hidden="true"></i>
                                   <span class="text">{{r.likes}}</span>
                                 </button>
                                 <button class="btn_reply" type="button">
@@ -599,82 +597,95 @@
                         </div> {% endcomment %}
                 </div>
               </div>
-
-
-              
+            
             <!-- paginator -->
             <div class="pg-container">
               <div class="paginator">
-                  <!-- 첫 페이지, 이전 페이지 버튼 -->
-                  <div class="pg-btns">
-                      <button disabled>
+
+                <!-- 첫 페이지, 이전 페이지 버튼 -->
+                <div class="pg-btns">
+                  {% if reviews.has_previous %}
+                    <a href="?page=1">
+                      <button>
+                        <!-- << 아이콘 -->
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
-                            <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+                          <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+                          <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
                         </svg>
                       </button>
-                      <button disabled>
+                    </a>
+                    <a href="?page={{ reviews.previous_page_number }}">
+                      <button>
+                        <!-- < 아이콘 -->
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+                          <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
                         </svg>
                       </button>
-                  </div>
+                    </a>
+                  {% else %}
+                    <button disabled>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M21.9323 22.5362C22.6042 21.8162 22.6042 20.7122 21.8842 20.0162L13.5562 12.0002L23.1562 2.76019L21.4762 1.00819L10.0282 12.0002L21.4763 22.9922L21.9323 22.5122L21.9323 22.5362Z" fill="currentColor"/>
+                        <path d="M12.4786 22.5362C13.1506 21.8162 13.1506 20.7122 12.4306 20.0162L4.10256 12.0002L13.7266 2.76019L12.0466 1.00819L0.598563 12.0002L12.0226 22.9922L12.4786 22.5122L12.4786 22.5362Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                    <button disabled>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% endif %}
+                </div>
 
-                  <!-- 페이지 번호 -->
-                  {% comment %} <div class="pg-numbers">
-                      <a class="active">1</a>
-                      <a>2</a>
-                      <a>3</a>
-                      <a>4</a>
-                      <a>5</a>
-                      <a>6</a>
-                  </div> {% endcomment %}
-
-                  <div class="pg-numbers">
-                    {% if reviews.has_previous %}
-                      <a href='?page=1'><li class="first"></li></a>
-                      <a href='?page={{ reviews.previous_page_number }}'><li class="prev"></li></a>
+                <!-- 페이지 번호들 -->
+                <div class="pg-numbers">
+                  {% for p in reviews.paginator.page_range %}
+                    {% if reviews.number == p %}
+                      <a href="?page={{ p }}" class="active">{{ p }}</a>
                     {% else %}
-                      <li class="first"></li>
-                      <li class="prev"></li>
+                      <a href="?page={{ p }}">{{ p }}</a>
                     {% endif %}
+                  {% endfor %}
+                </div>
 
-                    {% for p in reviews.paginator.page_range %}
-                      {% if page != p %}
-                        <a href='?page={{p}}'>
-                          <li class="num"><div>{{p}}</div></li>
-                        </a>
-                      {% else %}
-                        <li class="num on"><div>{{p}}</div></li>
-                      {% endif %}
-                    {% endfor %}
-
-                    {% if reviews.has_next %}
-                      <a href='?page={{ reviews.next_page_number }}'><li class="next"></li></a>
-                      <a href='?page={{ reviews.paginator.num_pages }}'><li class="last"></li></a>
-                    {% else %}
-                      <li class="next"></li>
-                      <li class="last"></li>
-                    {% endif %}
-                  </div>
-
-                  <!-- 다음 페이지, 마지막 페이지 버튼 -->
-                  <div class="pg-btns">
-                      <button disabled>
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                              <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
-                          </svg>
+                <!-- 다음 페이지, 마지막 페이지 버튼 -->
+                <div class="pg-btns">
+                  {% if reviews.has_next %}
+                    <a href="?page={{ reviews.next_page_number }}">
+                      <button>
+                        <!-- > 아이콘 -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+                        </svg>
                       </button>
-                      <button disabled>
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                              <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
-                              <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
-                          </svg>
+                    </a>
+                    <a href="?page={{ reviews.paginator.num_pages }}">
+                      <button>
+                        <!-- >> 아이콘 -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+                          <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+                        </svg>
                       </button>
-                  </div>
+                    </a>
+                  {% else %}
+                    <button disabled>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                    <button disabled>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M2.06775 1.46381C1.39575 2.18381 1.39575 3.28781 2.11575 3.98381L10.4437 11.9998L0.84375 21.2398L2.52375 22.9918L13.9718 11.9998L2.52375 1.00781L2.06775 1.48781V1.46381Z" fill="currentColor"/>
+                        <path d="M11.5214 1.46381C10.8494 2.18381 10.8494 3.28781 11.5694 3.98381L19.8974 11.9998L10.2734 21.2398L11.9534 22.9918L23.4014 11.9998L11.9774 1.00781L11.5214 1.48781V1.46381Z" fill="currentColor"/>
+                      </svg>
+                    </button>
+                  {% endif %}
+                </div>
+
               </div>
             </div>
-            <!--paginator 끝-->
+            <!-- paginator 끝 -->
                   
           </div>
       </nav>

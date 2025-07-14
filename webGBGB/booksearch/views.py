@@ -2,45 +2,46 @@ from django.shortcuts import render, redirect
 import requests
 from bs4 import BeautifulSoup
 from booksearch.models import Book
-from review.models import Review
+from review.models import Review, ReviewLike
 from reply.models import Reply
 from member.models import Member
 import urllib.parse
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from django.db.models import Q
+from django.db.models import F, Q
 from django.core.paginator import Paginator
 import traceback
 from django.contrib import messages
+from shareMain.models import ReadingGroup
+import datetime
+import html
 
 
 def search(request):
     query = request.GET.get('query', '').strip() or '파이썬'
     query_lower = query.lower()
-    books = []
     total_count = 0
 
-    try:
-        member_id = request.session.get('user_id')
-        member = Member.objects.get(id=member_id)
-    except:
-        messages.error(request, "로그인이 필요합니다.")
-        return redirect('/member/login/')
-    
+    member_id = request.session.get('user_id')
+    member = None
     bookmarks = set()
-    if member:
-        from bookmark.models import Bookmark
-        bookmarks = set(
-            Bookmark.objects.filter(member_id=member.member_id)
-            .values_list('book_id', flat=True)
-        )
+    if member_id:
+        try:
+            member = Member.objects.get(id=member_id)
+            from bookmark.models import Bookmark
+            bookmarks = set(
+                Bookmark.objects.filter(member_id=member.member_id)
+                .values_list('book_id', flat=True)
+            )
+        except Member.DoesNotExist:
+            member = None
 
     # 1. API로 검색 결과 받아오기
     headers = {
         "Authorization": "KakaoAK 5262b6fed76275833a5b8806921d6af1"
     }
     max_apipage = 2
-    
+
     for apipage in range(1, max_apipage + 1):
         params = {
             "query": query,
@@ -57,9 +58,9 @@ def search(request):
         documents = data.get('documents', [])
 
         for doc in documents:
-            title = doc.get('title', '')
-            author = ", ".join(doc.get('authors', []))
-            publisher = doc.get('publisher', '')
+            title = html.unescape(doc.get('title', ''))
+            author = html.unescape(", ".join(doc.get('authors', [])))
+            publisher = html.unescape(doc.get('publisher', ''))
             thumbnail_url = doc.get('thumbnail', '')
             book_url = doc.get('url', '')
 
@@ -73,8 +74,7 @@ def search(request):
             pub_date = pub_date_raw[:10] if pub_date_raw else None
 
             isbn_raw = doc.get('isbn', '')
-            isbn_parts = isbn_raw.split() if isbn_raw else []
-            isbn = isbn_parts[-1] if isbn_parts else ''
+            isbn = isbn_raw.split()[-1] if isbn_raw else "정보없음"
 
             # 2. title 또는 author에 쿼리 포함되는 경우만 DB에 저장
             if query_lower in title.lower() or query_lower in author.lower():
@@ -90,7 +90,6 @@ def search(request):
                     )
         if data.get('meta', {}).get('is_end'):
             break
-        apipage += 1
 
     # 2. Book DB에서 쿼리로 contains 검색
     book_qs = Book.objects.filter(
@@ -112,7 +111,7 @@ def search(request):
     block_start = block_num * block_size + 1
     block_end = min(block_start + block_size - 1, total_pages)
     page_range = range(block_start, block_end + 1)
-    
+
     has_prev_block = block_start > 1
     has_next_block = block_end < total_pages
     prev_block_page = block_start - 1
@@ -133,12 +132,29 @@ def search(request):
         'has_next_block': has_next_block,
         'prev_block_page': prev_block_page,
         'next_block_page': next_block_page,
+        'member': member,  # 로그인 여부를 템플릿에서 확인 가능
     }
 
     return render(request, 'booksearch/booksearch.html', context)
 
 def detail(request, book_id):
     print("넘어온 book_id : ", book_id)
+
+    member_id = request.session.get('user_id')
+    member = None
+
+    bookmarks = set()
+    if member_id:
+        try:
+            member = Member.objects.get(id=member_id)
+            from bookmark.models import Bookmark
+            bookmarks = set(
+                Bookmark.objects.filter(member_id=member.member_id)
+                .values_list('book_id', flat=True)
+            )
+        except Member.DoesNotExist:
+            member = None
+
     try:
         book = Book.objects.get(book_id=book_id)
     except Book.DoesNotExist:
@@ -149,7 +165,39 @@ def detail(request, book_id):
         r.rating_percent = r.rating * 20
         r.reply_list = Reply.objects.filter(review_id=r).order_by('created_at')
         
+    user_liked_review_ids = set()
+    if member:
+        user_liked_review_ids = set(
+            ReviewLike.objects.filter(member_id=member).values_list('review_id', flat=True)
+        )
+
+
     total_count = reviews_qs.count()
+    
+    reading_group = ReadingGroup.objects.filter(book_id=book_id).order_by('-created_at')[:5]
+    if reading_group is None:
+        # 원하는 처리 (예: None 처리)
+        pass
+    else:
+        # 객체가 있을 때 처리
+        pass
+    
+    # --- 조회수 증가 및 쿠키 중복 방지 ---
+    user_identifier = request.META.get('REMOTE_ADDR', 'anonymous')
+    cookie_name = f'book_hit_{user_identifier}'
+    cookies = request.COOKIES.get(cookie_name, "")
+    cookies_list = cookies.split('|') if cookies else []
+
+    # 오늘 밤 23:59:59까지 쿠키 유지
+    tomorrow = datetime.datetime.now().replace(hour=23, minute=59, second=59)
+    expires = tomorrow.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
+
+    if str(book.book_id) not in cookies_list:
+        Book.objects.filter(book_id=book.book_id).update(views=F('views') + 1)
+        cookies_list.append(str(book.book_id))
+        new_cookie_val = '|'.join(cookies_list)
+    else:
+        new_cookie_val = cookies
     
     page = int(request.GET.get('page',1))
     per_page = 5
@@ -172,13 +220,6 @@ def detail(request, book_id):
 
     # 북마크 여부 확인
     is_bookmarked = False
-    try:
-        member_id = request.session.get('user_id')
-        member = Member.objects.get(id=member_id)
-    except:
-        messages.error(request, "로그인이 필요합니다.")
-        return redirect('/member/login/')
-    
     if member:
         from bookmark.models import Bookmark
         is_bookmarked = Bookmark.objects.filter(book_id=book, member_id=member.member_id).exists()
@@ -205,7 +246,7 @@ def detail(request, book_id):
                 soup = BeautifulSoup(browser.page_source, "lxml")
                 browser.quit()
 
-                page_rv, size_rv = None, None
+                page_rv, size_rv = "정보없음","정보없음"
 
                 data = soup.find("div", class_="wrap_cont")
                 if not data:
@@ -218,12 +259,10 @@ def detail(request, book_id):
                         dd = dl.find("dd", class_="cont")
                         if dd:
                             # 페이지수 추출
-                            text = dd.get_text(" ", strip=True)
-                            parts = text.split('|')
-                            page_rv = parts[0].strip() if parts else None
+                            page_rv = dd.get_text(" ", strip=True).split('|')[0].strip()
                             # 판형(사이즈) 추출
                             size_span = dd.find("span", class_="txt_tag")
-                            size_rv = size_span.next_sibling.strip() if size_span and size_span.next_sibling else None
+                            size_rv = size_span.next_sibling.strip() if size_span and size_span.next_sibling else "정보없음"
                         break  # 찾았으면 반복 종료
 
             except Exception as e:
@@ -234,7 +273,7 @@ def detail(request, book_id):
             updated = False
             if page_rv:
                 try:
-                    book.page = int(page_rv)
+                    book.page = page_rv
                     updated = True
                 except ValueError:
                     pass
@@ -253,7 +292,7 @@ def detail(request, book_id):
     context = {
         'book': book,
         'reviews': page_obj,
-        'is_bookmarked': is_bookmarked,
+        'bookmarks': bookmarks,
         'total_count': f"{total_count:,}",
         'average':average,
         'average_percent':average_percent,
@@ -267,6 +306,10 @@ def detail(request, book_id):
         'has_next_block': has_next_block,
         'prev_block_page': prev_block_page,
         'next_block_page': next_block_page,
+        'member': member,
+        'user_liked_review_ids': user_liked_review_ids,
+        'reading_group':reading_group,
     }
-    return render(request, 'booksearch/bookdetail.html', context)
-
+    response = render(request, 'booksearch/bookdetail.html', context)
+    response.set_cookie(cookie_name, new_cookie_val, expires=expires)
+    return response

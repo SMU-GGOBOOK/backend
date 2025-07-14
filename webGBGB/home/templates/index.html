@@ -112,8 +112,8 @@
             <span>최신 교환독서 그룹</span>
         </div>
         <div class="feed__join_body">
-          {% if sharegroup %}
-          {% for s in sharegroup %}
+          {% if shareMain %}
+          {% for s in shareMain %}
             <div class="feed__join_body_item">
                 <div class="join_body_item_book">
                     <a href='#'><img src="{{s.book.cover}}" alt="{{s.group_name}}"></a>

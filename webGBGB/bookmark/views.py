@@ -11,9 +11,6 @@ import json
 def bookmark_create(request):
     # 1. 로그인 체크
     member_id = request.session.get('user_id')
-    if not member_id:
-        return JsonResponse({'error': '로그인이 필요합니다.'}, status=401)
-    
     try:
         member = Member.objects.get(id=member_id)
     except Member.DoesNotExist:

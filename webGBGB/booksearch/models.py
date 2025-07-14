@@ -9,9 +9,9 @@ class Book(models.Model):
     author = models.CharField(max_length=1000)  # 저자 (리스트는 문자열로 저장)
     publisher = models.CharField(max_length=500) # 출판사
     pub_date = models.CharField(max_length=500) # 출판일
-    ISBN = models.CharField(max_length=500, null=True, blank=True) # ISBN
-    page = models.IntegerField(default=0) # 쪽수
-    size = models.CharField(max_length=500, null=True, blank=True) # 크기
+    ISBN = models.CharField(max_length=500) # ISBN
+    page = models.CharField(max_length=500) # 쪽수
+    size = models.CharField(max_length=500, blank=True) # 크기
     review_count = models.IntegerField(default=0) # 리뷰 수
     bookmark_count = models.IntegerField(default=0) # 북마크 수
     rating = models.IntegerField(default=0) # 평점

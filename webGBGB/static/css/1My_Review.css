@@ -335,10 +335,10 @@ padding: 20px 0;
     border-radius: 6px 0 0 0;
     box-sizing: border-box;
 }
-img {
+.fig-main img {
     vertical-align: middle;
     border-radius: 7px;
-    box-shadow: 0 4px 4px #797e8480;
+    /* box-shadow: 0 4px 4px #797e8480; */
 }
 img, fieldset {
     border: 0;
@@ -548,7 +548,7 @@ font-size: 0;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 18px 18px;
-    background-image: url(../images/ico_star_nonecilck.svg);
+    background-image: url(/static/images/booksearch/ico_star_nonecilck.svg);
 }
 
 .rating-container .filled-stars {
@@ -579,7 +579,7 @@ font-size: 0;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 18px 18px;
-    background-image: url(../images/ico_star_cilck.svg);
+    background-image: url(/static/images/booksearch/ico_star_cilck.svg);
 }
 
 .rating-input {
@@ -605,7 +605,7 @@ font-size: 0;
     width: 4px;
     height: 8px;
     margin: 6px 6px 0;
-    background: url(../images/ico_slash@2x.png) 0% 0% no-repeat;
+    background: url(/static/images/booksearch/ico_slash@2x.png) 0% 0% no-repeat;
     background-size: 4px 8px;
     vertical-align: top;
 }
@@ -665,8 +665,8 @@ button[class^=btn_], a[class^=btn_] {
 font-size: 13px;
 padding: 6px 12px;
 border-radius: 7px;
-background-color: #f0f0f0;
-color: #1a1a1a;
+/* background-color: #f0f0f0; */
+color: #636363;
 border: none;
 cursor: pointer;
 transition: background 0.2s;
@@ -676,7 +676,7 @@ button[class^=btn_] .text, a[class^=btn_] .text {
     display: inline-block;
     position: relative;
     vertical-align: top;
-    color: #1a1a1a;
+    color: #;
 }
 
 button[class^=btn_] [class^=ico_], a[class^=btn_] [class^=ico_] {
@@ -694,7 +694,8 @@ button[class^=btn_] [class^=ico_], a[class^=btn_] [class^=ico_] {
     margin-left: 4px;
 }
 .btn_more_body {
-    color: #767676;
+     background: transparent !important;
+    color: #636363;
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.01em;

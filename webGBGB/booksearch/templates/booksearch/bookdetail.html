@@ -9,17 +9,12 @@
 <link rel="stylesheet" href="/static/css/reply.css"/>
 <link rel="stylesheet" href="/static/css/review.css"/>
 <link rel="stylesheet" href="/static/css/paginator.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta name='csrf-token' content={{ csrf_token }} />
+
 {% endblock %}
 
 {% block content %}
-{% if messages %}
-  <script>
-    {% for message in messages %}
-      alert("{{ message|escapejs }}");
-    {% endfor %}
-  </script>
-{% endif %}
-
     <!-- 상단 -->
     <div class="book-inform-wrap">
       <ng-component class="ng-star-inserted">
@@ -33,7 +28,9 @@
                     <div class="left overflow-box">
                       <!-- 도서 표지 -->
                       <div class="cover-box">
-                        <img class="cover" src="{{book.cover}}" alt="{{book.title}}" style="width: 110%">
+                        <img class="cover" src="{{book.cover}}" 
+                        onerror="this.onerror=null;this.src='/static/image/booksearch/defaultimg.png';" 
+                        alt="{{book.title}}" style="width: 110%">
                       </div>
                     </div>
                     <div class="right">
@@ -41,13 +38,16 @@
                         <!-- 도서 제목 -->
                         <div class="title">
                           <h1>{{book.title}}</h1>
-                          <button onclick="toggleBookmark(this)" 
-                            class="bookmarkBtn{% if is_bookmarked %} active{% endif %}" data-book-id="{{ book.book_id }}">
-                            <i class="fa-{% if is_bookmarked %}solid{% else %}regular{% endif %} fa-bookmark"></i>
-                          </button>
+                          {% if member %}
+                            <button onclick="toggleBookmark(this)" 
+                              class="bookmarkBtn {% if book.book_id in bookmarks %} active{% endif %}" 
+                              data-book-id="{{ book.book_id }}">
+                              <i class="fa-{% if book.book_id in bookmarks %}solid{% else %}regular{% endif %} fa-bookmark"></i>
+                            </button>
+                          {% endif %}
 
+                          </div>
                           <hr>
-                        </div>
                         <!-- 도서 상세정보 -->
                         <div class="tbl_row_wrap">
                           <table class="tbl_row">
@@ -73,7 +73,7 @@
                               </tr>
                               <tr>
                                 <th scope="row">쪽수</th>
-                                <td>{{book.page}}p</td>
+                                <td>{{book.page}}</td>
                               </tr>
                               <tr>
                                 <th scope="row">크기</th>
@@ -145,10 +145,6 @@
                                   tabindex="-1">
                                   <span class="review_desc">(<span class="val">{{book.review_count}}</span>개의 리뷰)</span>
                                 </div>
-                                <div class="col_review">
-                                  <span class="review_quotes_text">재밌어요</span>
-                                  <span class="review_desc">(<span class="val">90%</span>의 구매자)</span>
-                                </div>
                               </div>
                             </div>
                           </div>
@@ -175,54 +171,37 @@
       <!-- 독서 그룹 영역 -->
       <div class="feed__content">
         <div class="chart_sReading_container sReading">
-          <div class="sReading_title">이 책이 주제인 교환 독서 그룹</div>
+          {% if book %}
+          <div class="sReading_wrap">
+            <div class="sReading_title">이 책이 주제인 교환 독서 그룹</div>
+            <div class="sReading_img">
+              <a href="/shareMain/Share_Main/?q={{ book.title }}">
+                <i class="fa-solid fa-plus" style="font-size: 25px;"></i>
+              </a>
+            </div>
+          </div>
+          {% endif %}
           <div class='sReading_body'>
             <table>
-              {% comment %} 
-              qs = ReadingGroup.objects.filter(book=book)  대충이렇게..
-              context = {'readingGroup':qs[0]} 이렇게 context보내주면될듯 {% endcomment %}
-              {% if readingGroup %} 
-              {% for r in readingGroup %}
-              <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
-                <td class='sReading_name'><a href='#'>{{r.group_name}}</a></td>
-                <td class='sReading_date'>{{r.created_at|date:'Y-m-d'}}</td>
-              </tr>
-              {% endfor %}
+              {% if reading_group %} 
+                {% for r in reading_group %}
+                <tr class="reading_tr">
+                  <th><i class="fa-solid fa-book-open"></i></th>
+                  <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
+                  <td class='sReading_name'><a href='#'>{{r.group_name}}</a></td>
+                  <td class='sReading_date'>{{r.created_at|date:'Y-m-d'}}</td>
+                </tr>
+                {% endfor %}
               {% else %}
-              <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[1/10]</td>
-                <td class='sReading_name'><a href='#'>test교환독서그룹11</a></td>
-                <td class='sReading_date'>2025-07-10</td>
-              </tr>
-              <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[2/10]</td>
-                <td class='sReading_name'><a href='#'>ttttest교환독서그룹2222222</a></td>
-                <td class='sReading_date'>2025-07-10</td>
-              </tr>
-              <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[3/5]</td>
-                <td class='sReading_name'><a href='#'>TEST교환독서그룹3333333333333333333333333333333333333333333</a></td>
-                <td class='sReading_date'>2025-07-10</td>
-              </tr>
-              <tr>
-                <th><i class="fa-solid fa-book-open"></i></th>
-                <td class='sReading_member'>[1/7]</td>
-                <td class='sReading_name'><a href='#'>TTst교환독서그룹4</a></td>
-                <td class='sReading_date'>2025-07-10</td>
-              </tr>
               {% endif %}
             </table>
           </div>
         </div>
         <div class="chart_sReading_container chartdraw">
+          <canvas id="tagChart"</canvas>
         </div>
       </div>
-      
+
       <style>
         .comment_contents .comment_contents_inner .comment_view_wrap .comment_thumb_box .thumb_count {
           display: inline-block;
@@ -258,7 +237,7 @@
             id="openReviewBtn"
             class="btn_sm btn_primary"
             data-book-id="{{ book.id }}"
-            data-member-id="{{ request.user.id }}"
+            data-member-id="{{ member.member_id }}"
             >
             <span class="ico_review">
               <i class="fa-solid fa-pen-to-square" style="color: #fafafa;"></i>
@@ -289,10 +268,22 @@
                           <span class="gap"> | </span>
                           <span class="info_item">{{ r.created_at|date:"Y.m.d H:i" }}</span>
                           <span class="gap"> | </span>
-                          <span class="info_item">수정</span>
-                          <span class="gap"> | </span>
-                          <a href="/review/delete/{{r.review_id}}/" class="info_item">삭제</a>
-                          <span class="gap"> | </span>
+                          {% if r.member_id == member%}
+                            <span
+                            class="info_item modifyReviewBtn"
+                            data-review='{
+                              "review_id":{{r.review_id}},
+                              "rating":{{r.rating}},
+                              "tag":"{{r.tag}}",
+                              "content":"{{r.content|escapejs}}"
+                              }'
+                              data-images="{% for img in r.images.all %}{% if not forloop.first %},{% endif %}{{ img.image.url }}{% endfor %}">
+                              수정
+                            </span>
+                            <span class="gap"> | </span>
+                            <a href="/review/delete/{{r.review_id}}/" class="info_item">삭제</a>
+                            <span class="gap"> | </span>
+                          {% endif %}
                         </div>
                       </div>
                       <div class="right_area">
@@ -370,7 +361,8 @@
                                   {% for img in r.images.all %}
                                     <li class="swiper-slide">
                                       <div class="comment_img_box" style="background-image: url('{{ img.image.url }}');">
-                                        <button class="btn_view_img" type="button">
+                                        <button class="btn_view_img" type="button"
+                                        data-img-url="{{img.image.url}}">
                                           <img src="{{ img.image.url }}">
                                         </button>
                                       </div>
@@ -397,9 +389,9 @@
                           </span>
                         </button>
                         <div class="right_area">
-                          <button class="btn_like" type="button" data-review-id="{{r.review_id}}">
-                            <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
-                            <span class="text">{{r.likes}}</span>
+                          <button class="btn_like{% if r.review_id in user_liked_review_ids %} liked{% endif %}" data-review-id="{{ r.review_id }}">
+                            <i class="fa{% if r.review_id in user_liked_review_ids %}-solid{% else %}-regular{% endif %} fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
+                            <span class="text">{{ r.likes }}</span>
                           </button>
                           <button class="btn_reply" type="button">
                               <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
@@ -409,85 +401,91 @@
                       </div>
                     </div>
 
-                    <!-- 답글달기 -->
-                    <div class="reply_wrap" style="display: none;">
-                      <form method="post" action="/reply/create/" class="replyForm" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input type="hidden" name="review_id" value="{{r.review_id }}">
-                        <div class="reply_write_area active">
-                          <div class="byte_check_wrap">
-                            <textarea class="form_textarea reply_comments" name="replyText" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                          <div class="byte_check_footer">
-                              <div class="reply_byte_check">
-                                <span class="count">0</span>
-                                <span class="total">1000</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="btn_wrap_home">
-                            <div class="btn_wrap">
-                              <button class="btn_xs btn_primary reply_btn" type="submit" disabled="">
-                                <span class="text" style="font-weight: 500;">등록</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                      <div class="reply_list_area">
-                        <div class="reply_list">
-                          {% for reply in r.reply_list %}
-                            <div class="reply_item" id="{{reply.reply_id}}">
-                              <div class="reply_header">
-                                <div class="user_info_box">
-                                  <span class="info_item">{{reply.member_id.id}}<span>
-                                  <span class="gap"> | </span>
-                                  <span class="info_item">{{reply.created_at}}</span>
-                                  <span class="gap"> | </span>
-                                  <span class="info_item">수정</span>
-                                  <span class="gap"> | </span>
-                                  <a href="/reply/delete/{{reply.reply_id}}/" class="info_item">삭제</a>
-                                  <span class="gap"> | </span>
+                    {% if member %}
+                      <!-- 답글달기 -->
+                      <div class="reply_wrap" style="display: none;">
+                        <form method="post" action="/reply/create/" class="replyForm" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <input type="hidden" name="review_id" value="{{r.review_id }}">
+                          <div class="reply_write_area active">
+                            <div class="byte_check_wrap">
+                              <textarea class="form_textarea reply_comments" name="replyText" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                            <div class="byte_check_footer">
+                                <div class="reply_byte_check">
+                                  <span class="count">0</span>
+                                  <span class="total">1000</span>
                                 </div>
                               </div>
-                              <div class="reply_contents">
-                                <div class="reply_text">{{reply.content}}</div>
-                                <div class="reply_write_area">
-                                  <div class="byte_check_wrap">
-                                    <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
-                                    <div class="byte_check_footer">
-                                      <div class="byte_check">
-                                        <span class="count">0</span>
-                                        <span class="total">1000</span>
-                                      </div>
-                                      <div class="btn_wrap">
-                                        <button class="btn_xs btn_light_gray" type="button">
-                                          <span class="text">취소</span>
-                                        </button>
-                                        <button class="btn_xs btn_primary disabled" type="button">
-                                          <span class="text">등록</span>
-                                        </button>
+                            </div>
+                            <div class="btn_wrap_home">
+                              <div class="btn_wrap">
+                                <button class="btn_xs btn_primary reply_btn" type="submit" disabled="">
+                                  <span class="text" style="font-weight: 500;">등록</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                        <div class="reply_list_area">
+                          <div class="reply_list">
+                            {% for reply in r.reply_list %}
+                              <div class="reply_item" id="{{reply.reply_id}}">
+                                <div class="user_info_box">
+                                  <span class="info_item">{{reply.member_id.name}}</span>
+                                  <span class="gap"></span>
+                                  <span class="info_item">{{reply.created_at|date:"Y.m.d H:i"}}</span>
+                                  <span class="gap"></span>
+                                  {% if reply.member_id == member %}
+                                    <button type="button" class="modify_info_item reply-edit-btn" 
+                                    data-reply-id="{{reply.reply_id}}"
+                                    data-content="{{reply.content}}">
+                                    수정
+                                    </button>
+                                    <span class="gap"></span>
+                                    <a href="/reply/delete/{{reply.reply_id}}/" class="info_item">삭제</a>
+                                    <span class="gap"></span>
+                                  {% endif %}
+                                </div>
+                                <div class="reply_contents" style="margin-top: 10px;">
+                                  <div class="reply_text">{{reply.content}}</div>
+                                  <div class="reply_write_area">
+                                    <div class="byte_check_wrap">
+                                      <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                                      <div class="byte_check_footer">
+                                        <div class="byte_check">
+                                          <span class="count">0</span>
+                                          <span class="total">1000</span>
+                                        </div>
+                                        <div class="btn_wrap">
+                                          <button class="btn_xs btn_light_gray" type="button">
+                                            <span class="text">취소</span>
+                                          </button>
+                                          <button class="btn_xs btn_primary disabled" type="submit">
+                                            <span class="text">등록</span>
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          {% endfor %}
-                        </div>
-                      </div> 
-                    </div>
-                        
+                            {% endfor %}
+                          </div>
+                        </div> 
+                      </div>
+                    {% else %}
                     <div class="reply_wrap" style="display: none;">
                       <div class="comment_status_box">
                         <div class="login"></div>
                         <div class="comment_status_text">
                           답글 등록은 로그인 후 이용할 수 있습니다.
-                          <button class="btn_xxs btn_line_gray" type="button">
+                          <a href="/member/login/" class="btn_xxs btn_line_gray">
                             <span class="text">로그인</span>
-                          </button>
+                          </a>
                         </div>
                       </div>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
               {% endfor %}
@@ -583,20 +581,19 @@
       </div>
       </div>
 
-      <!-- 팝업 모달 구조 -->
+      <!-- 팝업 작성 모달 구조 -->
       <div id="reviewModal" class="modal">
         <div id="bodyDialog20" class="dialog_wrapper open">
           <div tabindex="-1" role="dialog" class="ui-dialog ui-widget ui-widget-content ui-front" aria-describedby="ReviewList1_e8a3c636-012b-44ff-92d9-1d938aa36eaa_post" aria-labelledby="ui-id-43" style="height: auto;">
               <div id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post" class="dialog_wrap no_title_line has_btn ui-dialog-content ui-widget-content initialized" data-class="" style="width: auto; min-height: 0px; max-height: none; height: 750px;">
                   <div class="dialog_header">
                       <div class="dialog_title">리뷰작성</div>
-                      
                       <button type="button" id="closeReviewBtn" class="btn_dialog_close">
                           <i class="fa-solid fa-xmark" style="color: #2D7868; font-size: 25px;"></i>
                           <span class="hidden">닫기</span>
                       </button>
                   </div>
-                  {% if book %}                  
+                  {% if book %}              
                   <form method="post" action="/review/create/" id="reviewForm" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="dialog_contents">
@@ -610,11 +607,9 @@
                                                   <div class="thumbnail_round_box">
                                                       <div class="prod_area horizontal">
                                                           <div class="prod_thumb_box size_xs">
-                                                              <a class="prod_link" href="https://product.kyobobook.co.kr/detail/S000001913217">
-                                                                  <span class="img_box">
-                                                                      <img data-kbbfn="s3-image" loading="lazy" alt="S000001913217" src="{{book.cover}}">
-                                                                  </span>
-                                                              </a>
+                                                            <span class="img_box">
+                                                                <img data-kbbfn="s3-image" loading="lazy" alt="S000001913217" src="{{book.cover}}">
+                                                            </span>
                                                           </div>
                                                           <div class="prod_info_box size_sm">
                                                               <a class="prod_info" href="#">
@@ -709,7 +704,7 @@
                                                           <li class="list_item">
                                                               <span class="file_item">
                                                                   <span class="btn_box">
-                                                                      <input id="review_img" type="file" name="review_image" multiple>
+                                                                      <input id="review_img" type="file" name="review_image" multiple style="display:none">
                                                                       <label for="review_img">
                                                                           <span class="hidden">첨부파일 추가</span>
                                                                       </label>
@@ -736,7 +731,7 @@
                               </div>
                             </div>
                             <div class="dialog_footer">
-                                <button class="btn_md btn_primary" id="modal_btn" type="submit" disabled="">
+                                <button class="btn_md btn_primary" id="review_btn" type="button">
                                 <span class="text">등록</span>
                               </button>
                             </div>
@@ -748,11 +743,234 @@
                   
                 {% endif %}
       </div>
+      <!-- 팝업 수정 모달 구조 -->
+      <div id="modifyModal" class="modal">
+        <div id="bodyDialog20" class="dialog_wrapper open">
+          <div tabindex="-1" role="dialog" class="ui-dialog ui-widget ui-widget-content ui-front" aria-describedby="ReviewList1_e8a3c636-012b-44ff-92d9-1d938aa36eaa_post" aria-labelledby="ui-id-43" style="height: auto;">
+              <div id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post" class="dialog_wrap no_title_line has_btn ui-dialog-content ui-widget-content initialized" data-class="" style="width: auto; min-height: 0px; max-height: none; height: 750px;">
+                  <div class="dialog_header">
+                      <div class="dialog_title">리뷰수정</div>
+                      <button type="button" id="closeModifyBtn" class="btn_dialog_close">
+                          <i class="fa-solid fa-xmark" style="color: #2D7868; font-size: 25px;"></i>
+                          <span class="hidden">닫기</span>
+                      </button>
+                  </div>
+                  {% if book %}                  
+                    <form method="post" action="/review/update/" id="modifyForm" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="dialog_contents">
+                        <div class="scroll_wrap active" data-simplebar="init">
+                          <input type="hidden" name="review_id" id="modal_review_id">
+                            <div class="simplebar-wrapper" style="margin: 0px -18px 0px 0px;"> 
+                                <div class="simplebar-mask">
+                                    <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                        <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+                                            <div class="simplebar-content" style="padding: 0px 18px 0px 0px;">
+                                                <div class="custom_scroll_inner" tabindex="0">
+                                                    <div class="thumbnail_round_box">
+                                                        <div class="prod_area horizontal">
+                                                            <div class="prod_thumb_box size_xs">
+                                                              <span class="img_box">
+                                                                  <img data-kbbfn="s3-image" loading="lazy" alt="S000001913217" src="{{book.cover}}">
+                                                              </span>
+                                                            </div>
+                                                            <div class="prod_info_box size_sm">
+                                                                <a class="prod_info" href="#">
+                                                                    <span class="prod_name">{{book.title}}</span>
+                                                                </a>
+                                                                <input type="hidden" name="book_id" value="{{ book.book_id }}">
+                                                                <div class="rating-container theme-krajee-gly rating-lg rating-animate has_caption" style="margin-top:16px">
+                                                                    <div class="rating-container has_caption">
+                                                                      <div class="rating-stars-review" id="rating">
+                                                                        <span class="star" data-value="1"></span>
+                                                                        <span class="star" data-value="2"></span>
+                                                                        <span class="star" data-value="3"></span>
+                                                                        <span class="star" data-value="4"></span>
+                                                                        <span class="star" data-value="5"></span>
+                                                                      </div>
+                                                                      <input type="hidden" name="rating" id="rating-value-review" value="5">
+
+                                                                      <div class="caption-review">
+                                                                        <span class="caption-review-badge">
+                                                                          <span>
+                                                                            <span>5점 중 5점</span>
+                                                                            <span class="val" aria-hidden="true">5</span>
+                                                                            <span class="total" aria-hidden="true">5</span>
+                                                                          </span>
+                                                                        </span>
+                                                                      </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form_wrap type_md">
+                                                        <div class="form_box">
+                                                            <div class="form_box">
+                                                            <div class="form_title">
+                                                                <label class="form_label">
+                                                                꼬북 태그 <span class="required">*</span>
+                                                                </label>
+                                                                <p class="info_text font_size_xxs">가장 와 닿는 하나의 키워드를 선택해주세요.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form_cont">
+                                                            <div class="tag_wrap size_lg" data-tag-toggle="">
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion01" data-value="001">
+                                                                    <span class="text">집중돼요</span>
+                                                                </button>
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion02" data-value="002">
+                                                                    <span class="text">도움돼요</span>
+                                                                </button>
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion03" data-value="003">
+                                                                    <span class="text">쉬웠어요</span>
+                                                                </button>
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion04" data-value="004">
+                                                                    <span class="text">최고예요</span>
+                                                                </button>
+                                                                <button class="tag emotionTag" type="button" id="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_emotion05" data-value="005">
+                                                                    <span class="text">추천해요</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" name="tag" id="selected-emotion" value="">
+
+                                                    </div>
+                                                <div class="form_box">
+                                                    <div class="form_title">
+                                                        <label class="form_label" for="ReviewList1_f8ce65d6-1ecf-4e48-8300-43481aa5c9c6_post_reviewText">리뷰 작성
+                                                            <span class="required">*</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form_cont">
+                                                        <div class="byte_check_wrap">
+                                                            <textarea class="form_textarea" id="modify_comments" name="reviewText" placeholder="내용을 10자 이상 입력해 주세요. 주제와 무관한 댓글, 악플 등의 비방 글은 임의 삭제될 수 있습니다." maxlength="3000" style="height: 70px;"></textarea>
+                                                            <div class="byte_check byte_check_footer">
+                                                                <span class="count">0</span>
+                                                                <span class="total">3000</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                              <div id="existingImagesInputs"></div>
+
+                                                <div class="form_box">
+                                                    <div class="form_title photo">
+                                                        <span class="form_label">
+                                                            <span>사진 첨부(선택) </span>
+                                                            <span class="file_attach_val">
+                                                            <span class="modify_file_attach_val">
+                                                                <span class="val">0</span>
+                                                                <span class="total"> / 3</span>
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="form_cont">
+                                                        <ul class="file_list">
+                                                          <input id="review_img" type="file" name="modify_review_image" multiple accept="image/*" style="display:none">
+                                                        <ul class="modify_file_list">
+                                                            <li class="list_item">
+                                                                <span class="file_item">
+                                                                    <span class="btn_box">
+                                                                        <label for="review_img">
+                                                                            <span class="hidden">첨부파일 추가</span>
+                                                                        </label>
+                                                                        <span class="attach_img_box">
+                                                                            <span class="attach_img_view"></span>
+                                                                            <button class="btn_remove_img" type="button">
+                                                                                <span class="hidden">첨부파일 삭제</span>
+                                                                            </button>
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                        <p class="bul_item_asterisk font_size_xxs">JPG, PNG, GIF 파일만 최대 3장 업로드 가능합니다.</p>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="simplebar-placeholder" style="width: auto; height: 610px;"></div>
+                                </div>
+                              </div>
+                              <div class="dialog_footer">
+                                  <button class="btn_md btn_primary" id="modify_btn" type="button">
+                                  <span class="text">수정</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  {% endif %}
+      </div>
     </div>
   </div>
+
+  <script>
+
+    let cToken = $('meta[name="csrf-token"]').attr('content');
+
+    console.log(cToken)
+
+    function drawTagBarChart(bookId){
+      $.ajax({
+        url:'/chart/chajax/',
+        type:'post',
+        headers:{'X-CSRFToken':cToken},
+        data:{'bookId':bookId},
+        success: function(data){
+          console.log(data)
+          // data.tag_counts = { "집중돼요": 3, "도움돼요": 0, ... }
+          let tagLabels = ["집중돼요", "도움돼요", "쉬웠어요", "최고예요", "추천해요"];
+          let tagCounts = tagLabels.map(tag => data.tag_counts[tag]);
+
+          // 차트 그리기 코드
+          let oldChart = Chart.getChart('tagChart');
+          if (oldChart) oldChart.destroy();
+
+          const ctx = document.getElementById('tagChart');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: tagLabels,
+              datasets: [{
+                label: '리뷰 태그별 개수',
+                data: tagCounts,
+                backgroundColor: 'rgba(97, 177, 230, 0.52)',
+                borderColor: 'rgba(97, 177, 230, 0.52)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              indexAxis: 'y',          // 이 옵션이 가로형 바 차트의 핵심!
+              scales: {
+                x: { beginAtZero: true }
+              }
+            }
+          });
+        },
+        error: function() {
+          alert('태그 차트 불러오기 실패');
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // bookId가 템플릿 변수로 전달된 경우
+      {% if book %}
+        drawTagBarChart({{ book.book_id }});
+      {% endif %}
+    });
+  </script>      
+
   {% endblock %}
 
 {% block extra_js %}
 <script src="/static/js/bookdetail.js"></script>
 {% endblock %}
-

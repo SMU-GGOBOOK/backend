@@ -9,15 +9,8 @@ from review.models import Review
 def reply_create(request):
     if request.method == 'POST':
         member_id = request.session.get('user_id')
-        if not member_id:
-            messages.error(request, "로그인이 필요합니다.")
-            return redirect('/member/login/')
         
-        try:
-            member = Member.objects.get(id=member_id)  # Member 객체 가져오기
-        except Member.DoesNotExist:
-            messages.error(request, "회원 정보가 없습니다.")
-            return redirect('/member/login/')
+        member = Member.objects.get(id=member_id)  # Member 객체 가져오기
         
         review_id = request.POST.get('review_id')
         try:
@@ -44,13 +37,13 @@ def reply_create(request):
         
         print("넘어온 데이터 : ", member_id, comments)
         
+        messages.success(request, "답글이 등록되었습니다.")
+
+        
         return redirect(f'/booksearch/detail/{book.book_id}/')
 
 def reply_delete(request, reply_id):
     user_id = request.session.get('user_id')
-    if not user_id:
-        messages.error(request, "로그인이 필요합니다.")
-        return redirect('/member/login/')
 
     member = Member.objects.get(id=user_id)
     reply = Reply.objects.get(reply_id=reply_id)
@@ -72,3 +65,23 @@ def reply_delete(request, reply_id):
     
     return redirect(f'/booksearch/detail/{reply.review_id.book_id.book_id}/')
         
+def reply_modify(request, reply_id):
+    user_id = request.session.get('user_id')
+
+    member = Member.objects.get(id=user_id)
+    reply = Reply.objects.get(reply_id=reply_id)
+    
+    if reply.member_id.member_id != member.member_id:
+        messages.error(request, "본인이 작성한 리뷰만 수정할 수 있습니다.")
+        return redirect(f'/booksearch/detail/{reply.review_id.book_id.book_id}/')
+    
+    print(reply.member_id, member.member_id)
+    
+    content=request.POST.get("replymodifycontent", " ")
+    
+    reply.content = content
+    reply.save()
+    
+    
+    return redirect(f'/booksearch/detail/{reply.review_id.book_id.book_id}/')
+    

@@ -135,6 +135,7 @@ section{
     flex-wrap: wrap; */
 }
 .bookbox{
+    cursor: pointer;
     width: 260px;
     height: 430px;
     border: 1px solid #ccc; /* 연한 회색 테두리 */
