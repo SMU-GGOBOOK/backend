@@ -65,6 +65,7 @@ hr {
 /* 헤더 왼쪽 ------- 로고 + 교환독서 탭 */
 .fig-header-left {
     align-items: center; 
+    width:453px;
 }
 .fig-one{
     display: flex; 
@@ -160,7 +161,7 @@ hr {
     display: flex;
     align-items: center;
     font-family: 'NanumSquareAcb';
-    width:222.73px;
+    width:453px;
     justify-content: end;
 }
 
@@ -170,9 +171,58 @@ hr {
     font-size: 16px;
     font-weight:600;
     line-height: 18px;
-    text-align: center;
     color: #2D7868;
 }
+
+.fig-r1{
+    text-align: right;
+    width:163px;
+    display: flex;
+    align-items:center;
+    justify-content: flex-end;
+}
+
+.fig-r1 span{
+    display:block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    
+}
+
+/*드롭다운*/
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1000;
+    border-radius: 8px;
+    overflow: hidden;
+    top: 100%;
+}
+
+.dropdown-content a {
+    color: #2D7868;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: 400;
+    text-align: center;
+    font-size: 15px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f0f9f7;
+}
+
+
 
 /* header 구분선 */
 .fig-hr{
