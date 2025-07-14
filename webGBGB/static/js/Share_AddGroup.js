@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    // =========================
+    // 최대 인원수 max_member 관련
+    // =========================
+    document.getElementById('max_member').addEventListener('change', function() {
+        document.getElementById('max_member_hidden').value = this.value;
+    });
+    
     // =========================
     // 책 검색 모달 관련
     // =========================
