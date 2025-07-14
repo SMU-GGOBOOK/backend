@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>교환독서 모임 상세</title>
+  <style>
+    @import url('https://fonts.google.com/selection/embed');
+    body {  
+      background-color: #fafafa;
+      margin: 0;
+      padding: 0;
+      border: 1px #ccc;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    #banner-close {
+      position: absolute;
+      top: 12px;    /* 배너 패딩에 맞춰 조절 */
+      right: 12px;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      color: #333;
+    }
+    #banner-close:hover {
+      color: #ddd;
+    }
+    .banner {
+      position: relative;
+      background-color: #fafafa;
+      color: #333;
+      padding: 30px;
+      border-radius: 7px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .banner-text {
+      flex: 1;
+    }
+    .banner h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    .profile-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .profile-upload img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ccc;
+    }
+    .profile-upload input[type="file"] {
+      display: none;
+    }
+    .upload-label {
+      background: #f0f0f0;
+      color: #333;
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .info-row {
+      background-color: #fafafa;
+      padding: 15px 20px;
+      border-radius: 7px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    .info-row span {
+      color: #666;
+      font-size: 15px;
+    }
+    .info-row strong {
+      color: #2D7868;
+    }
+
+    .info-row .tags {
+      margin-left: auto;       
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;          
+    }
+    .info-row .tags strong1 {
+      background-color: #2f81ed1c;
+      font-size: 14px;
+      font-weight: 400;
+      color: #2F80ED;
+      padding: 5px 10px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .description {
+      background-color: #fafafa;
+      color: #2D7868;
+      padding: 20px;
+      border-radius: 7px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+      line-height: 1.6;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+    .join-btn {
+      background-color: gray;
+      color: #fafafa;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 7px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .info-row > strong {
+      margin-left: auto;
+    }
+    
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="banner">
+      <button id="banner-close" aria-label="닫기">&times;</button>
+      <div class="banner-text">
+        <h1>🌿 감성 교환독서 모임</h1>
+        <p>같이 읽고, 같이 나누는 시간</p>
+      </div>
+      <div class="profile-upload">
+        <img id="profile-preview" src="https://via.placeholder.com/60/2D7868/ffffff?text=ME" alt="Profile">
+        <label class="upload-label" for="profile-image">프로필 변경</label>
+        <input type="file" id="profile-image" accept="image/*">
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="info-row">
+        <span>📅 채팅방 생성 일시</span>
+        <strong>2025년 6월 21일 (토)</strong>
+      </div>
+      <div class="info-row">
+        <span>🐢 꼬북태그</span>
+        <div class="tags">
+          <strong1>#좋아요</strong1>
+          <strong1>#재밌어요</strong1>
+          <strong1>#꼬북꼬북</strong1>
+          <strong1>#즐거운</strong1>
+          <strong1>#독서</strong1>
+        </div>
+      </div>
+      <div class="info-row">
+        <span>📖 책 제목</span>
+        <strong>『보통의 언어들』 - 김이나</strong>
+      </div>
+      <div class="info-row">
+        <span>👥 인원</span>
+        <strong>6명 참여중 / 최대 10명</strong>
+      </div>
+    </div>
+
+    <div class="description">
+      안녕하세요!<br><br>
+      이번 교환독서 모임은 김이나 작가의 『보통의 언어들』을 함께 읽고, 서로의 언어와 감정을 나누는 시간으로 준비했습니다. 책 속에서 발견한 구절을 함께 나누고, 서로 다른 해석과 감상을 나눠보는 따뜻한 자리가 되었으면 합니다.<br><br>
+      처음 참여하시는 분도 부담 없이 함께하실 수 있도록 편안한 분위기로 준비했어요. 🍵
+    </div>
+
+    <button class="join-btn"> 💬그룹방 참여하기 </button>
+  </div>
+
+<script>
+    const profileInput = document.getElementById('profile-image');
+    const profilePreview = document.getElementById('profile-preview');
+    const joinButton = document.querySelector('.join-btn');
+    const bannerCloseButton = document.getElementById('banner-close');
+
+    // Django 서버의 주소. 개발 환경에서는 주로 127.0.0.1:8000 입니다.
+    const API_BASE_URL = 'http://127.0.0.1:8000/api';
+    const CHAT_ROOM_ID = 1; // 예시: 실제로는 URL 파라미터 등에서 가져와야 함
+
+    // 챗룸 상세 정보 로드 함수
+    async function loadChatroomDetails() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/chatroom/${CHAT_ROOM_ID}/`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch chatroom details');
+            }
+            const data = await response.json();
+
+            document.querySelector('.banner h1').textContent = `🌿 ${data.name}`; //
+            // description_short가 없으므로 description의 일부를 사용하거나 기본값
+            document.querySelector('.banner p').textContent = data.description.split('.')[0] || '같이 읽고, 같이 나누는 시간';
+            
+            // 날짜 포맷 (YYYY-MM-DD 형태일 경우)
+            const date = new Date(data.created_at);
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' };
+            document.querySelector('.info-row:nth-child(1) strong').textContent = date.toLocaleDateString('ko-KR', options); //
+            
+            const tagsContainer = document.querySelector('.info-row .tags');
+            tagsContainer.innerHTML = ''; // 기존 태그 삭제
+            if (data.tags && Array.isArray(data.tags)) { // tags가 배열인지 확인
+                data.tags.forEach(tag => {
+                    const strong1 = document.createElement('strong1');
+                    strong1.textContent = `#${tag.trim()}`;
+                    tagsContainer.appendChild(strong1);
+                });
+            }
+
+            document.querySelector('.info-row:nth-child(3) strong').textContent = `『${data.book_title}』 - ${data.book_author || '작가 미상'}`; //
+            document.querySelector('.info-row:nth-child(4) strong').textContent = `${data.current_members}명 참여중 / 최대 ${data.max_members}명`; //
+            document.querySelector('.description').innerHTML = data.description; //
+            
+            if (data.profile_image_url) {
+                profilePreview.src = `${API_BASE_URL.replace('/api', '')}${data.profile_image_url}`; // /media/ 경로
+            }
+
+        } catch (error) {
+            console.error('Error loading chatroom details:', error);
+            // 에러 메시지 표시 또는 기본값 유지
+        }
+    }
+
+    // 페이지 로드 시 챗룸 정보 로드
+    document.addEventListener('DOMContentLoaded', loadChatroomDetails);
+
+    // 프로필 이미지 업로드
+    profileInput.addEventListener('change', async function () {
+        const file = this.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const formData = new FormData();
+            formData.append('profile_image', file);
+            // formData.append('user_id', '1'); // 실제 사용자 ID 또는 인증 토큰을 사용
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/profile/upload/`, {
+                    method: 'POST',
+                    body: formData
+                    // Django는 CSRF 토큰이 필요할 수 있으나, 개발용 CORS_ALLOW_ALL_ORIGINS=True시 생략 가능
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`Failed to upload profile image: ${errorData.detail || response.statusText}`);
+                }
+
+                const result = await response.json();
+                profilePreview.src = `${API_BASE_URL.replace('/api', '')}${result.imageUrl}`;
+                alert('프로필 이미지가 성공적으로 변경되었습니다!');
+            } catch (error) {
+                console.error('Error uploading profile image:', error);
+                alert(`프로필 이미지 변경에 실패했습니다: ${error.message}`);
+            }
+        }
+    });
+
+    // 그룹방 참여하기 버튼 클릭 이벤트
+    joinButton.addEventListener('click', async function() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/chatroom/${CHAT_ROOM_ID}/join/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: 1 }) // 실제 사용자 ID로 변경 필요
+                // Django는 CSRF 토큰이 필요할 수 있으나, 개발용 CORS_ALLOW_ALL_ORIGINS=True시 생략 가능
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Failed to join chatroom: ${errorData.detail || response.statusText}`);
+            }
+
+            const result = await response.json();
+            alert(`그룹방에 참여했습니다! 현재 인원: ${result.current_members}명`);
+            // UI 업데이트 (현재 인원수)
+            document.querySelector('.info-row:nth-child(4) strong').textContent = `${result.current_members}명 참여중 / 최대 ${result.max_members}명`;
+            
+            // 참여 후 버튼 비활성화 등 추가 처리
+            joinButton.textContent = '참여 완료';
+            joinButton.disabled = true;
+
+        } catch (error) {
+            console.error('Error joining chatroom:', error);
+            alert(`그룹방 참여에 실패했습니다: ${error.message}`);
+        }
+    });
+
+    // 배너 닫기 기능
+    bannerCloseButton.addEventListener('click', function() {
+        const banner = document.querySelector('.banner');
+        if (banner) {
+            banner.style.display = 'none';
+        }
+    });
+
+</script>
+</body>
+</html>
