@@ -3,6 +3,11 @@ from booksearch.models import Book
 from shareMain.models import ReadingGroup
 from home.models import Mainbanner
 
+from django.shortcuts import render
+from booksearch.models import Book
+from shareMain.models import ReadingGroup
+from home.models import Mainbanner
+
 def index(request):
     # 1. 빈 데이터 템플릿 정의
     empty_book_data = {
