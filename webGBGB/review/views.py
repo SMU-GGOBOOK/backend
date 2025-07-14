@@ -9,7 +9,6 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
 
 
-
 # Create your views here.
 def review_create(request):
     if request.method == 'POST':

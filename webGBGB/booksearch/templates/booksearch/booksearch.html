@@ -99,8 +99,8 @@
                 {% endif %}
 
                 <!-- 이전 블록 버튼 -->
-                {% if has_prev_block %}
-                  <button onclick="location.href='?query={{ query }}&page={{ prev_block_page }}'">
+                {% if page_obj.has_previous %}
+                  <button onclick="location.href='?query={{ query }}&page={{ books.previous_page_number }}'">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                       <path d="M16.3325 1.47C17.0125 2.18 16.9925 3.3 16.2825 3.98L7.9425 12L17.5625 21.25L15.8825 23L4.4425 12L15.8825 1L16.3325 1.47Z" fill="currentColor"/>
                     </svg>
@@ -127,8 +127,8 @@
 
               <div class="pg-btns">
                 <!-- 다음 블록 버튼 -->
-                {% if has_next_block %}
-                  <button onclick="location.href='?query={{ query }}&page={{ next_block_page }}'">
+                {% if page_obj.has_next %}
+                  <button onclick="location.href='?query={{ query }}&page={{ books.next_page_number }}'">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                       <path d="M7.6675 1.47C6.9875 2.18 7.0075 3.3 7.7175 3.98L16.0575 12L6.4375 21.25L8.1175 23L19.5575 12L8.1175 1L7.6675 1.47Z" fill="currentColor"/>
                     </svg>
