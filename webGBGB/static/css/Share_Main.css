@@ -92,6 +92,20 @@ body, input, select, textarea, button {
     display: flex;
     align-items: center;
 }
+.feed__tabs_title #total_group_count {
+    padding: 10px 0 0 12px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2D7868;
+}
+.feed__tabs_title #total_group_count_text {
+    padding: 13px 0 0 5px;
+    font-size: 21px;
+    font-weight: 400;
+    color: #1a1a1a;
+
+}
+
 /* 그룹 목록 상단 검색창 */
 .feed__tabs_search{
     display: flex;
