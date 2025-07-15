@@ -19,13 +19,15 @@
           <!-- form (addgroupFrm)-->
           <form action="{% url 'shareMain:Share_AddGroup' %}" method="post" name="addgroupFrm" id="addgroupFrm" novalidate>
             {% csrf_token %}
-            <!-- 📌 숨겨진 input들로 책 정보 전달 -->
+            <!-- 📌 숨겨진 input들로 form 정보 전달 -->
             <input type="hidden" id="id_book_title" name="book_title">
             <input type="hidden" id="id_book_author" name="book_author">
             <input type="hidden" id="id_book_cover" name="book_cover">
             <input type="hidden" id="id_book_isbn" name="book_isbn">
             <input type="hidden" id="id_tag" name="tag">
             <input type="hidden" id="id_book_publisher" name="book_publisher">
+            <input type="hidden" id="id_max_member" name="max_member" value="10">
+
               <table class="group_table">
                 <tbody>
                   <!-- 그룹명 -->
@@ -53,7 +55,7 @@
                           <option value="7">7</option>
                           <option value="8">8</option>
                           <option value="9">9</option>
-                          <option value="10">10</option>
+                          <option value="10" selected>10</option>
                         </select>
                         <span class="group_otherText">*최소 2명 ~ 최대 10명</span>
                       </div>
@@ -124,8 +126,8 @@
                           <div class="group_keyword_output">
                               <!-- 생성된 태그가 여기에 들어감 -->
                           </div>
-                          <!-- 폼 제출용 hidden input -->
-                          <input type="hidden" name="tag" id="group_keywords_hidden">
+                          {% comment %} <!-- 폼 제출용 hidden input -->
+                          <input type="hidden" name="tag" id="group_keywords_hidden"> {% endcomment %}
                           <div class="tags">
                               <a href=#>#시</a>
                               <a href=#>#소설</a>

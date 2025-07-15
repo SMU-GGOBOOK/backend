@@ -7,8 +7,12 @@ from django.shortcuts import render
 from booksearch.models import Book
 from shareMain.models import ReadingGroup
 from home.models import Mainbanner
+from review.models import Review
 
 def index(request):
+    
+    review_count = Review.objects.count()
+    
     # 1. 빈 데이터 템플릿 정의
     empty_book_data = {
         'title': '',
@@ -39,7 +43,7 @@ def index(request):
     
     # 2. 독서 그룹 데이터 (8개로 채우기)
     try:
-        group_queryset = ReadingGroup.objects.filter(is_public=0).order_by('-created_at')[:8]
+        group_queryset = ReadingGroup.objects.all().order_by('-created_at')[:8]
         pop_group = fill_to_count(group_queryset, empty_group_data, 8)
     except:
         pop_group = [empty_group_data for _ in range(8)]
@@ -76,7 +80,8 @@ def index(request):
         'review': review_top5,
         'bookmark': bookmark_top5,
         'views': views_top5,
-        'mainBanner': mainBanner
+        'mainBanner': mainBanner,
+        'review_count': review_count
     }
     
     return render(request, 'index.html', context)

@@ -29,7 +29,7 @@
                       <!-- 도서 표지 -->
                       <div class="cover-box">
                         <img class="cover" src="{{book.cover}}" 
-                        onerror="this.onerror=null;this.src='/static/image/booksearch/defaultimg.png';" 
+                        onerror="this.onerror=null;this.src='/static/images/defaultimg.png';" 
                         alt="{{book.title}}" style="width: 110%">
                       </div>
                     </div>
@@ -188,7 +188,7 @@
                 <tr class="reading_tr">
                   <th><i class="fa-solid fa-book-open"></i></th>
                   <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
-                  <td class='sReading_name'><a href='#'>{{r.group_name}}</a></td>
+                  <td class='sReading_name'><a href='/chatrooms/detail/{{r.id}}/'>{{r.group_name}}</a></td>
                   <td class='sReading_date'>{{r.created_at|date:'Y-m-d'}}</td>
                 </tr>
                 {% endfor %}
@@ -239,12 +239,12 @@
             data-book-id="{{ book.id }}"
             data-member-id="{{ member.member_id }}"
             >
-            <span class="ico_review">
-              <i class="fa-solid fa-pen-to-square" style="color: #fafafa;"></i>
-            </span>
-            <span class="text" style="font-weight: 500;">리뷰 작성</span>
-          </button>
-        </div>
+              <span class="ico_review">
+                <i class="fa-solid fa-pen-to-square" style="color: #fafafa;"></i>
+              </span>
+              <span class="text" style="font-weight: 500;">리뷰 작성</span>
+            </button>
+          </div>
       </div>
       
       <!-- 리뷰 리스트 영역 -->
@@ -393,7 +393,8 @@
                           </span>
                         </button>
                         <div class="right_area">
-                          <button class="btn_like{% if r.review_id in user_liked_review_ids %} liked{% endif %}" data-review-id="{{ r.review_id }}">
+                          <button class="btn_like{% if r.review_id in user_liked_review_ids %} liked{% endif %}" 
+                          data-review-id="{{ r.review_id }}">
                             <i class="fa{% if r.review_id in user_liked_review_ids %}-solid{% else %}-regular{% endif %} fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
                             <span class="text">{{ r.likes }}</span>
                           </button>
@@ -616,7 +617,7 @@
                                                             </span>
                                                           </div>
                                                           <div class="prod_info_box size_sm">
-                                                              <a class="prod_info" href="#">
+                                                              <a class="prod_info">
                                                                   <span class="prod_name">{{book.title}}</span>
                                                               </a>
                                                               <input type="hidden" name="book_id" value="{{ book.book_id }}">
