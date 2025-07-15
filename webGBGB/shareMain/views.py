@@ -220,6 +220,9 @@ def Share_Main(request):
     else:
         groups = ReadingGroup.objects.all().order_by('-id')
 
+    # 이 줄 추가
+    total_group_count = groups.count()
+
     # 페이지네이터 적용
     paginator = Paginator(groups, 10)  # 10개씩
     groups = paginator.get_page(page)  # groups는 Page 객체
@@ -245,5 +248,6 @@ def Share_Main(request):
         'join_groups': join_groups,
         'member':member, # member추가
         'query': query,    # 검색어도 같이 넘김 (페이지네이터에서 필요)
+        'total_group_count': total_group_count,  # 총 그룹개수
     }
     return render(request, 'shareMain/Share_Main.html', context)

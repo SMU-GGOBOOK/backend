@@ -20,7 +20,7 @@
                 {% for group in join_groups %}
                 <div class="feed__join_body_item">
                     <div class="join_body_item_book">
-                         <a href="/sns_feed/{{group.book.book_id}}">
+                         <a href="/feedpage/sns_feed/{{group.book.book_id}}">
                             <img src="{{ group.book.cover }}" alt="책 이미지"/>
                         </a>
                     </div>
@@ -41,8 +41,11 @@
         <div class="feed__tabs">
             
             <div class="feed__tabs_title">
-                꼬북꼬북 교환독서 그룹
+                <span>꼬북꼬북 교환독서 그룹</span>
+                <span id="total_group_count">{{ total_group_count }}</span>
+                <span id="total_group_count_text">개</span>
             </div>
+            
             <!-- 교환독서 메인페이지 - 검색창 -->
             <form method="get" action="{% url 'shareMain:search_groups' %}">
                 <div class="feed__tabs_search">
