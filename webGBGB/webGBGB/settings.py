@@ -39,7 +39,17 @@ INSTALLED_APPS = [
     'chart',
     'chatrooms',
     'sns_feed',
+    
     'rest_framework',
+
+     # allauth 필수 앱
+    'django.contrib.sites', # 중요!
+    'allauth',
+    'allauth.account', # 일반 계정 (이메일/비밀번호) 관련 기능
+    'allauth.socialaccount', # 소셜 계정 관련 기능
+
+    # Google Provider (추가)
+    'allauth.socialaccount.providers.google',
 
 ]
 
@@ -51,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware', 
 ]
 
 ROOT_URLCONF = 'webGBGB.urls'
