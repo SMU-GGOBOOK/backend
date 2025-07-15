@@ -60,14 +60,12 @@
       <div class="fig-main">
         <main>
           <div class="container">
-            <h2>어린왕자 책 같이읽기</h2>
-            <h3>#어린</h3>
-            <h3>#왕자</h3>
-            <h3>#존잼</h3>
-            <h3>#어쩌지?</h3>
-            <h3>#감성공유</h3>
-            <h3>#우리대화할래요?</h3>
-
+            <h2>{{readinggroup.group_name}}</h2>
+          <div class="tags">
+            {% for tag in tag_list %}  
+              <h3>{{tag}}</h3>
+            {% endfor %}
+          </div>
 
             <!--
             cno = models.AutoField(primary_key=True)

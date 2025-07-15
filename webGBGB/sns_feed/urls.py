@@ -1,23 +1,25 @@
 from django.urls import path, include
 from .views import (
-    sns_html_view, # HTML 렌더링 뷰
+    sns_html_view,
     PostListView, PostDetailView, PostLikeView, CommentListView,
-    ProfileUploadView, # 사용자 프로필 이미지 업로드 뷰 추가
-    ChatRoomDetailView, ChatRoomJoinView # GroupChatRoom 관련 뷰
+    UserProfileUploadView,
+    ChatRoomDetailView, ChatRoomJoinView # 리딩그룹 관련 뷰
 )
 
 urlpatterns = [
-    # API 엔드포인트
-    path('posts/', PostListView.as_view(), name='post-list'),
+    # html 렌더링뷰
+    path('sns_feed/<int:chat_id>/', sns_html_view, name='sns-page'),
+
+
+    path('reading-groups/<int:reading_group_id>/posts/', PostListView.as_view(), name='post-list-create-by-group'),
     path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('posts/<int:pk>/like/', PostLikeView.as_view(), name='post-like'),
     path('posts/<int:post_pk>/comments/', CommentListView.as_view(), name='comment-list'),
-    path('profile/upload/', ProfileUploadView.as_view(), name='profile-upload'), # 프로필 업로드
+    path('profile/upload/', UserProfileUploadView.as_view(), name='profile-upload'),
 
-    # # GroupChatRoom 관련 API
-    # path('chatroom/<int:pk>/', ChatRoomDetailView.as_view(), name='chatroom-detail'),
-    # path('chatroom/<int:pk>/join/', ChatRoomJoinView.as_view(), name='chatroom-join'),
 
-    # 앱 내에서 HTML 뷰를 직접 라우팅할 경우
-    # path('sns/', sns_html_view, name='sns-page'),
+    # --- ReadingGroup 관련 API 경로 ---
+    # `ChatRoomDetailView`와 `ChatRoomJoinView`를 ReadingGroup에 맞춰 추가
+    path('reading-groups/<int:pk>/', ChatRoomDetailView.as_view(), name='reading-group-detail'),
+    path('reading-groups/<int:pk>/join/', ChatRoomJoinView.as_view(), name='reading-group-join'),
 ]
