@@ -64,6 +64,22 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware', 
 ]
 
+# allauth 설정
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1 # 필수 설정 (없으면 추가)
+
+
+KAKAO_JAVASCRIPT_KEY = 'bec1572a47f03392aec44dd28bce95b4' # <-- Kakao JavaScript Key
+KAKAO_REDIRECT_URI = 'http://localhost:8000/member/kakao/callback/'
+KAKAO_REST_API_KEY = 'afb77164fe046904554115dc84fccb93'
+
+
 ROOT_URLCONF = 'webGBGB.urls'
 
 TEMPLATES = [
@@ -155,4 +171,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mcshin0111@gmail.com'
 EMAIL_HOST_PASSWORD = 'gzpl bkfm sgov wgrv'
 DEFAULT_FROM_EMAIL = 'mcshin0111@gmail.com'
-
