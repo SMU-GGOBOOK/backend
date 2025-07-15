@@ -49,7 +49,7 @@ document.addEventListener('click', function(e) {
   if (e.target.matches('.edit-post')) {
     e.stopPropagation();
     const post = e.target.closest('.post');
-    const contentEl = post.querySelector('.comment_contents');
+    const contentEl = post.querySelector('.post-contents');
 
     const imageHTML = Array
       .from(contentEl.querySelectorAll('img'))
@@ -218,13 +218,19 @@ function createReplyItem(text) {
   const item = document.createElement('div');
   item.className = 'reply_item';
   item.innerHTML = `
-    <div class="reply_header">
-      <div class="user_info_box">
-        <span class="info_item">나</span>
-        <span class="gap"> | </span>
-        <span class="info_item">${date} ${time}</span>
+    <div class="reply_header" style="width:100%">
+      <div class="reply_wrapper">
+        <div class="user_info_box">
+          <span class="info_item">닉네임</span>
+          <span class="gap"></span>
+          <span class="info_item">${date} ${time}</span>
+        </div>
+        <div class="btn_wrapper">
+        <button class="btn_reply_setting">
+          <i class="fa-solid fa-ellipsis" style="color: #333333;" aria-hidden="true"></i>
+        </button>
+        </div>
       </div>
-      <button class="btn_reply_setting">⋯</button>
     </div>
     <div class="reply_content">${text}</div>
     <div class="reply_actions">
@@ -277,13 +283,19 @@ function addNestedReply(parentReplyItem, text) {
   const newReply = document.createElement('div');
   newReply.className = 'reply_item nested-reply-item'; // 대댓글임을 나타내는 클래스 추가
   newReply.innerHTML = `
-    <div class="reply_header">
-      <div class="user_info_box">
-        <span class="info_item">나</span>
-        <span class="gap"> | </span>
-        <span class="info_item">${date} ${time}</span>
+    <div class="reply_header" style="width:100%">
+      <div class="reply_wrapper">
+        <div class="user_info_box">
+          <span class="info_item">닉네임</span>
+          <span class="gap"></span>
+          <span class="info_item">${date} ${time}</span>
+        </div>
+        <div class="btn_wrapper">
+        <button class="btn_reply_setting">
+          <i class="fa-solid fa-ellipsis" style="color: #333333;" aria-hidden="true"></i>
+        </button>
+        </div>
       </div>
-      <button class="btn_reply_setting">⋯</button>
     </div>
     <div class="reply_content">${text}</div>
     <div class="reply_actions">

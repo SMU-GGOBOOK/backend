@@ -7,7 +7,7 @@
   {% load static %}
   <script src="https://kit.fontawesome.com/e1869b8eb9.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/style_chatroomSNS_GOBOOK.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/reply.css' %}">
+  {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/reply.css' %}"> {% endcomment %}
   <script src="{% static 'js/book.js' %}" defer></script>
   <script src="{% static 'js/chatroomSNS_GOBOOK_updates.js' %}" defer></script>
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -131,43 +131,44 @@
       const div=document.createElement('div'); div.className='post';
             div.innerHTML=`
 
-                <div class="comment_item" data-id="5212265">
-                  <div class="comment_all">
+                <div class="post_item" data-id="5212265">
+                  <div class="post_all">
                     <div class="post-header">
-                      <img src="https://via.placeholder.com/36" alt="profile">
-                      <div>
-                        <div class="author">라떼</div>
-                        <div class="time">${formatTime()}</div>
+                      <div class="left_area">
+                        <div class="user_info_box">
+                          <span class="info_item">라떼</span>
+                          <span class="gap"> </span>
+                          <span class="info_item">${formatTime()}</span>
+                        </div>
+                      </div>
+                      <div class="post-actions">
+                        <div class="right_area">
+                          <button class="btn_setting" type="button">
+                              <i class="fa-solid fa-ellipsis" style="color: #333333;"></i>                           
+                          </button>
+                        </div>
                       </div>
                     </div>
-
-                    <div class="post-actions">
-                      <div class="right_area">
-                        <button class="btn_setting" type="button">
-                            <i class="fa-solid fa-ellipsis" style="color: #333333;"></i>                           
-                        </button>
-                      </div>
+                  </div>
+                  <div class="post_contents">
+                    ${imgHTML}
+                    <div class="post_text">
+                      ${txt}
                     </div>
-              
-                    <div class="comment_contents">
-                      ${imgHTML}
-                      <div class="comment_text">
-                        ${txt}
-                      </div>
-                    </div>
+                  </div>
               
                   <div class="comment_footer">
                     <div class="right_area">
-                  <button class="btn_like" type="button">
-                    <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
-                    <span class="text">0</span>
-                  </button>
-                  <button class="btn_reply" type="button">
-                      <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
-                      <span class="count">0</span>
-                  </button>
-                </div>
-              </div>
+                      <button class="btn_like" type="button">
+                        <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
+                        <span class="text">0</span>
+                      </button>
+                      <button class="btn_reply" type="button">
+                          <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
+                          <span class="count">0</span>
+                      </button>
+                    </div>
+                  </div>
                   <!-- 답글달기 -->
                   <div class="reply_wrap">
                     <div class="reply_write_area active">
@@ -315,7 +316,7 @@
       inp.value=''; prev.innerHTML=''; document.getElementById('image-upload').value='';
       applyImageOrientation();
       div.querySelector('.like-btn').addEventListener('click',()=>{const c=div.querySelector('.like-count');let n=parseInt(c.textContent.replace(/[^0-9]/g,''))||0;c.textContent=`❤️ ${n+1}`;});
-      div.querySelector('.edit-btn').addEventListener('click',()=>{const pc=div.querySelector('.post-content'), nv=prompt('수정할 내용을 입력하세요:',pc.textContent);if(nv!==null)pc.textContent=nv;});
+      div.querySelector('.edit-btn').addEventListener('click',()=>{const pc=div.querySelector('.post-contents'), nv=prompt('수정할 내용을 입력하세요:',pc.textContent);if(nv!==null)pc.textContent=nv;});
       div.querySelector('.delete-btn').addEventListener('click',()=>{if(confirm('이 글을 삭제하시겠습니까?'))div.remove();});
       div.querySelector('.report-btn').addEventListener('click',()=>{if(confirm('이 게시글을 신고하시겠습니까?'))alert('신고가 접수되었습니다. 감사합니다.');});
     }
