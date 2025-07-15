@@ -188,7 +188,7 @@
                 <tr class="reading_tr">
                   <th><i class="fa-solid fa-book-open"></i></th>
                   <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
-                  <td class='sReading_name'><a href='chatrooms/detail/{{r.id}}'>{{r.group_name}}</a></td>
+                  <td class='sReading_name'><a href='/chatrooms/detail/{{r.id}}/'>{{r.group_name}}</a></td>
                   <td class='sReading_date'>{{r.created_at|date:'Y-m-d'}}</td>
                 </tr>
                 {% endfor %}
@@ -239,12 +239,12 @@
             data-book-id="{{ book.id }}"
             data-member-id="{{ member.member_id }}"
             >
-            <span class="ico_review">
-              <i class="fa-solid fa-pen-to-square" style="color: #fafafa;"></i>
-            </span>
-            <span class="text" style="font-weight: 500;">리뷰 작성</span>
-          </button>
-        </div>
+              <span class="ico_review">
+                <i class="fa-solid fa-pen-to-square" style="color: #fafafa;"></i>
+              </span>
+              <span class="text" style="font-weight: 500;">리뷰 작성</span>
+            </button>
+          </div>
       </div>
       
       <!-- 리뷰 리스트 영역 -->
