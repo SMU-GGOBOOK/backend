@@ -425,29 +425,30 @@ def login(request):
     if request.method == 'POST':
         user_id = request.POST.get('id', '').strip()
         user_pw = request.POST.get('pw', '').strip()
-
+        next_url = request.GET.get('next') or request.POST.get('next')
         if not user_id or not user_pw:
             return render(request, 'member/login.html', {
                 'error': '아이디와 비밀번호를 모두 입력해주세요.'
             })
-
         try:
-            user = Member.objects.get(id=user_id) 
+            user = Member.objects.get(id=user_id)
             if user_pw == user.pw:
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
+                request.session['member_id'] = user.member_id  # 세션에 로그인 정보 저장(shareMain)
                 messages.success(request, '로그인 되었습니다.')
-                return redirect('/')
+                if next_url:
+                    return redirect(next_url)  # :흰색_확인_표시: 원래 가려던 페이지로 이동
+                else:
+                    return redirect('/')
             else:
                 return render(request, 'member/login.html', {
                     'error': '비밀번호가 틀렸습니다.'
                 })
-
         except Member.DoesNotExist:
             return render(request, 'member/login.html', {
                 'error': '존재하지 않는 아이디입니다.'
             })
-    
     return render(request, 'member/login.html')
 
 
