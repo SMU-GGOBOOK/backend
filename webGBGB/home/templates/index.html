@@ -116,9 +116,9 @@
             <div class="feed__join_body_item">
                 <div class="join_body_item_book">
                     {% if s.is_empty %}
-                    <img src="/static/images/Illustration28.png" alt="[꼬북꼬북] 교환독서 그룹 준비중">
+                    <img src="/static/images/defaultimg.png" alt="[꼬북꼬북] 교환독서 그룹 준비중">
                     {% else %}
-                    <a href='#'><img src="{{s.book.cover}}" alt="{{s.group_name}}"></a>
+                    <a href='/chatrooms/detail/{{s.id}}/'><img src="{{s.book.cover}}" alt="{{s.group_name}}"></a>
                     {% endif %}
                 </div>
                 <div class="join_body_item_groupName">
@@ -143,7 +143,7 @@
                     <a title="{{r.title}}">
                       <div class="book-cover-container">
                           {% if r.is_empty %}
-                          <img class='book__cover' alt="준비중입니다" src="/static/images/Illustration28.png">
+                          <img class='book__cover' alt="준비중입니다" src="/static/images/defaultimg.png">
                         </div>
                           {% else %}
                           <a href='{% url "booksearch:detail" r.book_id %}'><img class='book__cover' alt="{{r.title}} 표지 이미지" src="{{r.cover}}"></a>
@@ -173,7 +173,7 @@
             <a title="{{v.title}}">
               <div class="book-cover-container">
               {% if v.is_empty %}
-                <img class='book__cover' alt="준비중입니다" src="/static/images/Illustration28.png">
+                <img class='book__cover' alt="준비중입니다" src="/static/images/defaultimg.png">
               </div>
               {% else %}
                 <a href='{% url "booksearch:detail" v.book_id %}'><img class='book__cover' alt="{{v.title}} 표지 이미지" src="{{v.cover}}"></a>
@@ -202,7 +202,7 @@
             <a title="{{b.title}}">
               <div class="book-cover-container">
                 {% if b.is_empty %}
-                <img class='book__cover' alt="준비중입니다" src="/static/images/Illustration28.png">
+                <img class='book__cover' alt="준비중입니다" src="/static/images/defaultimg.png">
               </div>
                 {% else %}
                 <a href='{% url "booksearch:detail" b.book_id %}'><img class='book__cover' alt="{{b.title}} 표지 이미지" src="{{b.cover}}"></a>
