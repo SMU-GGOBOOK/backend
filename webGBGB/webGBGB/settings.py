@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'chart',
     'chatrooms',
     'sns_feed',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [

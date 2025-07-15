@@ -7,8 +7,12 @@ from django.shortcuts import render
 from booksearch.models import Book
 from shareMain.models import ReadingGroup
 from home.models import Mainbanner
+from review.models import Review
 
 def index(request):
+    
+    review_count = Review.objects.count()
+    
     # 1. 빈 데이터 템플릿 정의
     empty_book_data = {
         'title': '',
@@ -76,7 +80,8 @@ def index(request):
         'review': review_top5,
         'bookmark': bookmark_top5,
         'views': views_top5,
-        'mainBanner': mainBanner
+        'mainBanner': mainBanner,
+        'review_count': review_count
     }
     
     return render(request, 'index.html', context)
