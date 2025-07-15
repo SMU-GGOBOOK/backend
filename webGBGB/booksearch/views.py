@@ -18,6 +18,8 @@ import html
 
 
 def search(request):
+    review_count = Review.objects.count()
+
     query = request.GET.get('query', '').strip() or '파이썬'
     query_lower = query.lower()
     total_count = 0
@@ -140,12 +142,15 @@ def search(request):
         'prev_block_page': prev_block_page,
         'next_block_page': next_block_page,
         'member': member,  # 로그인 여부를 템플릿에서 확인 가능
+        'review_count':review_count,
     }
 
     return render(request, 'booksearch/booksearch.html', context)
 
 def detail(request, book_id):
     print("넘어온 book_id : ", book_id)
+    review_count = Review.objects.count()
+
 
     member_id = request.session.get('user_id')
     member = None
@@ -315,6 +320,7 @@ def detail(request, book_id):
         'member': member,
         'user_liked_review_ids': user_liked_review_ids,
         'reading_group':reading_group,
+        'review_count':review_count,
     }
     response = render(request, 'booksearch/bookdetail.html', context)
     return response

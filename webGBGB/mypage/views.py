@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 ## 리뷰,멤버만 있으면 가능
 def review(request):
+    review_count = Review.objects.count()
     user_id = request.session.get('user_id')  # 로그인된 유저의 ID
 
     if not user_id:
@@ -43,13 +44,15 @@ def review(request):
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
         "my_group_count": my_group_count,
-        "user_id":user_id
+        "user_id":user_id,
+        'review_count':review_count,
     }
 
     return render(request, 'mypage/review.html', context)
 
 
 def Bmark(request):
+    review_count = Review.objects.count()
     user_id = request.session.get('user_id')  # 로그인된 유저의 ID
 
     if not user_id:
@@ -76,13 +79,15 @@ def Bmark(request):
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
         "my_group_count": my_group_count,
-        "user_id":user_id
+        "user_id":user_id,
+        'review_count':review_count
         
     }
     
     return render(request,'mypage/Bmark.html',context)
 
 def mygroup(request):
+    review_count = Review.objects.count()
     user_id = request.session.get('user_id')  # 로그인된 유저의 ID
 
     if not user_id:
@@ -109,7 +114,8 @@ def mygroup(request):
         'my_review_count': my_review_count,
         'my_bookmark_count': my_bookmark_count,
         "my_group_count": my_group_count,
-        "user_id":user_id
+        "user_id":user_id,
+        'review_count':review_count,
         
         
     }
