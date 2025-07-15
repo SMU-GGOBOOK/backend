@@ -96,13 +96,18 @@
                         <span class="group_ellipsis_1">{{ group.group_name }}</span>
                     </div>
                     <div class="group_leader">
-                        <span><strong>· 책주제:</strong> {{ group.book.title}}</span> <br/>
+                        {% comment %} <span>· {{ group.book.title}}</span> <br/>
+                        <span>· {{ group.admin.name }}</span> <br/>
+                        <span class="group_ellipsis_2">· {{ group.description }}</span> {% endcomment %}
+                        
+                        <span><strong>· 책제목:</strong> {{ group.book.title}}</span> <br/>
                         <span><strong>· 그룹장:</strong> {{ group.admin.name }}</span> <br/>
-                        <span class="group_ellipsis_2"><strong>· 소개글:</strong> {{ group.description }}</span>
+                        <span class="group_ellipsis_2"><strong>· </strong>{{ group.description }}</span>
                     </div>
                     <!-- -->
                 </div>
                 <div class="feed__preview_book">
+                    <!-- img 클릭 시 책 상세페이지로 이동 a태그 -->
                     <a href="/booksearch/detail/{{group.book.book_id}}">
                         <img src="{{ group.book.cover }}" alt="책 이미지"/>
                     </a>
