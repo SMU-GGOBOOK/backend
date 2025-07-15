@@ -48,6 +48,45 @@ form[name='updateFrm'] {
     padding: 0;                 /* ✅ 내부 여백 제거 */
 }
 
+#sendVerificationCode {
+    display: flex;
+    justify-content: center;    /* 수평 중앙 */
+    align-items: center;        /* 수직 중앙 */
+    background-color: #2D7868; 
+    border: none;               /* border-style: hidden → none 권장 */
+    
+    width: 160px;
+    height: 45px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fafafa;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-left:10px;
+    line-height: 1;             /* ✅ 텍스트 줄간격 줄이기 */
+    padding: 0;                 /* ✅ 내부 여백 제거 */
+}
+
+
+#verifyCodeButton {
+    display: flex;
+    justify-content: center;    /* 수평 중앙 */
+    align-items: center;        /* 수직 중앙 */
+    background-color: #2D7868; 
+    border: none;               /* border-style: hidden → none 권장 */
+    
+    width: 160px;
+    height: 45px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fafafa;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-left:10px;
+    line-height: 1;             /* ✅ 텍스트 줄간격 줄이기 */
+    padding: 0;                 /* ✅ 내부 여백 제거 */
+}
+
 
 .group_table th {
      vertical-align: middle;
@@ -78,7 +117,7 @@ input[type="checkbox"]:focus {
     outline: none;
 }
 
-.email1, .email2 {
+.email1, .email2, .verification_code {
     width:200px;
 }
 
@@ -86,7 +125,7 @@ input[type="checkbox"]:focus {
     margin:10px;
 }
 
-.email-select{
+.email_select{
     margin-left:8px; width:200px; height:45px;
 }
 
