@@ -43,7 +43,7 @@ def index(request):
     
     # 2. 독서 그룹 데이터 (8개로 채우기)
     try:
-        group_queryset = ReadingGroup.objects.filter(is_public=0).order_by('-created_at')[:8]
+        group_queryset = ReadingGroup.objects.all().order_by('-created_at')[:8]
         pop_group = fill_to_count(group_queryset, empty_group_data, 8)
     except:
         pop_group = [empty_group_data for _ in range(8)]
