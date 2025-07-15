@@ -90,12 +90,12 @@
 }
 
 .swiper-pagination-bullet-active {
-    background: #2d7868 !important;
+    background: #fafafa !important;
     opacity: 1;
 }
 
 .swiper-button-next, .swiper-button-prev{
-    color:#2d7868;
+    color:#fafafa;
     transform: scale(0.7);
 }
 

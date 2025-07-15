@@ -94,3 +94,12 @@
     .forch label{
       color:#1a1a1a;
     }
+
+    .kakao-login-button{
+      text-align:center;
+    }
+    .kBtn{
+      width:80px;
+      height:80px;
+      margin:100px auto;
+    }

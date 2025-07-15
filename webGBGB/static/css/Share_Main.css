@@ -163,7 +163,7 @@ body, input, select, textarea, button {
     background-color: #2f81ed1c;
     color: #2F80ED;
     border-radius: 7px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 .group_name{
     padding: 18px 0;

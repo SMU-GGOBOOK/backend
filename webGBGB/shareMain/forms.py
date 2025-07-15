@@ -10,12 +10,13 @@ class ReadingGroupForm(forms.ModelForm):
     book_cover = forms.CharField(widget=forms.HiddenInput())
     book_isbn = forms.CharField(widget=forms.HiddenInput())
     tag = forms.CharField(required=False, widget=forms.HiddenInput())
+    max_member = forms.IntegerField(widget=forms.HiddenInput())  # 최대인원수
     book_publisher = forms.CharField(required=False)
 
     class Meta:
         model = ReadingGroup
         fields = ['group_name', 'description', 'is_public', 'password',
-                  'book_title', 'book_author', 'book_cover', 'book_isbn', 'tag']
+                  'book_title', 'book_author', 'book_cover', 'book_isbn', 'tag', 'max_member', ]
 
     def clean(self):
         cleaned_data = super().clean()
