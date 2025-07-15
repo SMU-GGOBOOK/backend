@@ -118,7 +118,7 @@
                     {% if s.is_empty %}
                     <img src="/static/images/defaultimg.png" alt="[꼬북꼬북] 교환독서 그룹 준비중">
                     {% else %}
-                    <a href='/chatrooms/chatroom/1/'><img src="{{s.book.cover}}" alt="{{s.group_name}}"></a>
+                    <a href='/chatrooms/detail/{{s.id}}/'><img src="{{s.book.cover}}" alt="{{s.group_name}}"></a>
                     {% endif %}
                 </div>
                 <div class="join_body_item_groupName">

@@ -188,7 +188,7 @@
                 <tr class="reading_tr">
                   <th><i class="fa-solid fa-book-open"></i></th>
                   <td class='sReading_member'>[{{r.member.count}}/{{r.max_member}}]</td>
-                  <td class='sReading_name'><a href='feedpage/sns_feed/{{r.id}}/'>{{r.group_name}}</a></td>
+                  <td class='sReading_name'><a href='chatrooms/detail/{{r.id}}'>{{r.group_name}}</a></td>
                   <td class='sReading_date'>{{r.created_at|date:'Y-m-d'}}</td>
                 </tr>
                 {% endfor %}
