@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <div class="feed__content">
-            
+
   <div class="feed__add">
     <div class="feed__add_title">
       <span>로그인</span>
@@ -17,20 +17,20 @@
     <div class="login-box">
       <input type="text" class="idpw" name="id" id="id" placeholder="아이디">
       <input type="password" class="idpw" name="pw" id="pw" placeholder="비밀번호" autocomplete="off">
-      
+
       <div class="checkbox-container">
         <input type="checkbox" class="saveID" name="saveID" id="saveID">
         <p class="popo">아이디 자동 완성</p>
         <div class="forfind">
-          <a href="/member/find1/" ><p class="ffp">아이디 찾기</p></a>
+          <a href="{% url 'member:find1' %}" ><p class="ffp">아이디 찾기</p></a>
           <p>|</p>
-          <a href="/member/find2/"><p class="ffp">비밀번호 찾기</p></a>
+          {# 비밀번호 찾기 URL을 'send_password_reset_code'로 다시 변경합니다. #}
+          <a href="{% url 'member:send_password_reset_code' %}"><p class="ffp">비밀번호 찾기</p></a>
         </div>
       </div>
 
       {% if error %}
         <p class="forerror">{{ error }}</p>
-      
       {% endif %}
 
       <div>
@@ -38,14 +38,22 @@
         <a href="/member/join1/"><button type="button" class="mbtn" id="mbtn">회원가입</button></a>
 
       </div>
-      
-
-      
     </div>
     </form>
+
+    <div class="kakao-login-button">
+            <a href="{% url 'member:kakao_login' %}">
+                <img src="{% static 'images/kaka.png' %}" alt="카카오 로그인" class="kBtn">
+            </a>
+        </div>
+    
+    
+
   </div>
+
 </div>
 {% endblock %}
 {% block extra_js %}
-  <script src="{% static 'js/login.js' %}"></script>
+<script src="{% static 'js/login.js' %}"></script>
+
 {% endblock %}

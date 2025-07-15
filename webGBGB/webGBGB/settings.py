@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-4&bajmgb*6@9r6c*65ld)g8g$l^m4auauv0b%00651gh(6!dl4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -26,20 +26,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base',
-    'home',
-    'cscenter',
-    'booksearch',
-    'bookmark',
-    'review',
     'member',
-    'mypage',
-    'shareMain',
-    'reply',
-    'chart',
-    'chatrooms',
-    'sns_feed',
+    'base',
+     # allauth 필수 앱
+    'django.contrib.sites', # 중요!
+    'allauth',
+    'allauth.account', # 일반 계정 (이메일/비밀번호) 관련 기능
+    'allauth.socialaccount', # 소셜 계정 관련 기능
+
+    # Google Provider (추가)
+    'allauth.socialaccount.providers.google',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,9 +45,26 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# allauth 설정
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1 # 필수 설정 (없으면 추가)
+
+
+KAKAO_JAVASCRIPT_KEY = 'bec1572a47f03392aec44dd28bce95b4' # <-- Kakao JavaScript Key
+KAKAO_REDIRECT_URI = 'http://localhost:8000/member/kakao/callback/'
+KAKAO_REST_API_KEY = 'afb77164fe046904554115dc84fccb93'
+
 
 ROOT_URLCONF = 'webGBGB.urls'
 
@@ -78,9 +93,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-        'OPTIONS' : {
-            'timeout' : 10,
-        }
     }
 }
 

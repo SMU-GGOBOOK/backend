@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/Share_AddGroup.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/member_delete.css' %}">
 <meta name="csrf-token" content="{{ csrf_token }}">
-
 {% endblock %}
 {% block title %}회원정보수정{% endblock %}
 {% block content %}
@@ -73,7 +72,7 @@
                           <input type="text" name="email1" class="email1" value="{{ email1 }}">
                           <p class="rhfqoddl">@</p>
                           <input type="text" name="email2" class="email2" value="{{ email2 }}">
-                          <select class="email-select">
+                          <select class="email_select">
                             <option>직접입력</option>
                             <option {% if email2 == 'gmail.com' %}selected{% endif %}>gmail.com</option>
                             <option {% if email2 == 'naver.com' %}selected{% endif %}>naver.com</option>
@@ -100,6 +99,10 @@
                           <label class="lagen">
                             <input type="radio" class="gra" name="gender" value="여자" {% if member.gender == '여자' %}checked{% endif %}>
                             여성
+                          </label>
+                          <label class="lagen">
+                            <input type="radio" class="gra" name="gender" value="미선택" {% if member.gender == '미선택' %}checked{% endif %}>
+                            미선택
                           </label>
                         </div>
                       </td>
