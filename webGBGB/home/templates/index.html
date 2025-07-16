@@ -30,8 +30,8 @@
           {% endfor %}
           {% else %}
           <!-- 슬라이드 1 -->
-          <div class="swiper-slide">
-            <a href="#">
+          <div class="swiper-slide" data-book-id="760">
+            <a href="/booksearch/detail/760/">
               <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_1.jpg')"></div>
               <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
               <div class='mainBanner__imagewhite'></div>
@@ -45,8 +45,8 @@
             </a>
           </div>
           <!-- 슬라이드 2 -->
-          <div class="swiper-slide">
-            <a href='#'>
+          <div class="swiper-slide" data-book-id="839">
+            <a href='/booksearch/detail/839/'>
               <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_2.jpg')"></div>
               <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
               <div class='mainBanner__imagewhite'></div>
@@ -61,8 +61,8 @@
           </div>
           
           <!-- 슬라이드 3 -->
-          <div class="swiper-slide">
-            <a href='#'>
+          <div class="swiper-slide" data-book-id="171">
+            <a href='/booksearch/detail/171/'>
               <div class='mainBanner__image' style="background-image: url('/static/images/home/banner_3.jpg')"></div>
               <div class='mainBanner__backdrop' style="background-color:rgba(0, 2,0, 0.2)"></div>
               <div class='mainBanner__imagewhite'></div>
@@ -104,6 +104,7 @@
   </div>
   
 {% else %}
+
 <!--로그인 세션 있을때-->
 <div class="exchngreading">
     <!-- 참여중인 그룹 표시 -->
@@ -122,7 +123,11 @@
                     {% endif %}
                 </div>
                 <div class="join_body_item_groupName">
-                    {{s.group_name}}
+                  {% if s.is_public|stringformat:"s" == '1' %}<!-- 비공개일 경우 잠금아이콘 추가 -->
+                    <i class="fa-solid fa-lock"></i>
+                  {% endif %}
+                    {{ s.group_name }}
+
                 </div>
             </div>
           {% endfor %}
@@ -130,6 +135,37 @@
     </div>
 </div>
 {% endif %}
+
+<section class="ranking">
+    <div>
+        <p class="ranking__title"><i class="fa-solid fa-fire"></i>교환 독서 그룹 인기 도서 Top5</p>
+    </div>
+    <div class="CIirP0cq">
+        <div class="listWrapper">
+            <ul>
+                {% for r in readinggroup %}
+                <li class="w_exposed_cell">
+                    <a title="{{r.book_id.title}}">
+                      <div class="book-cover-container">
+                          {% if r.is_empty %}
+                          <img class='book__cover' alt="준비중입니다" src="/static/images/defaultimg.png">
+                        </div>
+                          {% else %}
+                          <a href='{% url "booksearch:detail" r.book.book_id %}'><img class='book__cover' alt="{{r.book.title}} 표지 이미지" src="{{r.book.cover}}"></a>
+                          <div class="rank">{{forloop.counter}}</div>
+                        </div>
+                        <div class="bVUVO8nJ">
+                            <div class="book__title">{{r.book.title}}</div>
+                            <div class="rating"><i class="fa-solid fa-fire"></i>{{r.select_count}}</div>
+                        </div>
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
 
 <section class="ranking">
     <div>

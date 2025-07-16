@@ -18,6 +18,8 @@ import html
 
 
 def search(request):
+    review_count = Review.objects.count()
+
     query = request.GET.get('query', '').strip() or '파이썬'
     query_lower = query.lower()
     total_count = 0
@@ -74,7 +76,13 @@ def search(request):
             pub_date = pub_date_raw[:10] if pub_date_raw else None
 
             isbn_raw = doc.get('isbn', '')
-            isbn = isbn_raw.split()[-1] if isbn_raw else "정보없음"
+            
+            if isbn_raw:
+                split_result = isbn_raw.split()
+                isbn = split_result[-1] if split_result else "정보없음"
+            else:
+                isbn = "정보없음"
+
 
             # 2. title 또는 author에 쿼리 포함되는 경우만 DB에 저장
             if query_lower in title.lower() or query_lower in author.lower():
@@ -140,12 +148,15 @@ def search(request):
         'prev_block_page': prev_block_page,
         'next_block_page': next_block_page,
         'member': member,  # 로그인 여부를 템플릿에서 확인 가능
+        'review_count':review_count,
     }
 
     return render(request, 'booksearch/booksearch.html', context)
 
 def detail(request, book_id):
     print("넘어온 book_id : ", book_id)
+    review_count = Review.objects.count()
+
 
     member_id = request.session.get('user_id')
     member = None
@@ -315,6 +326,7 @@ def detail(request, book_id):
         'member': member,
         'user_liked_review_ids': user_liked_review_ids,
         'reading_group':reading_group,
+        'review_count':review_count,
     }
     response = render(request, 'booksearch/bookdetail.html', context)
     return response

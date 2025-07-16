@@ -3,6 +3,7 @@ from .models import ReadingGroup # shareMain 앱의 모델 불러오기
 from .forms import ReadingGroupForm  # ReadingGroupForm
 from booksearch.models import Book  # book 앱의 모델 불러오기
 from member.models import Member  # member 앱의 모델 불러오기
+from review.models import Review
 
 from django.http import JsonResponse  # 책 검색 모달창 api 관련
 import requests, urllib, urllib.parse # 책 검색 모달창 api 관련
@@ -203,6 +204,7 @@ def Share_AddGroup(request):
 
 # 1. 교환독서_메인페이지 | Share_Main
 def Share_Main(request):
+    review_count = Review.objects.count()
     # 검색 파라미터 (q로 통일)
     query = request.GET.get('q', '').strip()
     page = int(request.GET.get('page', 1))
@@ -219,6 +221,9 @@ def Share_Main(request):
         ).distinct().order_by('-id')
     else:
         groups = ReadingGroup.objects.all().order_by('-id')
+
+    # 이 줄 추가
+    total_group_count = groups.count()
 
     # 페이지네이터 적용
     paginator = Paginator(groups, 10)  # 10개씩
@@ -245,5 +250,7 @@ def Share_Main(request):
         'join_groups': join_groups,
         'member':member, # member추가
         'query': query,    # 검색어도 같이 넘김 (페이지네이터에서 필요)
+        'total_group_count': total_group_count,  # 총 그룹개수
+        'review_count':review_count,
     }
     return render(request, 'shareMain/Share_Main.html', context)

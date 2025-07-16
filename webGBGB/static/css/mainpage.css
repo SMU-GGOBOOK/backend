@@ -305,6 +305,11 @@
     color: #636363;
 }
 
+.join_body_item_groupName i {
+    margin: 4px 4px 0 0;
+
+}
+
 
 .feed__join_main{
     display:flex;

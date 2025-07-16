@@ -425,29 +425,30 @@ def login(request):
     if request.method == 'POST':
         user_id = request.POST.get('id', '').strip()
         user_pw = request.POST.get('pw', '').strip()
-
+        next_url = request.GET.get('next') or request.POST.get('next')
         if not user_id or not user_pw:
             return render(request, 'member/login.html', {
                 'error': '아이디와 비밀번호를 모두 입력해주세요.'
             })
-
         try:
-            user = Member.objects.get(id=user_id) 
+            user = Member.objects.get(id=user_id)
             if user_pw == user.pw:
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
+                request.session['member_id'] = user.member_id  # 세션에 로그인 정보 저장(shareMain)
                 messages.success(request, '로그인 되었습니다.')
-                return redirect('/')
+                if next_url:
+                    return redirect(next_url)  # :흰색_확인_표시: 원래 가려던 페이지로 이동
+                else:
+                    return redirect('/')
             else:
                 return render(request, 'member/login.html', {
                     'error': '비밀번호가 틀렸습니다.'
                 })
-
         except Member.DoesNotExist:
             return render(request, 'member/login.html', {
                 'error': '존재하지 않는 아이디입니다.'
             })
-    
     return render(request, 'member/login.html')
 
 
@@ -567,6 +568,7 @@ def kakao_callback(request):
         # 이미 가입된 사용자가 맞다면 로그인 처리
         request.session['user_id'] = member.id # Member 모델의 고유 ID 필드 (member_id)를 user_id로 사용 가능
         request.session['user_name'] = member.name
+        request.session['member_id'] = member.member_id # 이 줄을 추가합니다.
         messages.success(request, f"{member.name}님, 카카오 계정으로 로그인 되었습니다.")
         return redirect('/') # 로그인 완료 후 메인 페이지로 이동
 

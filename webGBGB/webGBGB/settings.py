@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'chart',
     'chatrooms',
     'sns_feed',
-    'neews',
-    
     'rest_framework',
 
      # allauth 필수 앱
