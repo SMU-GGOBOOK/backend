@@ -13,7 +13,6 @@ urlpatterns = [
     path('join-complete/',views.join3,name='join_complete'),
     path('login/',views.login,name='login'),
     path('logout/',views.logout,name='logout'),
-    path('sample/',views.sample,name='sample'),
     
     
     
@@ -31,6 +30,13 @@ urlpatterns = [
     path('update/<str:user_id>/', views.member_update, name='member_update'),
     path('update_process/', views.member_update_process, name='member_update_process'),
     
+    path('kakao/login/', views.kakao_login, name='kakao_login'), # 이 부분이 중요!
+    path('kakao/callback/', views.kakao_callback, name='kakao_callback'),
     
+    path('clear-kakao-session/', views.clear_kakao_session, name='clear_kakao_session'),
+    
+    # join2 이메일 인증 추가
+    path('send-join2-verification/', views.send_join2_verification_code, name='send_join2_verification'),
+    path('verify-join2-code/', views.verify_join2_code, name='verify_join2_code'),
     
 ]

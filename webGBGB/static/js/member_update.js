@@ -1,4 +1,3 @@
-// member_update.js
 
 // 비밀번호 유효성 검사 및 일치 확인
 const pwInput = document.querySelector("input[name='pw']");

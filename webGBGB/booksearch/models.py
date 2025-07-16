@@ -10,15 +10,17 @@ class Book(models.Model):
     publisher = models.CharField(max_length=500) # 출판사
     pub_date = models.CharField(max_length=500) # 출판일
     ISBN = models.CharField(max_length=500) # ISBN
-    page = models.IntegerField(default=0) # 쪽수
+    page = models.CharField(max_length=500) # 쪽수
     size = models.CharField(max_length=500, blank=True) # 크기
     review_count = models.IntegerField(default=0) # 리뷰 수
     bookmark_count = models.IntegerField(default=0) # 북마크 수
     rating = models.IntegerField(default=0) # 평점
     views = models.IntegerField(default=0) # 조회수
     
-    class Meta:
-        unique_together = ('ISBN', 'title', 'author')
+    @property
+    def average(self):
+        return self.rating / self.review_count if self.review_count > 0 else 0
+
     
     def __str__(self):
         return f"{self.book_id}, {self.title}, {self.author}"
