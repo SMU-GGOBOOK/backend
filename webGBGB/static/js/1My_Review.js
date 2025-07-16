@@ -66,12 +66,11 @@ $(document).on('click', '.deleteBtn', function () {
     success: function (data) {
       if (data.result === 'success') {
         $commentItem.remove(); // DOM에서 제거
-
         // 리뷰 개수 갱신
         const $countSpan = $("#my_review_count");
         const currentCount = parseInt($countSpan.text().replace(/[^\d]/g, ''), 10); // 괄호 제외 숫자 추출
         const newCount = currentCount - 1;
-
+        
         if (newCount <= 0) {
           $countSpan.text('(0)');
         } else {
@@ -85,6 +84,8 @@ $(document).on('click', '.deleteBtn', function () {
       alert('서버 오류');
     }
   });
+  alert("삭제되었습니다.")
+
 });
 
 });//맨위랑 연결

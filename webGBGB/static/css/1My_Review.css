@@ -447,14 +447,16 @@ margin-left: 6px;
 
 }*/
 .btn_comment_util {
-font-size: 12px;
-background: none;
-border: none;
-cursor: pointer;
-padding: 0;
-color: #1a1a1a;
-line-height: 1;
-display: inline-block;
+    width: 28px;
+    height: 20px;
+    font-size: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #1a1a1a;
+    line-height: 1;
+    display: inline-block;
 }
 /*
 .gap {
