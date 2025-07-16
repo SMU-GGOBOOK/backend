@@ -250,6 +250,5 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // member_delete.js와 관련된 다른 로직이 있다면 이 DOMContentLoaded 블록 안에 포함되어야 합니다.
-    // 현재 코드에 없는 추가적인 이벤트 리스너나 초기화 로직이 있다면 이곳에 배치하세요.
+    
 });
