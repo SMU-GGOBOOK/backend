@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'chart',
     'chatrooms',
     'sns_feed',
+    'neews',
     
     'rest_framework',
 
