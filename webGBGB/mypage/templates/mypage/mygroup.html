@@ -51,7 +51,9 @@
                       <div class="bookbox" data-id="{{g.id}}"data-group-id="{{ g.id }}" data-book-id="{{ b.book_id.book_id }}">
                         <button type="button" class="outBtn" data-group-id="{{g.id}}"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                           <div class="bookbox_cover">
-                              <img src="{{g.book.cover}}">
+                              <img src="{{g.book.cover}}"
+                              onerror="this.onerror=null;this.src='/static/images/defaultimg.png';"
+                              >
                           </div>
                           <div class="group_info">
                               <div class="booktitle">
