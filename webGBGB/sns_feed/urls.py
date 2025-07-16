@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import (
     sns_html_view,
-    PostListView, PostDetailView, PostLikeView, CommentListView,
+    PostListView, PostDetailView, CommentListView,
     UserProfileUploadView,
     ChatRoomDetailView, ChatRoomJoinView # 리딩그룹 관련 뷰
 )
@@ -13,7 +13,6 @@ urlpatterns = [
 
     path('reading-groups/<int:reading_group_id>/posts/', PostListView.as_view(), name='post-list-create-by-group'),
     path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
-    path('posts/<int:pk>/like/', PostLikeView.as_view(), name='post-like'),
     path('posts/<int:post_pk>/comments/', CommentListView.as_view(), name='comment-list'),
     path('profile/upload/', UserProfileUploadView.as_view(), name='profile-upload'),
 

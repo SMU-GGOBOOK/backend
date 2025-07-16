@@ -10,12 +10,12 @@ from shareMain.models import ReadingGroup
 from member.models import Member
 
 # GroupChatRoom 임포트 제거
-from .models import Post, Comment, UserProfile, Like
+from .models import Post, Comment, UserProfile
 
 # 시리얼라이저 임포트 (이름 변경 반영)
 from .serializers import (
     ReadingGroupSerializer, PostSerializer, CommentSerializer,
-    UserProfileSerializer, LikeSerializer
+    UserProfileSerializer
 )
 
 
@@ -59,36 +59,25 @@ class PostListView(generics.ListCreateAPIView):
         return {'request': self.request}
 
     def perform_create(self, serializer):
-        # Post 생성 시 author와 group 정보를 함께 저장
+        member_id = self.request.session.get('user_id')
+        if not member_id:
+            raise serializers.ValidationError({"detail": "로그인 후에 글을 작성할 수 있습니다."})
+
+        try:
+            member = Member.objects.get(id=member_id)
+        except Member.DoesNotExist:
+            raise serializers.ValidationError({"detail": "유효하지 않은 사용자입니다."})
+
         reading_group_id = self.kwargs.get('reading_group_id')
-        if not reading_group_id:
-            # 여기에서 'serializers.ValidationError'를 사용하기 위해 'serializers'가 임포트되어야 함
-            raise serializers.ValidationError({"detail": "Reading group ID is required for creating a post."})
-        
         reading_group = get_object_or_404(ReadingGroup, id=reading_group_id)
-        
-        serializer.save(author=self.request.user, group=reading_group) # group 정보 추가
+
+        serializer.save(member_id=member, group=reading_group)
+
 
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
-
-class PostLikeView(APIView):
-    def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
-        user = request.user
-
-        if user.is_authenticated:
-            # 좋아요 토글 로직
-            like, created = Like.objects.get_or_create(user=user, post=post)
-            if not created: # 이미 존재하면 (즉, 새로 생성되지 않았다면)
-                like.delete() # 좋아요 취소
-                return Response({"message": "Like removed"}, status=status.HTTP_200_OK)
-            else: # 새로 생성되었다면
-                return Response({"message": "Like added"}, status=status.HTTP_201_CREATED)
-        return Response({"detail": "Authentication required"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class CommentListView(generics.ListCreateAPIView):
