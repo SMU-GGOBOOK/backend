@@ -74,7 +74,7 @@
       const txt=inp.value.trim();
       if(!txt && !prev.querySelector('img')){alert('내용 또는 이미지를 추가해주세요.');return;}
       const imgHTML=prev.querySelector('img')
-        ? `<img src="${prev.querySelector('img').src}" style="max-width:100%;border-radius:10px;margin-bottom:8px;">` : '';
+        ? `<img src="${prev.querySelector('img').src}" style="max-width: 400px; max-height: 400px; border-radius: 7px; margin-bottom: 8px; padding: 4px;" />` : '';
       const div=document.createElement('div'); div.className='post';
             div.innerHTML=`
 
@@ -344,6 +344,11 @@
       document.addEventListener('mouseup',()=>{if(isDrag){isDrag=false;imgEl.style.cursor='grab';}});imgEl.style.cursor='grab';
     });
   </script>
+
+    <div id="image-modal" class="image-modal">
+      <span class="image-modal-close" onclick="closeImageModal()">&times;</span>
+      <img class="image-modal-content" id="modal-img">
+    </div>
   
 {% endblock content %}
 {% block extra_js %}

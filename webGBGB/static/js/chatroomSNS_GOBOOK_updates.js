@@ -49,7 +49,7 @@ document.addEventListener('click', function(e) {
   if (e.target.matches('.edit-post')) {
     e.stopPropagation();
     const post = e.target.closest('.post');
-    const contentEl = post.querySelector('.post-contents');
+    const contentEl = post.querySelector('.post_contents');
 
     const imageHTML = Array
       .from(contentEl.querySelectorAll('img'))
@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeBtn = modal.querySelector('.image-modal-close');
   applyImageOrientation();
   // --- 이미지 방향에 따라 클래스 붙이기 ---
-  document.querySelectorAll('.comment_contents img').forEach(img => {
+  document.querySelectorAll('.post_contents img').forEach(img => {
     const applyClass = () => {
       const cls = img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait';
       img.classList.add(cls);
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1) 이미지 클릭 → 모달 열기
   document.body.addEventListener('click', e => {
     // .comment_contents 내의 <img>를 클릭했을 때
-    if (e.target.matches('.comment_contents img')) {
+    if (e.target.matches('.post_contents img')) {
       scale = 1;
       offX = 0;
       offY = 0;
@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // ── 이미지 방향에 따라 클래스 붙이는 함수 ──
 function applyImageOrientation() {
-  document.querySelectorAll('.comment_contents img').forEach(img => {
+  document.querySelectorAll('.post_contents img').forEach(img => {
     const setOri = () => {
       // 기존 inline style 제거
       img.removeAttribute('style');
@@ -458,6 +458,8 @@ function applyImageOrientation() {
     else img.addEventListener('load', setOri);
   });
 }
+
+
 
 // 게시글 백엔드
 async function loadPosts() {

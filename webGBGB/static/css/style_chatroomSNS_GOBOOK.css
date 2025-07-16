@@ -252,11 +252,11 @@
     }
 
     .post-box, .comment-box { width:100%; 
-                              margin:5px 0; 
+                              margin-top: 10px; 
                               display: flex;
                               position:relative; }
     
-    textarea { width: 90%;
+    textarea { width: 95%;
                border-radius:7px; 
                padding:15px; 
                border:1px solid #ccc; 
@@ -465,6 +465,22 @@
 
 
     /* 이미지 모달창 기능 */
+
+
+    .landscape{
+        max-width: 400px !important;
+        max-height: 400px !important;
+        border-radius: 7px;
+        margin-bottom: 8px;
+        padding: 4px;
+    }
+    .portrait{
+        max-width: 400px !important;
+        max-height: 400px !important;
+        border-radius: 7px;
+        margin-bottom: 8px;
+        padding: 4px;
+    }
     .image-modal { display:none; 
                    position:fixed; 
                    z-index:2000; 
@@ -742,6 +758,7 @@
     .nested-reply-write-area {
     display: flex;
     margin-bottom: 10px;
+    gap: 10px;
     }
 
     .nested-reply-textarea {
