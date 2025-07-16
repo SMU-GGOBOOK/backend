@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="https://kit.fontawesome.com/955e8c2313.js" crossorigin="anonymous"></script>
+
   <title>교환독서 모임 상세</title>
   <style>
     @import url('https://fonts.google.com/selection/embed');
@@ -47,6 +50,14 @@
     }
     .banner-text {
       flex: 1;
+      font-size: 30px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
+    .banner-text i {
+      margin-right: 8px;
+      font-size: 25px;
     }
     .banner h1 {
       margin: 0;
@@ -95,7 +106,8 @@
     }
     .info-row span {
       color: #666;
-      font-size: 15px;
+      font-size: 16px;
+      font-weight: 500;
     }
     .info-row strong {
       color: #2D7868;
@@ -121,10 +133,10 @@
 
     .description {
       background-color: #fafafa;
-      color: #2D7868;
+      color: #1a1a1a;
       padding: 20px;
       border-radius: 7px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
       line-height: 1.6;
       font-size: 16px;
       margin-bottom: 30px;
@@ -135,13 +147,15 @@
       padding: 14px 24px;
       border: none;
       border-radius: 7px;
-      font-size: 16px;
+      font-size: 17px;
       cursor: pointer;
       width: 100%;
+      font-weight: 700;
     }
 
     .info-row > strong {
       margin-left: auto;
+      font-size: 16px;
     }
     
 
@@ -152,14 +166,11 @@
     <div class="banner">
       <button id="banner-close" aria-label="닫기">&times;</button>
       <div class="banner-text">
-        <h1>{{readinggroup.group_name}}</h1>
-        {% comment %} <p>같이 읽고, 같이 나누는 시간</p> {% endcomment %}
+        {% if readinggroup.is_public|stringformat:"s" == '1' %}<!-- 비공개일 경우 잠금아이콘 추가 -->
+          <i class="fa-solid fa-lock"></i>
+        {% endif %}
+          <span class="group_ellipsis_2">{{ readinggroup.group_name }}</span>
       </div>
-      {% comment %} <div class="profile-upload">
-        <img id="profile-preview" src="https://via.placeholder.com/60/2D7868/ffffff?text=ME" alt="Profile">
-        <label class="upload-label" for="profile-image">프로필 변경</label>
-        <input type="file" id="profile-image" accept="image/*">
-      </div> {% endcomment %}
     </div>
 
     <div class="info">
@@ -189,7 +200,7 @@
       {{readinggroup.description}}
     </div>
 
-    <a href='/sns_feed/'><button class="join-btn"> 💬그룹방 참여하기 </button></a>
+    <a href='/feedpage/sns_feed/{{readinggroup.id}}/'><button class="join-btn"> 가입 </button></a>
   </div>
 
 </body>
