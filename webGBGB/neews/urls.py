@@ -7,7 +7,14 @@ from django.conf.urls.static import static
 app_name = 'neews'
 
 urlpatterns = [
-    path('gobookneews/',views.gobookneews,name='gobookneews'),
+    path('',views.gobookneews,name='gobookneews'),
+    
+    path('chart/join/', views.join_chart_data),
+    path('chart/genre/', views.genre_chart_data),
+    path('chart/tag/', views.tag_chart_data),
+    path('chart/share/', views.share_chart_data),
+    path('chart/review/', views.review_chart_data),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
