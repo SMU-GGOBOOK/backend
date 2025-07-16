@@ -219,6 +219,7 @@
     h2 { margin-bottom:7px; 
          color:#1a1a1a; 
          font-weight:700; 
+         font-size: 35px;
          margin-left:5px; }
     h3 { background-color: #2f81ed1c;
          color: #2F80ED;
@@ -731,7 +732,6 @@
     }
     .nested-reply-section {
     margin-top: 10px;
-    border-left: 2px solid #eee; /* 시각적으로 중첩을 나타내는 선 */
     display: none; /* 기본적으로 숨김 */
     }
 
@@ -766,7 +766,6 @@
     .nested-reply-item {
     margin-top: 10px; /* 대댓글 아이템 간 간격 */
     background-color: #f9f9f9; /* 대댓글 아이템 배경색 약간 다르게 */
-    padding: 10px;
     border-radius: 7px;
     /* border: 1px solid #eee; */
     }
@@ -788,7 +787,7 @@
     padding-left: 0; /* 최상위 댓글이 들여쓰기 되지 않도록 */
     }
     .reply_list{
-        padding:15px;
+        padding:8px;
     }
 
     /* 댓글 입력 텍스트 영역 (textarea) */
