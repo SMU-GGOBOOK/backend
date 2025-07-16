@@ -170,7 +170,7 @@ section{
  
 }
 .booktitle{
-    margin: 20px 17px 0 17px;
+    margin: 15px 17px 0 17px;
     font-size: 18px;
     font-weight: 600;
     color: #1a1a1a;
@@ -183,7 +183,7 @@ section{
 
 }
 .bookauthor{
-    margin-top: 4px;
+    margin-top: 8px;
     font-size: 15px;
     font-weight: 500;
     line-height: 18px;

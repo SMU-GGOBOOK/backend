@@ -48,7 +48,7 @@
                   <!--내 그룹 목록-->
                   <div class="my_group">
                     {% for g in sharegroups%}
-                      <div class="bookbox" data-id="{{g.id}}" data-book-id="{{ b.book_id.book_id }}">
+                      <div class="bookbox" data-id="{{g.id}}"data-group-id="{{ g.id }}" data-book-id="{{ b.book_id.book_id }}">
                         <button type="button" class="outBtn" data-group-id="{{g.id}}"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                           <div class="bookbox_cover">
                               <img src="{{g.book.cover}}">
@@ -63,6 +63,7 @@
                               <div class="bookauthor">{{g.admin.name}}</div>
                           </div>
                       </div>
+                    
                     {% endfor %}
                       {% comment %} <div class="bookbox">
                         <button class="outBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>

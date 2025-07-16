@@ -7,6 +7,7 @@ from member.models import Member
 from bookmark.models import Bookmark
 from shareMain.models import ReadingGroup
 from django.views.decorators.csrf import csrf_exempt
+from chatrooms.models import ChatMessage
 
 ## list : 현재 페이지의 리뷰 목록
 #list.paginator.num_pages : 전체 페이지 수
@@ -89,7 +90,6 @@ def Bmark(request):
 def mygroup(request):
     review_count = Review.objects.count()
     user_id = request.session.get('user_id')  # 로그인된 유저의 ID
-
     if not user_id:
         return redirect(f'/member/login/?next={request.path}')  # 로그인 안 되어있으면 로그인 페이지로
 
@@ -105,6 +105,8 @@ def mygroup(request):
     qs = ReadingGroup.objects.filter(member=member).order_by('-created_at')  # member_id는 FK니까 객체로 필터
     for g in qs:
             g.membercount = g.member.count()
+            # latest_chat = ChatMessage.objects.filter(group_id=g.id).last()
+            # g.chat = latest_chat
     paginator = Paginator(qs,8)
     paginated_sharegroups = paginator.get_page(page)
 
@@ -116,7 +118,6 @@ def mygroup(request):
         "my_group_count": my_group_count,
         "user_id":user_id,
         'review_count':review_count,
-        
         
     }
     
