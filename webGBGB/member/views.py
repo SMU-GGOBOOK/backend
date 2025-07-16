@@ -451,6 +451,7 @@ def login(request):
             })
     return render(request, 'member/login.html')
 
+
 def join1(request):
     # join1 페이지에 진입할 때 카카오 회원가입 세션을 명시적으로 지웁니다.
     # 이렇게 하면 join1에서 일반 회원가입을 시작할 때, 이전의 카카오 세션 정보가 남아있지 않게 됩니다.
@@ -567,7 +568,7 @@ def kakao_callback(request):
         # 이미 가입된 사용자가 맞다면 로그인 처리
         request.session['user_id'] = member.id # Member 모델의 고유 ID 필드 (member_id)를 user_id로 사용 가능
         request.session['user_name'] = member.name
-        request.session['member_id'] = member.member_id 
+        request.session['member_id'] = member.member_id # 이 줄을 추가합니다.
         messages.success(request, f"{member.name}님, 카카오 계정으로 로그인 되었습니다.")
         return redirect('/') # 로그인 완료 후 메인 페이지로 이동
 
