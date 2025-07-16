@@ -6,8 +6,8 @@ class ReadingGroupForm(forms.ModelForm):
     password = forms.CharField(required=False, widget=forms.PasswordInput())  # ✅ 중요!
 
     book_title = forms.CharField(widget=forms.HiddenInput())
-    book_author = forms.CharField(widget=forms.HiddenInput())
-    book_cover = forms.CharField(widget=forms.HiddenInput())
+    book_author = forms.CharField(widget=forms.HiddenInput(),required=False)
+    book_cover = forms.CharField(widget=forms.HiddenInput(),required=False)
     book_isbn = forms.CharField(widget=forms.HiddenInput())
     tag = forms.CharField(required=False, widget=forms.HiddenInput())
     max_member = forms.IntegerField(widget=forms.HiddenInput())  # 최대인원수
