@@ -31,9 +31,6 @@ def member_update(request, user_id):
     # 사용자 정보 가져오기
     member = get_object_or_404(Member, id=user_id)
     
-    # 카카오 로그인인지 확인
-    is_kakao_member = 'kakao_' in str(user_id)
-
     # 이메일 분리 (@ 기준으로)
     email_parts = member.email.split('@') if member.email else ['', '']
     email1 = email_parts[0] if len(email_parts) > 0 else ''
@@ -48,8 +45,6 @@ def member_update(request, user_id):
         'email2': email2,
         'genres_list': genres_list,
         'user_id': user_id,
-        'is_kakao_member': is_kakao_member,
-        
     }
     
     return render(request, 'member/member_update.html', context)

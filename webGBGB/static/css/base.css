@@ -96,16 +96,10 @@ hr {
 }
 
 
-.fig-l1, .fig-l2{
+.fig-exchange-book{
     color: #2D7868;
     font-family: 'NanumSquareAcb';
     font-size: 17px; 
-    margin-right:17px;
-}
-
-
-.fig-header-left i{
-    margin-right:7px;
 }
 
 
