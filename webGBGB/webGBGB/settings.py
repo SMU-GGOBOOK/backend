@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-4&bajmgb*6@9r6c*65ld)g8g$l^m4auauv0b%00651gh(6!dl4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,8 +39,13 @@ INSTALLED_APPS = [
     'chart',
     'chatrooms',
     'sns_feed',
+<<<<<<< Updated upstream
     'neews',
     'rest_framework',
+=======
+    'rest_framework',
+
+>>>>>>> Stashed changes
      # allauth 필수 앱
     'django.contrib.sites', # 중요!
     'allauth',
@@ -49,9 +54,13 @@ INSTALLED_APPS = [
 
     # Google Provider (추가)
     'allauth.socialaccount.providers.google',
+<<<<<<< Updated upstream
     'allauth.socialaccount.providers.kakao',
 ]
+=======
+>>>>>>> Stashed changes
 
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,9 +68,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware', 
 ]
 
 # allauth 설정
@@ -171,4 +180,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mcshin0111@gmail.com'
 EMAIL_HOST_PASSWORD = 'gzpl bkfm sgov wgrv'
 DEFAULT_FROM_EMAIL = 'mcshin0111@gmail.com'
-
