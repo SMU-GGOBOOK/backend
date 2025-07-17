@@ -163,14 +163,15 @@
   </style>
 </head>
 <body>
-  <div class="container">
     {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
+      {% for message in messages %}
+        <script>
+          alert('{{ message }}');
+        </script>
+      {% endfor %}
     {% endif %}
+  <div class="container">
+
 
     {% if group %}
       <div class="banner">
