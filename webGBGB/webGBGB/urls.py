@@ -17,6 +17,9 @@ urlpatterns = [
     path('reply/', include('reply.urls')),
     path('chart/', include('chart.urls')),
     path('bookclub/', include('bookclub.urls')),
+    path('chatrooms/', include('chatrooms.urls')),
+    path('feedpage/', include('sns_feed.urls')),
+    path('neews/', include('neews.urls')),
     
 ]
 

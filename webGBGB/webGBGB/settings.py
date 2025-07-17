@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'reply',
     'chart',
     'bookclub',
+    'chatrooms',
+    'sns_feed',
+    'neews',
+    'rest_framework',
 
 ]
 
