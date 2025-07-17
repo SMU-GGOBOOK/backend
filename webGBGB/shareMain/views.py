@@ -67,7 +67,7 @@ def ajax_search(request):
         return JsonResponse({"books": [], "pagination": {}})
 
     headers = {
-        "Authorization": "KakaoAK 5262b6fed76275833a5b8806921d6af1"  # ← 너의 REST API 키로 바꾸기!
+        "Authorization": "KakaoAK 5262b6fed76275833a5b8806921d6af1"  # ← 카카오 REST API 키
     }
     params = {
         "query": query,
@@ -140,7 +140,7 @@ def ajax_search(request):
 
 # 2. 교환독서_그룹만들기 | Share_AddGroup
 def Share_AddGroup(request):
-    # 로그인한 유저 정보 가져오기
+    # 사용자 유효성 검사 (로그인한 유저 정보 가져오기)
     member_id = request.session.get('member_id')
     if not member_id:
         messages.warning(request, '로그인이 필요합니다.')
@@ -151,7 +151,7 @@ def Share_AddGroup(request):
         return redirect('member:login')  # 세션에 이상 있으면 로그인 요구
     
     if request.method == 'POST':
-        form = ReadingGroupForm(request.POST)
+        form = ReadingGroupForm(request.POST)  # 폼 제출 처리(POST요청)
         if form.is_valid():
             # 책 정보 꺼내기
             isbn = form.cleaned_data['book_isbn']
@@ -160,42 +160,42 @@ def Share_AddGroup(request):
             cover = form.cleaned_data['book_cover']
             publisher = form.cleaned_data.get('book_publisher', '')
 
-            if not isbn or not title:
+            if not isbn or not title:  # 책 선택 안 했을 경우 (책 제목, isbn 누락)
                 return render(request, 'shareMain/Share_AddGroup.html', {
                     'form': form,
                     'error': '책을 선택해주세요.',
                 })
-            # Book DB 저장 or get
+            # 책 정보 처리 (Book 모델과 연결) Book DB 저장 or get
             book_obj, created = Book.objects.get_or_create(
                 ISBN=isbn,
                 title=title,
-                author=author,
                 defaults={
                     'title': title,
                     'author': author,
-                    'cover': cover,
+                    # 'cover': cover,
                     'publisher': publisher,
                 }
             )
-            # 1. 참여 중인 그룹 수 확인
+            # 1. 참여 중인 그룹 수 제한 체크
             joined_count = ReadingGroup.objects.filter(
                 Q(admin=member) | Q(member=member)
             ).distinct().count()
 
+            # 최대 8개 제한
             if joined_count >= 8:
                 messages.warning(request, '최대 8개의 그룹만 참여할 수 있습니다. 그룹을 더 만들 수 없습니다.')
                 return redirect('shareMain:Share_Main')
             # 2. 그룹 생성
-            group = form.save(commit=False)
-            group.book = book_obj
+            group = form.save(commit=False) # DB에 아직 저장x
+            group.book = book_obj # 책 할당
             group.admin = member  # 방장 지정
-            group.save()
+            group.save()          # 이제 DB에 저장
             # 3. 자신도 멤버로 추가
-            group.member.add(member)
+            group.member.add(member)  # 자신도 참여 멤버로 등록
 
-            return redirect('shareMain:Share_Main')
+            return redirect('shareMain:Share_Main')  # 완료 -> 메인페이지 리다이렉트
         else:
-            print("폼 오류:", form.errors)
+            print("폼 오류:", form.errors)  # 폼 오류 있을 경우: cmd창에 print
             return render(request, 'shareMain/Share_AddGroup.html', {'form': form})
     else:
         form = ReadingGroupForm()

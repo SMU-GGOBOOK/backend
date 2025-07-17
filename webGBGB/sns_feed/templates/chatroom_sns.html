@@ -1,11 +1,26 @@
 {% extends "base.html" %}
 {% load static %}
+<<<<<<< Updated upstream
   {% block title %}OOO 교환독서{% endblock %}
   {% block extra_css %}
     <meta name="csrf-token" content="{{ csrf_token }}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style_chatroomSNS_GOBOOK.css' %}">
   {% endblock %}
 {% block content %}
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <script src="https://kit.fontawesome.com/e1869b8eb9.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style_chatroomSNS_GOBOOK.css' %}">
+  {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/reply.css' %}"> {% endcomment %}
+  <script src="{% static 'js/book.js' %}" defer></script>
+  <script src="{% static 'js/chatroomSNS_GOBOOK_updates.js' %}" defer></script>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+>>>>>>> Stashed changes
 
     <main>
       <div class="container">
@@ -27,6 +42,7 @@
         
         -->
 
+<<<<<<< Updated upstream
         <div class="post-box">
             <div class="image-preview" id="image-preview"></div>
             <textarea name="ccontent" id="post-input" rows="3" placeholder="무엇이든 자유롭게 공유해보세요!"></textarea>
@@ -38,6 +54,52 @@
                 <input type="file" name="cfile" id="image-upload"  accept="image/*" onchange="handleImageUpload(event)" hidden>    
                 <button class="upload_btn" onclick="addPost()">올리기</button>
               </div>
+=======
+      <div class="fig-join">
+        <a href="" class="fig-signup">회원가입</a>
+        <a href="" class="fig-login">로그인</a>
+      </div>
+
+    </nav>
+  </header>
+
+    <!-- main content -->
+    <div class="all-main">    
+      <div class="fig-main">
+        <main>
+          <div class="container">
+            <h2>{{readinggroup.group_name}}</h2>
+          <div class="tags">
+            {% for tag in tag_list %}  
+              <h3>{{tag}}</h3>
+            {% endfor %}
+          </div>
+
+            <!--
+            cno = models.AutoField(primary_key=True)
+            board = models.ForeignKey(Board,on_delete=models.CASCADE) #게시글삭제시 하단댓글모두삭제
+            member = models.ForeignKey(Member,on_delete=models.DO_NOTHING) # 그대로
+            cpw = models.CharField(max_length=20,null=True,blank=True)
+            ccontent = models.TextField(blank=True)
+            cfile = models.ImageField(null=True,blank=True,upload_to='comment')
+            cdate = models.DateTimeField(auto_now=True)
+            
+            -->
+
+            <div class="post-box">
+                <div class="image-preview" id="image-preview"></div>
+                <textarea name="ccontent" id="post-input" rows="3" placeholder="무엇이든 자유롭게 공유해보세요!"></textarea>
+                <div class="upload-tap_wrap">
+                  <div class="upload-tab">
+                    <label for="image-upload">
+                      <i class="fas fa-image"></i>
+                    </label>
+                    <input type="file" name="cfile" id="image-upload"  accept="image/*" onchange="handleImageUpload(event)" hidden>    
+                    <button class="upload_btn" onclick="addPost()">올리기</button>
+                  </div>
+  
+                </div>
+>>>>>>> Stashed changes
 
             </div>
 
@@ -83,6 +145,7 @@
       reader.readAsDataURL(file);
     }
 
+<<<<<<< Updated upstream
 function addPost() {
   const content = document.getElementById('post-input').value.trim();
   const imageInput = document.getElementById('image-upload');
@@ -142,6 +205,243 @@ function createPostElement(post) {
                   </button>
                 </div>
               </div>
+=======
+                <div class="post_item" data-id="5212265">
+                  <div class="post_all">
+                    <div class="post-header">
+                      <div class="left_area">
+                        <div class="user_info_box">
+                          <span class="info_item">라떼</span>
+                          <span class="gap"> </span>
+                          <span class="info_item">${formatTime()}</span>
+                        </div>
+                      </div>
+                      <div class="post-actions">
+                        <div class="right_area">
+                          <button class="btn_setting" type="button">
+                              <i class="fa-solid fa-ellipsis" style="color: #333333;"></i>                           
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="post_contents">
+                    ${imgHTML}
+                    <div class="post_text">
+                      ${txt}
+                    </div>
+                  </div>
+              
+                  <div class="comment_footer">
+                    <div class="right_area">
+                      <button class="btn_like" type="button">
+                        <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
+                        <span class="text">0</span>
+                      </button>
+                      <button class="btn_reply" type="button">
+                          <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
+                          <span class="count">0</span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- 답글달기 -->
+                  <div class="reply_wrap">
+                    <div class="reply_write_area active">
+                      <div class="comment-box">
+                        <textarea id='reply_textarea' rows="1" placeholder="댓글 달기..." style="height: 63px;"></textarea>
+                        <button class="reply_btn">댓글</button>
+                      </div>
+                    </div>
+                      <div class="reply_list_area">
+                        <div class="reply_list">
+                        <!--  
+                        <div class="reply_item" id="cmnt_num_1054923">
+                            <div class="reply_header">
+                            <div class="user_info_box">
+                                <span class="info_item">ch*****</span>
+                                <span class="gap"> | </span>
+                                <span class="info_item">2021.01.17</span>
+                                <span class="gap"> | </span>
+                                <span class="info_item">
+                                <button class="btn_comment_util report_item" type="button" data-role="report">
+                                    <span class="text">신고/차단</span>
+                                </button>
+                                </span>
+                            </div>
+                            </div>
+                            <div class="reply_contents">
+                            <div class="reply_text">우와,,, 축하드립니다^^ 부럽네요. 저는 "돈의속성" 책이 너무 좋아서 회장님의 다른 저서"김밥파는 CEO"도 찾아서 뒤늦게 읽어봤어요. 거기서도 소원 100번 말하기 있던데 지금 실천중입니다..</div>
+                            <div class="reply_write_area">
+                                <div class="byte_check_wrap">
+                                <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                                <div class="byte_check_footer">
+                                    <div class="byte_check">
+                                    <span class="count">0</span>
+                                    <span class="total">1000</span>
+                                    </div>
+                                    <div class="btn_wrap">
+                                    <button class="btn_xs btn_light_gray" type="button">
+                                        <span class="text">취소</span>
+                                    </button>
+                                    <button class="btn_xsbyte_check_wrap btn_primary disabled" type="button">
+                                        <span class="text">등록</span>
+                                    </button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="reply_item" id="cmnt_num_1054924">
+                            <div class="reply_header">
+                            <div class="user_info_box">
+                                <span class="info_item">닉네임</span>
+                                <span class="gap"> | </span>
+                                <span class="info_item">2020.08.23</span>
+                                <span class="gap"> | </span>
+                                <span class="info_item">
+                                <button class="btn_comment_util report_item" type="button" data-role="report">
+                                    <span class="text">신고/차단</span>
+                                </button>
+                                </span>
+                            </div>
+                            </div>
+                            <div class="reply_contents">
+                            <div class="reply_text">돈에 대한 속성을 넘 잘 쉽게 설명해주셔서 감사합니다</div>
+                            <div class="reply_write_area">
+                                <div class="byte_check_wrap">
+                                <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                                <div class="byte_check_footer">
+                                    <div class="byte_check">
+                                    <span class="count">0</span>
+                                    <span class="total">1000</span>
+                                    </div>
+                                    <div class="btn_wrap">
+                                    <button class="btn_xs btn_light_gray" type="button">
+                                        <span class="text">취소</span>
+                                    </button>
+                                    <button class="btn_xs btn_primary disabled" type="button">
+                                        <span class="text">등록</span>
+                                    </button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="reply_item" id="cmnt_num_1054925">
+                            <div class="reply_header">
+                            <div class="user_info_box">
+                                <span class="info_item">닉네임</span>
+                                <span class="gap"> | </span>
+                                <span class="info_item">2020.06.08</span>
+                                <span class="gap"> | </span>
+                                <span class="info_item">
+                                <button class="btn_comment_util report_item" type="button" data-role="report">
+                                    <span class="text">신고/차단</span>
+                                </button>
+                                </span>
+                            </div>
+                            </div>
+                            <div class="reply_contents">
+                              <div class="reply_text">저는 일년 전 생각의 비밀, 알면서알지못하는 것들 이렇게 두 권을 읽었습니다.</div>
+                              <div class="reply_write_area">
+                                  <div class="byte_check_wrap">
+                                      <textarea class="form_textarea" title="답글 입력" placeholder="1000자 이내로 입력해주세요." maxlength="1000"></textarea>
+                                  <div class="byte_check_footer">
+                                      <div class="byte_check">
+                                          <span class="count">0</span>
+                                          <span class="total">1000</span>
+                                      </div>
+                                      <div class="btn_wrap">
+                                          <button class="btn_xs btn_light_gray" type="button">
+                                              <span class="text">취소</span>
+                                          </button>
+                                          <button class="btn_xs btn_primary disabled" type="button">
+                                              <span class="text">등록</span>
+                                          </button>
+                                      </div>
+                                  </div>
+                                  </div>
+                              </div>
+                            </div>
+                        </div>
+                      -->
+                        </div>
+                        <div class="auto_overflow_wrap">
+                          <div class="auto_overflow_contents">
+                              <div class="auto_overflow_inner">
+                                  <div class="reply_list"></div>
+                              </div>
+                          </div>
+                          <div class="auto_overflow_footer">
+                              <button class="btn_more_body" type="button">
+                                  <span class="text">답글 더보기</span>
+                                  <span class="ico_arw"></span>
+                              </button>
+                          </div>
+                        </div> 
+                    </div>
+                  </div>
+          
+                  </div>
+                </div>
+              </div>      `;
+      document.getElementById('post-list').prepend(div);
+      inp.value=''; prev.innerHTML=''; document.getElementById('image-upload').value='';
+      applyImageOrientation();
+      div.querySelector('.like-btn').addEventListener('click',()=>{const c=div.querySelector('.like-count');let n=parseInt(c.textContent.replace(/[^0-9]/g,''))||0;c.textContent=`❤️ ${n+1}`;});
+      div.querySelector('.edit-btn').addEventListener('click',()=>{const pc=div.querySelector('.post-contents'), nv=prompt('수정할 내용을 입력하세요:',pc.textContent);if(nv!==null)pc.textContent=nv;});
+      div.querySelector('.delete-btn').addEventListener('click',()=>{if(confirm('이 글을 삭제하시겠습니까?'))div.remove();});
+      div.querySelector('.report-btn').addEventListener('click',()=>{if(confirm('이 게시글을 신고하시겠습니까?'))alert('신고가 접수되었습니다. 감사합니다.');});
+    }
+    
+    // 댓글
+  document.querySelectorAll('.reply_write_area').forEach(area => {
+    const textarea = area.querySelector('.reply_textarea');
+    const btn = area.querySelector('.reply_btn');
+    const countSpan = area.querySelector('.byte_check .count');
+
+    if (textarea && btn) {
+      textarea.addEventListener('input', () => {
+        const length = textarea.value.length;
+        countSpan.textContent = length;
+        btn.classList.toggle('disabled', length === 0);
+      });
+
+      btn.addEventListener('click', () => {
+
+        if (!textarea.value.trim()) { 
+          alert('댓글을 입력해주세요'); 
+          return; 
+        }
+        if (!confirm('댓글을 등록하시겠습니까?')) return;
+
+        const commentItem = btn.closest('.comment_item');
+        const replyList = commentItem?.querySelector('.reply_list');
+        const replyCount = commentItem?.querySelector('.btn_reply .count');
+
+        const text = textarea.value.trim();
+        if (!text) return;
+
+        const now = new Date();
+        const date = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
+
+        const newReply = document.createElement('div');
+        newReply.className = 'reply_item';
+        newReply.innerHTML = `
+          <div class="reply_header">
+            <div class="user_info_box">
+              <span class="info_item">닉네임</span>
+              <span class="gap"> | </span>
+              <span class="info_item">${date}</span>
+              <span class="gap"> | </span>
+              <span class="info_item">
+                <button class="btn_comment_util report_item" type="button" data-role="report">
+                  <span class="text">신고/차단</span>
+                </button>
+              </span>
+>>>>>>> Stashed changes
             </div>
           </div>
           <div class="post_contents">
