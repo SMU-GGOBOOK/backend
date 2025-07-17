@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'chart',
     'chatrooms',
     'sns_feed',
+    'neews',
     'rest_framework',
 
      # allauth 필수 앱
@@ -75,7 +76,7 @@ SITE_ID = 1 # 필수 설정 (없으면 추가)
 
 
 KAKAO_JAVASCRIPT_KEY = 'bec1572a47f03392aec44dd28bce95b4' # <-- Kakao JavaScript Key
-KAKAO_REDIRECT_URI = 'http://localhost:8000/member/kakao/callback/'
+KAKAO_REDIRECT_URI = 'http://127.0.0.1:8000/member/kakao/callback/'
 KAKAO_REST_API_KEY = 'afb77164fe046904554115dc84fccb93'
 
 

@@ -298,8 +298,15 @@
     box-shadow: 0 4px 4px #797e8480;
 }
 .join_body_item_groupName{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;  /* 보여줄 최대 줄 수 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width:118px;
+    height: 45px;  /* 줄 높이에 맞게 조절 */
+
     margin-top: 10px;
-    height: 45px;
     font-size: 15px;
     font-weight: 400;
     color: #636363;
