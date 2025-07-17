@@ -30,8 +30,7 @@
                         </th>
                         <td>
                             <input type="text" name="name" class="name" required
-                                value="{% if request.session.kakao_signup_data %}{{ request.session.kakao_signup_data.nickname }}{% endif %}"
-                                {% if request.session.kakao_signup_data %}readonly{% endif %}>
+                                value="{% if request.session.kakao_signup_data %}{{ request.session.kakao_signup_data.nickname }}{% endif %}">
                         </td>
                     </tr>
                     <tr>

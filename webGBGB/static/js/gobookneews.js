@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const year = urlParams.get('year') || new Date().getFullYear();
   const month = urlParams.get('month') || (new Date().getMonth() + 1);
 
-  const select = document.getElementById('ctgr_inq');
+  const select = document.getElementById('ctgr_mon');
   if (select) {
     const valueToSelect = `${year}-${month.toString().padStart(2, '0')}`;
     select.value = valueToSelect;
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const applyBtn = document.getElementById('applyBtn');
   if (applyBtn) {
     applyBtn.addEventListener('click', function () {
-      const value = document.getElementById('ctgr_inq').value;
+      const value = document.getElementById('ctgr_mon').value;
       const [year, month] = value.split('-');
       window.location.href = `/neews/?year=${year}&month=${month}`;
     });
