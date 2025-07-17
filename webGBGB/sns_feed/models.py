@@ -1,41 +1,23 @@
 from django.db import models
 from django.conf import settings
-<<<<<<< Updated upstream
 from member.models import Member
-=======
->>>>>>> Stashed changes
 from shareMain.models import ReadingGroup # ReadingGroup 모델 임포트
 
-# class GroupChatRoom(models.Model):
-#     name = models.CharField(max_length=100)
-#     description = models.TextField()
-#     max_members = models.IntegerField(default=10)
-#     current_members = models.IntegerField(default=0)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#
-#     def __str__(self):
-#         return self.name
-
-
 class Post(models.Model):
-<<<<<<< Updated upstream
+
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='posts')
-=======
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts')
->>>>>>> Stashed changes
     # group 필드를 GroupChatRoom에서 ReadingGroup으로 변경
     group = models.ForeignKey(ReadingGroup, on_delete=models.CASCADE, related_name='posts')
     content = models.TextField()
+    image = models.ImageField(upload_to='posts/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         # group이 ReadingGroup 인스턴스이므로 group_name 속성 사용
-<<<<<<< Updated upstream
+
         return f"Post by {self.member_id.name} in {self.group.group_name}"
-=======
-        return f"Post by {self.author.username} in {self.group.group_name}"
->>>>>>> Stashed changes
 
 
 class Comment(models.Model):

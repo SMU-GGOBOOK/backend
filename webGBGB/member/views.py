@@ -567,11 +567,7 @@ def kakao_callback(request):
         # 이미 가입된 사용자가 맞다면 로그인 처리
         request.session['user_id'] = member.id # Member 모델의 고유 ID 필드 (member_id)를 user_id로 사용 가능
         request.session['user_name'] = member.name
-<<<<<<< Updated upstream
-        request.session['member_id'] = member.member_id # 이 줄을 추가합니다.
-=======
         request.session['member_id'] = member.member_id 
->>>>>>> Stashed changes
         messages.success(request, f"{member.name}님, 카카오 계정으로 로그인 되었습니다.")
         return redirect('/') # 로그인 완료 후 메인 페이지로 이동
 

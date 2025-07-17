@@ -18,12 +18,7 @@ urlpatterns = [
     path('chart/', include('chart.urls')),
     path('chatrooms/', include('chatrooms.urls')),
     path('feedpage/', include('sns_feed.urls')),
-<<<<<<< Updated upstream
     path('neews/', include('neews.urls')),
-     
-=======
-    
->>>>>>> Stashed changes
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
