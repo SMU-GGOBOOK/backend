@@ -34,8 +34,8 @@
                       {% endif %}
                       </div>
                       <div class="user_name">
-                        <span><!--<i class="fa-solid fa-user-lock"></i>*-->차단한 사용자</span>
-                        <span class="user_name_gap"> | </span>
+                        {% comment %} <span><!--<i class="fa-solid fa-user-lock"></i>*-->차단한 사용자</span> {% endcomment %}
+                        {% comment %} <span class="user_name_gap">  </span> {% endcomment %}
                         <a href='{% url "member:member_update" user_id %}'><span>정보수정 · 계정삭제</span></a>
                       </div> 
                   </div>
@@ -46,7 +46,8 @@
                     <div class="bookbox" data-id="{{b.bookmark_id}}" data-book-id="{{ b.book_id.book_id }}">
                         <div class="bookbox_cover">
                             <button class="bookmarkBtn" data-bookmark-id="{{b.bookmark_id}}" ><i class="fa-solid fa-bookmark"></i></button>
-                            <img src={{b.book_id.cover}}>
+                            <img src="{{b.book_id.cover}}" 
+                            onerror="this.onerror=null;this.src='/static/images/defaultimg.png';">
                         </div>
                         <div class="booktitle">{{b.book_id.title}}</div>
                         <div class="bookauthor">{{b.book_id.author}}</div>
