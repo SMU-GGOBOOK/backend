@@ -219,10 +219,7 @@
     h2 { margin-bottom:7px; 
          color:#1a1a1a; 
          font-weight:700; 
-<<<<<<< Updated upstream
          font-size: 35px;
-=======
->>>>>>> Stashed changes
          margin-left:5px; }
     h3 { background-color: #2f81ed1c;
          color: #2F80ED;
@@ -255,19 +252,11 @@
     }
 
     .post-box, .comment-box { width:100%; 
-<<<<<<< Updated upstream
                               margin-top: 10px; 
                               display: flex;
                               position:relative; }
     
     textarea { width: 95%;
-=======
-                              margin:5px 0; 
-                              display: flex;
-                              position:relative; }
-    
-    textarea { width: 90%;
->>>>>>> Stashed changes
                border-radius:7px; 
                padding:15px; 
                border:1px solid #ccc; 
@@ -476,7 +465,6 @@
 
 
     /* 이미지 모달창 기능 */
-<<<<<<< Updated upstream
 
 
     .landscape{
@@ -493,8 +481,6 @@
         margin-bottom: 8px;
         padding: 4px;
     }
-=======
->>>>>>> Stashed changes
     .image-modal { display:none; 
                    position:fixed; 
                    z-index:2000; 
@@ -762,10 +748,6 @@
     }
     .nested-reply-section {
     margin-top: 10px;
-<<<<<<< Updated upstream
-=======
-    border-left: 2px solid #eee; /* 시각적으로 중첩을 나타내는 선 */
->>>>>>> Stashed changes
     display: none; /* 기본적으로 숨김 */
     }
 
@@ -776,10 +758,7 @@
     .nested-reply-write-area {
     display: flex;
     margin-bottom: 10px;
-<<<<<<< Updated upstream
     gap: 10px;
-=======
->>>>>>> Stashed changes
     }
 
     .nested-reply-textarea {
@@ -804,10 +783,6 @@
     .nested-reply-item {
     margin-top: 10px; /* 대댓글 아이템 간 간격 */
     background-color: #f9f9f9; /* 대댓글 아이템 배경색 약간 다르게 */
-<<<<<<< Updated upstream
-=======
-    padding: 10px;
->>>>>>> Stashed changes
     border-radius: 7px;
     /* border: 1px solid #eee; */
     }
@@ -829,11 +804,7 @@
     padding-left: 0; /* 최상위 댓글이 들여쓰기 되지 않도록 */
     }
     .reply_list{
-<<<<<<< Updated upstream
         padding:8px;
-=======
-        padding:15px;
->>>>>>> Stashed changes
     }
 
     /* 댓글 입력 텍스트 영역 (textarea) */

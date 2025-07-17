@@ -11,7 +11,7 @@ class Member(models.Model):
     birth = models.CharField(max_length=100,blank=True, null=True)
     genres = models.CharField(max_length=100,blank=True, null=True)
     
-    mdate = models.DateTimeField(auto_now_add=True)
+    mdate = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f'{self.member_id}, {self.id}, {self.name}'

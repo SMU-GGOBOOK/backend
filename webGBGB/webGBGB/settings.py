@@ -39,13 +39,8 @@ INSTALLED_APPS = [
     'chart',
     'chatrooms',
     'sns_feed',
-<<<<<<< Updated upstream
-    'neews',
-    'rest_framework',
-=======
     'rest_framework',
 
->>>>>>> Stashed changes
      # allauth 필수 앱
     'django.contrib.sites', # 중요!
     'allauth',
@@ -54,11 +49,6 @@ INSTALLED_APPS = [
 
     # Google Provider (추가)
     'allauth.socialaccount.providers.google',
-<<<<<<< Updated upstream
-    'allauth.socialaccount.providers.kakao',
-]
-=======
->>>>>>> Stashed changes
 
 ]
 

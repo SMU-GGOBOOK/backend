@@ -73,9 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
                              data-cover="${book.cover}"
                              data-isbn="${book.isbn}">
                           <div class="modal_book_item">
-                            <img src="${book.cover}" alt="${book.title}"
-                            onerror="this.onerror=null;this.src='/static/images/defaultimg.png';" />
-                            
+                            <img src="${book.cover}" alt="${book.title}" />
                           </div>
                           <div class="modal_book_info">
                             <h3>${book.title}</h3>
@@ -232,8 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <a href="#" id="book_search_trigger">
                 <div class="selected_book_img_js">
                   <div class="tooltip_wrapper">
-                    <img src="${cover}" alt="${title}"
-                    onerror="this.onerror=null;this.src='/static/images/defaultimg.png';" />
+                    <img src="${cover}" alt="${title}">
                     <div class="custom_tooltip">변경<br></div>
                   </div>
                 </div>

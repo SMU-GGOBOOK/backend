@@ -3,21 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 열린 메뉴 모두 닫기
   document.querySelectorAll('.settings-menu, .reply-settings-menu').forEach(m => m.remove());
 
-<<<<<<< Updated upstream
   // 각 포스트마다 버튼에 카운트 스팬 없으면 추가
   document.querySelectorAll('.post').forEach(post => {
-=======
-  // 각 포스트마다 좋아요·댓글 버튼에 카운트 스팬 없으면 추가
-  document.querySelectorAll('.post').forEach(post => {
-    // 좋아요 버튼 (comment_footer 영역)
-    const likeBtn = post.querySelector('.comment_footer .btn_like');
-    if (likeBtn && !likeBtn.querySelector('.text')) {
-      const span = document.createElement('span');
-      span.className = 'text';
-      span.textContent = '0';
-      likeBtn.appendChild(span);
-    }
->>>>>>> Stashed changes
     // 댓글 버튼
     const replyBtn = post.querySelector('.comment_footer .btn_reply');
     if (replyBtn && !replyBtn.querySelector('.count')) {
@@ -54,11 +41,7 @@ document.addEventListener('click', function(e) {
   if (e.target.matches('.edit-post')) {
     e.stopPropagation();
     const post = e.target.closest('.post');
-<<<<<<< Updated upstream
     const contentEl = post.querySelector('.post_contents');
-=======
-    const contentEl = post.querySelector('.post-contents');
->>>>>>> Stashed changes
 
     const imageHTML = Array
       .from(contentEl.querySelectorAll('img'))
@@ -83,26 +66,6 @@ document.addEventListener('click', function(e) {
     return;
   }
 
-<<<<<<< Updated upstream
-=======
-
-  // 2-1) 피드 좋아요 클릭
-  const feedLike = e.target.closest('.comment_footer .btn_like');
-  if (feedLike) {
-    e.stopPropagation();
-    const icon = feedLike.querySelector('i');
-    icon?.classList.replace('fa-regular', 'fa-solid');
-    let badge = feedLike.querySelector('.text');
-    if (!badge) {
-      badge = document.createElement('span');
-      badge.className = 'text';
-      feedLike.appendChild(badge);
-    }
-    badge.textContent = String((parseInt(badge.textContent, 10) || 0) + 1);
-    return;
-  }
-
->>>>>>> Stashed changes
   // 2-2) 피드 댓글 버튼 클릭 → 댓글창 토글 + 댓글 수 갱신
   const feedReply = e.target.closest('.comment_footer .btn_reply');
   if (feedReply) {
@@ -383,11 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeBtn = modal.querySelector('.image-modal-close');
   applyImageOrientation();
   // --- 이미지 방향에 따라 클래스 붙이기 ---
-<<<<<<< Updated upstream
   document.querySelectorAll('.post_contents img').forEach(img => {
-=======
-  document.querySelectorAll('.comment_contents img').forEach(img => {
->>>>>>> Stashed changes
     const applyClass = () => {
       const cls = img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait';
       img.classList.add(cls);
@@ -409,11 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1) 이미지 클릭 → 모달 열기
   document.body.addEventListener('click', e => {
     // .comment_contents 내의 <img>를 클릭했을 때
-<<<<<<< Updated upstream
     if (e.target.matches('.post_contents img')) {
-=======
-    if (e.target.matches('.comment_contents img')) {
->>>>>>> Stashed changes
       scale = 1;
       offX = 0;
       offY = 0;
@@ -463,11 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // ── 이미지 방향에 따라 클래스 붙이는 함수 ──
 function applyImageOrientation() {
-<<<<<<< Updated upstream
   document.querySelectorAll('.post_contents img').forEach(img => {
-=======
-  document.querySelectorAll('.comment_contents img').forEach(img => {
->>>>>>> Stashed changes
     const setOri = () => {
       // 기존 inline style 제거
       img.removeAttribute('style');
@@ -483,29 +434,18 @@ function applyImageOrientation() {
   });
 }
 
-<<<<<<< Updated upstream
 
 
 // 게시글 백엔드
 async function loadPosts() {
   try {
     const response = await fetch('http://localhost:8000/feedpage/reading-groups/1/posts/');
-=======
-// 게시글 백엔드
-async function loadPosts() {
-  try {
-    const response = await fetch('http://127.0.0.1:8000/api/posts/');
->>>>>>> Stashed changes
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const posts = await response.json(); // JSON 데이터를 파싱합니다.
 
-<<<<<<< Updated upstream
     const postListContainer = document.querySelector('#post-list'); // 게시물들이 들어갈 컨테이너
-=======
-    const postListContainer = document.querySelector('.post-list'); // 게시물들이 들어갈 컨테이너
->>>>>>> Stashed changes
     postListContainer.innerHTML = ''; // 기존 내용 지우기
 
     posts.forEach(post => {
@@ -568,7 +508,6 @@ function createPostElement(post) {
 // 페이지 로드 시 게시물 로딩 함수 호출
 document.addEventListener('DOMContentLoaded', () => {
   loadPosts();
-<<<<<<< Updated upstream
 });
 
 // 좋아요 토글 (이벤트 위임 방식)
@@ -593,6 +532,4 @@ document.body.addEventListener('click', function (e) {
   }
 
   countEl.textContent = count;
-=======
->>>>>>> Stashed changes
 });
