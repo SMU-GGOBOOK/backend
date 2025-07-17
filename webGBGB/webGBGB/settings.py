@@ -37,12 +37,20 @@ INSTALLED_APPS = [
     'shareMain',
     'reply',
     'chart',
-    'bookclub',
     'chatrooms',
     'sns_feed',
     'neews',
     'rest_framework',
 
+    # allauth 필수 앱
+    'django.contrib.sites', # 중요!
+    'allauth',
+    'allauth.account', # 일반 계정 (이메일/비밀번호) 관련 기능
+    'allauth.socialaccount', # 소셜 계정 관련 기능
+
+    # Google Provider (추가)
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.kakao',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +61,24 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware', 
 ]
+
+# allauth 설정
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1 # 필수 설정 (없으면 추가)
+
+
+KAKAO_JAVASCRIPT_KEY = 'bec1572a47f03392aec44dd28bce95b4' # <-- Kakao JavaScript Key
+KAKAO_REDIRECT_URI = 'http://127.0.0.1:8000/member/kakao/callback/'
+KAKAO_REST_API_KEY = 'afb77164fe046904554115dc84fccb93'
+
 
 ROOT_URLCONF = 'webGBGB.urls'
 
@@ -146,4 +171,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mcshin0111@gmail.com'
 EMAIL_HOST_PASSWORD = 'gzpl bkfm sgov wgrv'
 DEFAULT_FROM_EMAIL = 'mcshin0111@gmail.com'
-

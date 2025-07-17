@@ -31,9 +31,6 @@ def member_update(request, user_id):
     # 사용자 정보 가져오기
     member = get_object_or_404(Member, id=user_id)
     
-    # 카카오 로그인인지 확인
-    is_kakao_member = 'kakao_' in str(user_id)
-
     # 이메일 분리 (@ 기준으로)
     email_parts = member.email.split('@') if member.email else ['', '']
     email1 = email_parts[0] if len(email_parts) > 0 else ''
@@ -48,8 +45,6 @@ def member_update(request, user_id):
         'email2': email2,
         'genres_list': genres_list,
         'user_id': user_id,
-        'is_kakao_member': is_kakao_member,
-        
     }
     
     return render(request, 'member/member_update.html', context)
@@ -456,7 +451,6 @@ def login(request):
             })
     return render(request, 'member/login.html')
 
-
 def join1(request):
     # join1 페이지에 진입할 때 카카오 회원가입 세션을 명시적으로 지웁니다.
     # 이렇게 하면 join1에서 일반 회원가입을 시작할 때, 이전의 카카오 세션 정보가 남아있지 않게 됩니다.
@@ -573,7 +567,7 @@ def kakao_callback(request):
         # 이미 가입된 사용자가 맞다면 로그인 처리
         request.session['user_id'] = member.id # Member 모델의 고유 ID 필드 (member_id)를 user_id로 사용 가능
         request.session['user_name'] = member.name
-        request.session['member_id'] = member.member_id # 이 줄을 추가합니다.
+        request.session['member_id'] = member.member_id 
         messages.success(request, f"{member.name}님, 카카오 계정으로 로그인 되었습니다.")
         return redirect('/') # 로그인 완료 후 메인 페이지로 이동
 

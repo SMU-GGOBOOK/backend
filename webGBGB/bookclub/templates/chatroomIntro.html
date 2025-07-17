@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="https://kit.fontawesome.com/955e8c2313.js" crossorigin="anonymous"></script>
+  <meta name="csrf-token" content="{{ csrf_token }}">
+
   <title>교환독서 모임 상세</title>
   <style>
-    /* 기존 CSS는 유지 */
     @import url('https://fonts.google.com/selection/embed');
     body {  
       background-color: #fafafa;
@@ -16,12 +19,12 @@
     .container {
       max-width: 900px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 100px;
     }
 
     #banner-close {
       position: absolute;
-      top: 12px;
+      top: 12px;    /* 배너 패딩에 맞춰 조절 */
       right: 12px;
       background: transparent;
       border: none;
@@ -48,6 +51,14 @@
     }
     .banner-text {
       flex: 1;
+      font-size: 30px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
+    .banner-text i {
+      margin-right: 8px;
+      font-size: 25px;
     }
     .banner h1 {
       margin: 0;
@@ -96,7 +107,8 @@
     }
     .info-row span {
       color: #666;
-      font-size: 15px;
+      font-size: 16px;
+      font-weight: 500;
     }
     .info-row strong {
       color: #2D7868;
@@ -122,10 +134,10 @@
 
     .description {
       background-color: #fafafa;
-      color: #2D7868;
+      color: #1a1a1a;
       padding: 20px;
       border-radius: 7px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
       line-height: 1.6;
       font-size: 16px;
       margin-bottom: 30px;
@@ -136,111 +148,80 @@
       padding: 14px 24px;
       border: none;
       border-radius: 7px;
-      font-size: 16px;
+      font-size: 17px;
       cursor: pointer;
       width: 100%;
+      font-weight: 700;
     }
 
     .info-row > strong {
       margin-left: auto;
+      font-size: 16px;
     }
+    
 
-    /* 메시지 스타일 */
-    .messages {
-      list-style: none;
-      padding: 10px 0;
-      margin: 0;
-    }
-    .messages li {
-      padding: 10px 20px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-    .messages .success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
-    .messages .error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
-    .messages .info {
-      background-color: #d1ecf1;
-      color: #0c5460;
-      border: 1px solid #bee5eb;
-    }
-    .messages .warning {
-      background-color: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeeba;
-    }
   </style>
 </head>
 <body>
-  <div class="container">
     {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
+      {% for message in messages %}
+        <script>
+          alert('{{ message }}');
+        </script>
+      {% endfor %}
     {% endif %}
+  <div class="container">
+
 
     {% if group %}
-    <div class="banner">
-      <button id="banner-close" aria-label="닫기">&times;</button>
-      <div class="banner-text">
-        <h1>{{ group.group_name }}</h1>
-        <p>같이 읽고, 같이 나누는 시간</p>
-      </div>
-      <div class="profile-upload">
-        <img id="profile-preview" src="https://via.placeholder.com/60/2D7868/ffffff?text=ME" alt="Profile">
-        <label class="upload-label" for="profile-image">프로필 변경</label>
-        <input type="file" id="profile-image" accept="image/*">
-      </div>
-    </div>
-
-    <div class="info">
-      <div class="info-row">
-        <span>📅 채팅방 생성 일시</span>
-        <strong>{{ group.created_at|date:"Y년 n월 j일 (D)" }}</strong>
-      </div>
-      <div class="info-row">
-        <span>🐢 꼬북태그</span>
-        <div class="tags">
-          {% for tag in group.tags_list %}
-          <strong1>{{ tag }}</strong1>
-          {% endfor %}
+      <div class="banner">
+        <button id="banner-close" aria-label="닫기">&times;</button>
+        <div class="banner-text">
+        {% if group.is_public|stringformat:"s" == '1' %}<!-- 비공개일 경우 잠금아이콘 추가 -->
+          <i class="fa-solid fa-lock"></i>
+        {% endif %}
+          <h1>{{ group.group_name }}</h1>
         </div>
       </div>
-      <div class="info-row">
-        <span>📖 책 제목</span>
-        <strong>{{ group.book.title }} - {{ group.book.author }}</strong>
-      </div>
-      <div class="info-row">
-        <span>👥 인원</span>
-        <strong>{{ current_members_count }}명 참여중 / 최대 {{ group.max_member }}명</strong>
-      </div>
-      <div class="info-row">
-        <span>🔒 그룹 공개 여부</span>
-        <strong>
-          {% if group.is_public == "0" %}공개{% else %}비공개{% endif %}
-        </strong>
-      </div>
-    </div>
 
-    <div class="description">
-      {% for paragraph in group.description|linebreaksbr %}
-          {{ paragraph }}
-      {% endfor %}
-    </div>
+      <div class="info">
+        <div class="info-row">
+          <span>📅 채팅방 생성 일시</span>
+          <strong>{{ group.created_at|date:"Y년 n월 j일 (D)" }}</strong>
+        </div>
+        <div class="info-row">
+          <span>🐢 꼬북태그</span>
+          <div class="tags">
+            {% for tag_list in group.tags_list %}
+            <strong1>{{ tag_list }}</strong1>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="info-row">
+          <span>📖 책 제목</span>
+          <strong>{{ group.book.title }} - {{ group.book.author }}</strong>
+        </div>
+        <div class="info-row">
+          <span>👥 인원</span>
+          <strong>{{ current_members_count }}명 참여중 / 최대 {{ group.max_member }}명</strong>
+        </div>
+        <div class="info-row">
+          <span>🔒 그룹 공개 여부</span>
+          <strong>
+            {% if group.is_public == "0" %}공개{% else %}비공개{% endif %}
+          </strong>
+        </div>
+      </div>
 
-    <button class="join-btn" data-group-id="{{ group.id }}" data-is-public="{{ group.is_public }}">
-        💬그룹방 참여하기
-    </button>
+      <div class="description">
+        {% for paragraph in group.description|linebreaksbr %}
+            {{ paragraph }}
+        {% endfor %}
+      </div>
+
+      <button class="join-btn" data-group-id="{{ group.id }}" data-is-public="{{ group.is_public }}">
+          가입
+      </button>
 
     {% else %}
     <p>채팅방을 찾을 수 없습니다.</p>
@@ -248,20 +229,6 @@
   </div>
 
   <script>
-    // 기존 프로필 변경 스크립트
-    const profileInput = document.getElementById('profile-image');
-    const profilePreview = document.getElementById('profile-preview');
-
-    profileInput.addEventListener('change', function () {
-      const file = this.files[0];
-      if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          profilePreview.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    });
 
     // 기존 배너 닫기 스크립트
     document.getElementById('banner-close').addEventListener('click', function() {
@@ -277,32 +244,33 @@
       joinBtn.addEventListener('click', function(event) {
         event.preventDefault(); // 기본 폼 제출 방지
 
-        const groupId = this.dataset.groupId;
-        const isPublic = this.dataset.isPublic; // '0' (공개) 또는 '1' (비공개)
+        const groupId = joinBtn.getAttribute('data-group-id');
+        const isPublic = joinBtn.getAttribute('data-is-public'); // '0' (공개) 또는 '1' (비공개)
 
         let password = null;
         if (isPublic === '1') { // 비공개 그룹인 경우
-          password = prompt("비밀번호를 입력하세요 (4자리 숫자):");
+          password = prompt("비밀번호를 입력하세요 :");
           if (password === null) { // 사용자가 취소를 눌렀을 때
             return; // 함수 실행 중단
           }
           // 비밀번호가 4자리 숫자인지 간단히 검증
-          if (!/^\d{4}$/.test(password)) {
-            alert("비밀번호는 4자리 숫자여야 합니다.");
-            return; // 유효하지 않으면 함수 실행 중단
-          }
+          //if (!/^\d{4}$/.test(password)) {
+            //alert("비밀번호는 4자리 숫자여야 합니다.");
+            //return; // 유효하지 않으면 함수 실행 중단
+          //}
         }
 
         // 폼을 동적으로 생성하여 POST 요청 전송
         const form = document.createElement('form');
         form.method = 'POST';
-        // {% url 'bookclub:join_group' group.id %}를 사용하여 URL을 동적으로 생성
-        form.action = "{% url 'bookclub:join_group' group.id %}";
+        form.action = "/chatrooms/detail/{{group.id}}/";
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = 'csrfmiddlewaretoken';
-        csrfInput.value = '{{ csrf_token }}'; // Django CSRF 토큰 사용
+        csrfInput.value = csrfToken;
         form.appendChild(csrfInput);
 
         if (password !== null) { // 비밀번호가 입력되었으면 (비공개 그룹)
