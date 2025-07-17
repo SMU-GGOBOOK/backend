@@ -297,7 +297,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 link.classList.add("clicked");
             }
         });
-
         updateHiddenInput();
     }
 
@@ -466,5 +465,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return false;
         }
         // 통과 시 제출
+        alert("그룹 만들기가 완료되었습니다.")
     });
 });

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'chart',
     'chatrooms',
     'sns_feed',
+    'neews',
     'rest_framework',
 
      # allauth 필수 앱
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
 
     # Google Provider (추가)
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.kakao',
 
 ]
 
