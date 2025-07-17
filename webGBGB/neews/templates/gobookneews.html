@@ -6,7 +6,9 @@
 {% block extra_css %}
 <!-- <link rel="stylesheet" href="{% static 'css/example.css' %}"> -->
 <link rel="stylesheet" href="/static/css/bookdetail.css"/>
+<link rel='stylesheet' href='/static/css/gobookneews.css'/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 {% endblock %}
 
@@ -17,21 +19,25 @@
       <div style="text-align: center;">
         <p style="margin: 0; font-size:80px;font-family: 'HakgyoansimDunggeunmisoTTF-B';">꼬북NEWS</p>
         <p>꼬북꼬북 이용자 월간 통계를 한눈에 보여드립니다!</p>
-        <select name="category_inq" id="ctgr_inq" class="ctgr_inq">
-          <option value="2025-07">2025년 7월</option>
-          <option value="2025-06">2025년 6월</option>
-          <option value="2025-05">2025년 5월</option>
-        </select>
-        <button style="width:100px;background-color:green;" id='applyBtn'>적용</button>
+        <div class='selectnbtn' style='margin-top:30px;'>
+
+          <select name="category_inq" id="ctgr_inq" class="ctgr_inq" style='border:1px solid #ccc;border-radius:7px;height:30px;width:110px;padding-left:5px;'>
+            <option value="2025-07">2025년 7월</option>
+            <option value="2025-06">2025년 6월</option>
+            <option value="2025-05">2025년 5월</option>
+          </select>
+          <button style="width:50px;height:30px;border-radius:7px;background-color:#2d7868;padding:2px;color:#fafafa;font-size:14px;cursor:pointer" id='applyBtn'>적용</button>
+        </div>
       </div>
     </div>
       
       <div style="width:100%;height:400px;margin-bottom:50px;display:flex; flex-direction: column; justify-content:center; align-items:center;">
-        <p>{{month}}월 일자별 가입인원 추이 차트(선형)</p>
+        <p>{{month}}월 일자별 가입인원 추이</p>
         <canvas id="joinChart"  style="width: 100%; height: 500px;"></canvas>
       </div>
       <div style="width:100%;height:300px;margin-bottom:50px;display:flex; flex-direction: column; justify-content:center; align-items:center;">
-        <p style='width:100%;text-align:center;'>{{month}}월 한 달 꼬북꼬북에 가입한 이용자수 "{{total_join}}명"</p>
+        <p style='width:100%;text-align:center;'>{{month}}월 한 달 꼬북꼬북에 가입한 이용자수</p>
+        <p style='width:100%;text-align:center;font-size:25px;'>"{{total_join}}명"</p>
       </div>
       <div class="feed__content">
         <div class="chart_sReading_container sReading" style="display:flex; flex-direction: column; justify-content:center; align-items:center;">
@@ -41,14 +47,14 @@
                 <td style='display:flex;justify-content:space-between;'><i class="fa-solid fa-quote-left"></i><i class="fa-solid fa-quote-right"></i></td>
               </tr>
               <tr>
-                <td style='font-size:45px;padding:0 20px;'>{{top_genre}}</td>
+                <td style='font-size:45px;padding:0 20px;font-weight:600;'>{{top_genre}}</td>
               </tr>
             </table>
-            <p style='margin-bottom:20px;'>{{month}}월 한달동안 총 {{top_genre_count}}명의 이용자들이 "{{top_genre}}" 장르를 선호했어요.</p>
+            <p style='margin:20px 0;'>{{month}}월 한달동안 총 {{top_genre_count}}명의 이용자들이 "{{top_genre}}" 장르를 선호했어요.</p>
         </div>
         <div class="chart_sReading_container sReading"  style="display:flex; flex-direction: column; justify-content:center; align-items:center;">
             <div class="sReading_wrap" style='text-align:center; display:inline-block;margin:0 auto;'>   
-                <p>선호장르 그래프(원형)</p>
+                <p>선호장르 상세</p>
                 <canvas id="genChart" style="width: 648px; height: 288px;"></canvas>
 
           </div>
@@ -57,12 +63,12 @@
         </div>
       </div>
       <div style="width:100%;height:200px;margin-bottom:50px;display:flex; flex-direction: column; justify-content:center; align-items:center;">
-        <p STYLE='background-color:yellow;'>교환독서</p>
+        <p STYLE='background-color:yellow;font-size:25px;font-weight:600;'>교환독서</p>
         <p>함께 읽고 함께 감상을 나누는 행위</p>
         <p>{{month}}월 한달동안 {{total_groups}}개의 교환독서 그룹이 만들어졌어요.</p>
       </div>
       <div style="width:100%;height:500px;margin-bottom:50px;">
-        <p>교환독서 그룹 생성 추이(선형)</p>
+        <p style='text-align:center;'>교환독서 그룹 생성 추이</p>
         <canvas id="shareChart" style='width:100%;height:500px;'></canvas>
       </div>
 
@@ -74,14 +80,14 @@
                 <td style='display:flex;justify-content:space-between;'><i class="fa-solid fa-quote-left"></i><i class="fa-solid fa-quote-right"></i></td>
               </tr>
               <tr>
-                <td style='font-size:45px;padding:0 20px;'>{{top_tag}}</td>
+                <td style='font-size:45px;padding:0 20px;font-weight:600;'>{{top_tag}}</td>
               </tr>
             </table>
-            <p style='margin-bottom:20px;'>{{month}}월 한달동안 총 {{top_tag_count}}명의 이용자들이 "{{top_tag}}" 장르를 선호했어요.</p>
+            <p style='margin:20px 0;'>{{month}}월 한달동안 총 {{top_tag_count}}개의 교환독서 그룹에서 "{{top_tag}}" 태그를 선호했어요.</p>
         </div>
         <div class="chart_sReading_container chartdraw"  style="display:flex; flex-direction: column; justify-content:center; align-items:center;">
             <div class="sReading_wrap" style='text-align:center; display:inline-block;margin:0 auto;'>   
-                <p>이달의 태그 사용 현황 차트 들어올 자리(원형)</p>
+                <p style='margin-bottom:10px;'>이달의 태그 상세</p>
                 <canvas id="sharetagChart" style="width: 288px; height: 288px;"></canvas>
 
           </div>
@@ -92,12 +98,12 @@
 
 
       <div style="width:100%;height:500px;margin-bottom:50px;">
-        <p>리뷰 수 차트(선형)</p>
-        <canvas id="reviewChart"></canvas>
+        <p style='text-align:center;'>리뷰 수 차트</p>
+        <canvas id="reviewChart" style="width: 100%; height: 500px;"></canvas>
       </div>
 
       <div style='width:100%;height:200px;display:flex; justify-content:center;align-items:center;'>
-        <button style='background-color:#2d7868;color:white;'>교환독서 시작하기</button>
+        <button id='startjoinBtn' style='width:200px;height:45px;border-radius:7px;padding:5px;background-color:#2d7868;color:#fafafa;cursor:pointer;font-weight:600;'>꼬북꼬북 시작하기</button>
       </div>
 
 {% endblock %}
