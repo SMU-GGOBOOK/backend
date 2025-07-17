@@ -83,12 +83,12 @@ def ajax_search(request):
     books = []
 
     for doc in documents:
-        title = doc.get('title', '')
-        authors = ", ".join(doc.get('authors', []))
-        publisher = doc.get('publisher', '')
-        thumbnail = doc.get('thumbnail', '')
-        isbn_raw = doc.get('isbn', '')
-        contents = doc.get('contents', '')
+        title = doc.get('title', '')  # 책 제목
+        authors = ", ".join(doc.get('authors', []))  # 저자
+        publisher = doc.get('publisher', '')  # 출판사
+        thumbnail = doc.get('thumbnail', '')  # 미리보기 이미지
+        isbn_raw = doc.get('isbn', '')  # isbn
+        contents = doc.get('contents', '')  # 책 소개글
 
         # ISBN-13(13자리)로만 저장
         isbn13 = ''
@@ -140,6 +140,8 @@ def ajax_search(request):
 
 # 2. 교환독서_그룹만들기 | Share_AddGroup
 def Share_AddGroup(request):
+    # footer 리뷰 개수 넘기기
+    review_count = Review.objects.count()
     # 사용자 유효성 검사 (로그인한 유저 정보 가져오기)
     member_id = request.session.get('member_id')
     if not member_id:
@@ -196,14 +198,15 @@ def Share_AddGroup(request):
             return redirect('shareMain:Share_Main')  # 완료 -> 메인페이지 리다이렉트
         else:
             print("폼 오류:", form.errors)  # 폼 오류 있을 경우: cmd창에 print
-            return render(request, 'shareMain/Share_AddGroup.html', {'form': form})
+            return render(request, 'shareMain/Share_AddGroup.html', {'form': form, 'review_count': review_count,})
     else:
         form = ReadingGroupForm()
-        return render(request, 'shareMain/Share_AddGroup.html', {'form': form})
+        return render(request, 'shareMain/Share_AddGroup.html', {'form': form, 'review_count': review_count,} )
 
 
 # 1. 교환독서_메인페이지 | Share_Main
 def Share_Main(request):
+    # footer 리뷰 개수 넘기기
     review_count = Review.objects.count()
     # 검색 파라미터 (q로 통일)
     query = request.GET.get('q', '').strip()
