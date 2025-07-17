@@ -17,7 +17,7 @@
 
     <div style="width:100%; height:300px;margin-bottom:50px; display: flex; justify-content: center; align-items: center;">
       <div style="text-align: center;">
-        <p style="margin: 0; font-size:80px;font-family: 'HakgyoansimDunggeunmisoTTF-B';">꼬북NEWS</p>
+        <p style="margin: 0; font-size:80px;font-family: 'HakgyoansimDunggeunmisoTTF-B';color:#1a1a1a;">꼬북NEWS</p>
         <p>꼬북꼬북 이용자 월간 통계를 한눈에 보여드립니다!</p>
         <div class='selectnbtn' style='margin-top:30px;'>
 
@@ -110,4 +110,19 @@
 
 {% block extra_js %}
 <script src="/static/js/gobookneews.js"></script>
+<script>
+  const startjoinBtn = document.getElementById('startjoinBtn');
+    if (startjoinBtn) {
+
+    startjoinBtn.addEventListener('click', function () {
+      if ({{request.session.user_id}}=''){
+        location.href = '/member/join1/'
+        
+      }
+      else{
+        location.href = '/';
+        }
+    });
+  }
+</script>
 {% endblock %}

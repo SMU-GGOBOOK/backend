@@ -121,13 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // applyBtn 이벤트 리스너 바인딩, 요소가 있으면만
-  const startjoinBtn = document.getElementById('startjoinBtn');
-  if (startjoinBtn) {
-    startjoinBtn.addEventListener('click', function () {
-      location.href = '/member/join1/';
-    });
-  }
 });
 
 
