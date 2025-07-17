@@ -156,7 +156,7 @@ nav{
 }*/
 /* 내 그룹 */
 .my_group {
-    text-align: justify;
+    /* text-align: justify; */
     display: grid;
     /* grid-template-columns: repeat(auto-fill, minmax(558px, 1fr)); 여기 fr 때문에 between이 안 먹었던 거였습니다ㅎㅎㅜ*/
     gap: 10px;

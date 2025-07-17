@@ -36,8 +36,8 @@
                       {% endif %}
                     </div>
                     <div class="user_name">
-                        <span><!--<i class="fa-solid fa-user-lock"></i>*-->차단한 사용자</span>
-                        <span class="user_name_gap"> | </span>
+                        {% comment %} <span><!--<i class="fa-solid fa-user-lock"></i>*-->차단한 사용자</span> {% endcomment %}
+                        {% comment %} <span class="user_name_gap"> | </span> {% endcomment %}
                         <a href='{% url "member:member_update" user_id %}'><span>정보수정 · 계정삭제</span></a>
                     </div> 
                   </div>
@@ -48,11 +48,12 @@
                   <!--내 그룹 목록-->
                   <div class="my_group">
                     {% for g in sharegroups%}
-                      <div class="bookbox" data-id="{{g.id}}" data-book-id="{{ b.book_id.book_id }}">
+                      <div class="bookbox" data-id="{{g.id}}"data-group-id="{{ g.id }}" data-book-id="{{ b.book_id.book_id }}">
                         <button type="button" class="outBtn" data-group-id="{{g.id}}"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
                           <div class="bookbox_cover">
                               <img src="{{g.book.cover}}"
-                              onerror="this.onerror=null;this.src='/static/images/defaultimg.png';"/>
+                              onerror="this.onerror=null;this.src='/static/images/defaultimg.png';"
+                              >
                           </div>
                           <div class="group_info">
                               <div class="booktitle">
@@ -64,6 +65,7 @@
                               <div class="bookauthor">{{g.admin.name}}</div>
                           </div>
                       </div>
+                    
                     {% endfor %}
                       {% comment %} <div class="bookbox">
                         <button class="outBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>

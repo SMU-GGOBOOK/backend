@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="https://kit.fontawesome.com/955e8c2313.js" crossorigin="anonymous"></script>
+  <meta name="csrf-token" content="{{ csrf_token }}">
 
   <title>교환독서 모임 상세</title>
   <style>
@@ -162,46 +163,128 @@
   </style>
 </head>
 <body>
+    {% if messages %}
+      {% for message in messages %}
+        <script>
+          alert('{{ message }}');
+        </script>
+      {% endfor %}
+    {% endif %}
   <div class="container">
-    <div class="banner">
-      <button id="banner-close" aria-label="닫기">&times;</button>
-      <div class="banner-text">
-        {% if readinggroup.is_public|stringformat:"s" == '1' %}<!-- 비공개일 경우 잠금아이콘 추가 -->
+
+
+    {% if group %}
+      <div class="banner">
+        <button id="banner-close" aria-label="닫기">&times;</button>
+        <div class="banner-text">
+        {% if group.is_public|stringformat:"s" == '1' %}<!-- 비공개일 경우 잠금아이콘 추가 -->
           <i class="fa-solid fa-lock"></i>
         {% endif %}
-          <span class="group_ellipsis_2">{{ readinggroup.group_name }}</span>
-      </div>
-    </div>
-
-    <div class="info">
-      <div class="info-row">
-        <span>📅 채팅방 생성 일시</span>
-        <strong>{{readinggroup.created_at|date:"Y-m-d"}}</strong>
-      </div>
-      <div class="info-row">
-        <span>🐢 꼬북태그</span>
-        <div class="tags">
-          {% for tag in tag_list %}
-          <strong1>{{tag}}</strong1>
-          {% endfor %}
+          <h1>{{ group.group_name }}</h1>
         </div>
       </div>
-      <div class="info-row">
-        <span>📖 책 제목</span>
-        <strong>『{{readinggroup.book.title}}』 - {{readinggroup.book.author}}</strong>
-      </div>
-      <div class="info-row">
-        <span>👥 인원</span>
-        <strong>{{readinggroup.member.count}}명 참여중 / 최대 {{readinggroup.max_member}}명</strong>
-      </div>
-    </div>
 
-    <div class="description">
-      {{readinggroup.description}}
-    </div>
+      <div class="info">
+        <div class="info-row">
+          <span>📅 채팅방 생성 일시</span>
+          <strong>{{ group.created_at|date:"Y년 n월 j일 (D)" }}</strong>
+        </div>
+        <div class="info-row">
+          <span>🐢 꼬북태그</span>
+          <div class="tags">
+            {% for tag_list in group.tags_list %}
+            <strong1>{{ tag_list }}</strong1>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="info-row">
+          <span>📖 책 제목</span>
+          <strong>{{ group.book.title }} - {{ group.book.author }}</strong>
+        </div>
+        <div class="info-row">
+          <span>👥 인원</span>
+          <strong>{{ current_members_count }}명 참여중 / 최대 {{ group.max_member }}명</strong>
+        </div>
+        <div class="info-row">
+          <span>🔒 그룹 공개 여부</span>
+          <strong>
+            {% if group.is_public == "0" %}공개{% else %}비공개{% endif %}
+          </strong>
+        </div>
+      </div>
 
-    <a href='/feedpage/sns_feed/{{readinggroup.id}}/'><button class="join-btn"> 가입 </button></a>
+      <div class="description">
+        {% for paragraph in group.description|linebreaksbr %}
+            {{ paragraph }}
+        {% endfor %}
+      </div>
+
+      <button class="join-btn" data-group-id="{{ group.id }}" data-is-public="{{ group.is_public }}">
+          가입
+      </button>
+
+    {% else %}
+    <p>채팅방을 찾을 수 없습니다.</p>
+    {% endif %}
   </div>
 
+  <script>
+
+    // 기존 배너 닫기 스크립트
+    document.getElementById('banner-close').addEventListener('click', function() {
+      const popup = document.getElementById('popup');
+      if (popup) {
+        popup.style.display = 'none';
+      }
+    });
+
+    // 그룹 참여하기 버튼 클릭 이벤트 리스너
+    const joinBtn = document.querySelector('.join-btn');
+    if (joinBtn) {
+      joinBtn.addEventListener('click', function(event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+
+        const groupId = joinBtn.getAttribute('data-group-id');
+        const isPublic = joinBtn.getAttribute('data-is-public'); // '0' (공개) 또는 '1' (비공개)
+
+        let password = null;
+        if (isPublic === '1') { // 비공개 그룹인 경우
+          password = prompt("비밀번호를 입력하세요 :");
+          if (password === null) { // 사용자가 취소를 눌렀을 때
+            return; // 함수 실행 중단
+          }
+          // 비밀번호가 4자리 숫자인지 간단히 검증
+          //if (!/^\d{4}$/.test(password)) {
+            //alert("비밀번호는 4자리 숫자여야 합니다.");
+            //return; // 유효하지 않으면 함수 실행 중단
+          //}
+        }
+
+        // 폼을 동적으로 생성하여 POST 요청 전송
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "/chatrooms/detail/{{group.id}}/";
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = csrfToken;
+        form.appendChild(csrfInput);
+
+        if (password !== null) { // 비밀번호가 입력되었으면 (비공개 그룹)
+          const passwordInput = document.createElement('input');
+          passwordInput.type = 'hidden';
+          passwordInput.name = 'password_input';
+          passwordInput.value = password;
+          form.appendChild(passwordInput);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+      });
+    }
+  </script>
 </body>
 </html>

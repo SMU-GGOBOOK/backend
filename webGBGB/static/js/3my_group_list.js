@@ -43,3 +43,70 @@ $(document).on('click', '.outBtn', function () {
   });
 
 
+// //리뷰박스 클릭시 상세페이지 이동
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+//   console.log("✅ DOMContentLoaded 실행됨");
+
+//   document.addEventListener('click', function (e) {
+//     console.log("✅ document 클릭 감지됨");
+
+//     // ❗ 상세페이지 이동 막기
+//     if (e.target.closest('.outBtn')) {
+//       console.log("그룹나가기버튼 클릭 - 이동 막음");
+//       return;
+//     }
+
+//     const bookBox = e.target.closest('.bookbox');
+//     console.log("bookBox:", bookBox);
+
+//     if (!bookBox) return;
+
+//     const chatId = bookBox.dataset.chatId;
+//     console.log("📘 클릭된 chatId:", chatId);
+
+//     window.location.href = `/sns_feed/${chatId}/`;
+//   });
+// });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  console.log("✅ DOMContentLoaded 실행됨");
+
+  document.addEventListener('click', function (e) {
+    console.log("✅ document 클릭 감지됨");
+
+    // 그룹 나가기 버튼 클릭 시 상세페이지 이동 막기
+    if (e.target.closest('.outBtn')) {
+      console.log("❗ 그룹나가기버튼 클릭 - 이동 막음");
+      return;
+    }
+
+    const bookBox = e.target.closest('.bookbox');
+    console.log("📦 클릭된 bookBox:", bookBox);
+
+    // bookBox가 없다면 아무 동작 안 함
+    if (!bookBox) return;
+
+    const groupId = bookBox.dataset.groupId;
+    console.log("📘 클릭된 chatId:", groupId);
+
+    // chatId가 없거나 비어 있으면 이동 안 함
+    if (!groupId) {
+      console.warn("⛔ chatId가 비어 있어 이동 취소");
+      return;
+    }
+
+    // 정상적으로 chatId가 있으면 상세페이지로 이동
+    window.location.href = `/feedpage/sns_feed/${groupId}/`;
+  });
+});
+
+
+
+
+
+
+
+
