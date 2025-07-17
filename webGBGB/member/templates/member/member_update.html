@@ -48,20 +48,23 @@
                           <small class="smafi">아이디는 변경할 수 없습니다.</small>
                         </td>
                     </tr>
-                    <tr>
+                    <tr >
                         <th>
                             <label>비밀번호</label>
                         </th>
                         <td>
-                          <input type="password" name="pw" class="pw" autocomplete="off" placeholder="변경하려면 새 비밀번호를 입력하세요 (8자 이상)" >
-                          <small id="pw-default-message">비밀번호를 변경하지 않으려면 비워두세요.</small>
+                          <input type="password" name="pw" class="pw" autocomplete="off" placeholder="{% if is_kakao_member %}카카오 회원은 수정할 수 없습니다.{%else%}변경하려면 새 비밀번호를 입력하세요 (8자 이상){% endif %}"
+                          {% if is_kakao_member %}style="display:none"{% endif %}>
+                          <small id="pw-default-message"{% if is_kakao_member %}style="font-size:15px;"{% endif %}>{% if is_kakao_member %}카카오 회원은 수정할 수 없습니다.{%else%}비밀번호를 변경하지 않으려면 비워두세요.{% endif %}</small>
                         </td>
                     </tr>
-                    <tr>
+                    <tr >
                         <th>
                             <label>비밀번호 확인</label>
                         </th>
-                        <td><input type="password" name="pw2" class="pw2" autocomplete="off" placeholder="새 비밀번호 확인"></td>
+                        <td><input type="password" name="pw2" class="pw2" autocomplete="off" placeholder="{% if is_kakao_member %}카카오 회원은 수정할 수 없습니다.{%else%}새 비밀번호 확인{% endif %}"
+                          {% if is_kakao_member %}style="display:none"{% endif %}>
+                        </td>
                     </tr>
                     <tr>
                         <th>
@@ -69,10 +72,10 @@
                             <span>*</span>
                         </th>
                         <td>
-                          <input type="text" name="email1" class="email1" value="{{ email1 }}">
+                          <input type="text" name="email1" class="email1" value="{{ email1 }}" readonly>
                           <p class="rhfqoddl">@</p>
-                          <input type="text" name="email2" class="email2" value="{{ email2 }}">
-                          <select class="email_select">
+                          <input type="text" name="email2" class="email2" value="{{ email2 }}" readonly>
+                          <select class="email_select" readonly>
                             <option>직접입력</option>
                             <option {% if email2 == 'gmail.com' %}selected{% endif %}>gmail.com</option>
                             <option {% if email2 == 'naver.com' %}selected{% endif %}>naver.com</option>

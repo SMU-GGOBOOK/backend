@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     # Google Provider (추가)
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.kakao',
 
 ]
 
