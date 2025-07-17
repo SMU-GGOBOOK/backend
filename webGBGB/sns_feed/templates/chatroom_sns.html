@@ -10,105 +10,134 @@
     <main>
       <div class="container">
         <h2>{{readinggroup.group_name}}</h2>
-      <div class="tags">
-        {% for tag in tag_list %}  
-          <h3>{{tag}}</h3>
-        {% endfor %}
-      </div>
-      <form method="post" action="/feedpage/create/" id="postForm" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="post-box">
-            <div class="image-preview" id="image-preview"></div>
-            <input type="hidden" name="readinggroup_id" value="{{readinggroup.id }}">
-            <textarea name="post-input" id="post-input" rows="3" placeholder="무엇이든 자유롭게 공유해보세요!"></textarea>
-            <div class="upload-tap_wrap">
-              <div class="upload-tab">
-                <label for="image-upload">
-                  <i class="fas fa-image"></i>
-                </label>
-                <input type="file" name="post_file" id="image-upload"  accept="image/*" onchange="handleImageUpload(event)" hidden>    
-                <button class="upload_btn">올리기</button>
-              </div>
-            </div>
+        <div class="tags">
+          {% for tag in tag_list %}  
+            <h3>{{tag}}</h3>
+          {% endfor %}
         </div>
-      </form>
-      <div id="post-list"></div>
-      {% if post %}
-        {% for p in post %}
-          <div class="post_item" data-id="5212265">
-            <div class="post_all">
-              <div class="post-header">
-                <div class="left_area">
-                  <div class="user_info_box">
-                    <span class="info_item">{{p.member_id.name}}</span></span>
-                    <span class="gap"></span>
-                    <span class="info_item">{{p.created_at|date:"Y.m.d H:i"}}</span>
+        <form method="post" action="/feedpage/create/" id="postForm" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="post-box">
+              <div class="image-preview" id="image-preview"></div>
+              <input type="hidden" name="readinggroup_id" value="{{readinggroup.id }}">
+              <textarea name="post-input" id="post-input" rows="3" placeholder="무엇이든 자유롭게 공유해보세요!"></textarea>
+              <div class="upload-tap_wrap">
+                <div class="upload-tab">
+                  <label for="image-upload">
+                    <i class="fas fa-image"></i>
+                  </label>
+                  <input type="file" name="post_file" id="image-upload"  accept="image/*" onchange="handleImageUpload(event)" hidden>    
+                  <button class="upload_btn">올리기</button>
+                </div>
+              </div>
+          </div>
+        </form>
+        <div id="post-list">
+          {% if post %}
+            {% for p in post %}
+              <div class="post_item" data-id="{{p.id}}">
+                <div class="post_all">
+                  <div class="post-header">
+                    <div class="left_area">
+                      <div class="user_info_box">
+                        <span class="info_item">{{p.member_id.name}}</span></span>
+                        <span class="gap"></span>
+                        <span class="info_item">{{p.created_at|date:"Y.m.d H:i"}}</span>
+                      </div>
+                    </div>
+                    <div class="post-actions">
+                      <div class="right_area">
+                        <button class="btn_setting" type="button">
+                            <i class="fa-solid fa-ellipsis" style="color: #333333;"></i>                           
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="post-actions">
+                <div class="post_contents">
+                  {% with image=p.images.first %}
+                    {% if image %}
+                      <img src="{{ image.image.url }}" alt="post_image" class="landscape"/>
+                    {% endif %}
+                  {% endwith %}
+                  <div class="post_text">
+                    {{p.content}}
+                  </div>
+                </div>
+                <div class="comment_footer">
                   <div class="right_area">
-                    <button class="btn_setting" type="button">
-                        <i class="fa-solid fa-ellipsis" style="color: #333333;"></i>                           
+                    <button class="btn_like{% if p.id in likes %} active{% endif %}"
+                    onclick="togglebtnlike(this)"
+                    data-post-id={{p.id}}>
+                      <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
+                      <span class="text">0</span>
+                    </button>
+                    <button class="btn_reply" type="button">
+                        <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
+                        <span class="count">0</span>
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="post_contents">
-              {% with image=p.images.first %}
-                {% if image %}
-                  <img src="{{ image.image.url }}" alt="post_image" class="landscape"/>
-                {% endif %}
-              {% endwith %}
-              <div class="post_text">
-                {{p.content}}
-              </div>
-            </div>
-      
-            <div class="comment_footer">
-              <div class="right_area">
-                <button class="btn_like" type="button">
-                  <i class="fa-regular fa-thumbs-up" style="color: #333333;" aria-hidden="true"></i>
-                  <span class="text">0</span>
-                </button>
-                <button class="btn_reply" type="button">
-                    <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
-                    <span class="count">0</span>
-                </button>
-              </div>
-            </div>
-          <!-- 답글달기 -->
-          <div class="reply_wrap" style="display: none;">
-            <form method="post" action="/feedpage/reply/create/" class="replyForm" enctype="multipart/form-data">
-              <div class="reply_write_area active">
-                <div class="comment-box">
-                  <textarea id='reply_textarea' name="replytext" placeholder="주제와 무관한 댓글, 악플 등의 비방 글은 임의 삭제될 수 있습니다." style="height: 63px;"></textarea>
-                  <button class="reply_btn">등록</button>
-                </div>
-              </div>
-            </form>
-            <!-- 답글 리스트 -->
-              <div class="reply_list_area">
-                <div class="reply_list">
-                </div>
-                <div class="auto_overflow_wrap">
-                  <div class="auto_overflow_contents">
-                      <div class="auto_overflow_inner">
-                          <div class="reply_list"></div>
+                <!-- 답글달기 -->
+                <div class="reply_wrap" style="display: none;">
+                  <form method="post" action="/feedpage/reply/create/" class="replyForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{p.id }}">
+                    <div class="reply_write_area active">
+                      <div class="comment-box">
+                        <textarea id='reply_textarea' name="replytext" placeholder="주제와 무관한 댓글, 악플 등의 비방 글은 임의 삭제될 수 있습니다." style="height: 63px;"></textarea>
+                        <button class="reply_btn">등록</button>
                       </div>
+                    </div>
+                  </form>
+                  <!-- 답글 리스트 -->
+                  <div class="reply_list_area">
+                    <div class="reply_list">
+                      {% for comment in p.comment_list %}
+                        <div class="reply_item" id="{{comment.id}}" style="margin-top: 20px;">
+                          <div class="user_info_box" style="margin-left: 15px;">
+                            <span class="info_item">{{comment.member_id.name}}</span>
+                            <span class="gap"></span>
+                            <span class="info_item">{{comment.created_at|date:"Y.m.d H:i"}}</span>
+                            <span class="gap"></span>
+                            {% comment %} {% if c.member_id ==>< member %}
+                              <button type="button" class="modify_info_item reply-edit-btn" 
+                                data-reply-id="{{reply.reply_id}}"
+                                data-content="{{reply.content}}" >
+                                수정
+                              </button>
+                            <span class="gap"></span>
+                            <a href="/reply/delete/{{reply.reply_id}}/" class="info_item">삭제</a>
+                            <span class="gap"></span>
+                            {% endif %} {% endcomment %}
+                          </div>
+
+                          <div class="reply_contents" style="margin-top: 10px;">
+                            <div class="reply_text" style="margin-left: 10px;">{{comment.content}}</div>
+                            <div class="comment_footer">
+                              <div class="right_area">
+                                <button class="btn_reply_reply" type="button">
+                                    <i class="fa-regular fa-comment-dots" aria-hidden="true"></i>                            
+                                    <span class="count">0</span>
+                                </button>
+                              </div>
+                            </div>
+
+                            <div class="reply_write_area" style="display: none;">
+                              <div class="comment-box">
+                                <textarea id="reply_textarea" name="replytext" placeholder="주제와 무관한 댓글, 악플 등의 비방 글은 임의 삭제될 수 있습니다." style="height: 63px;"></textarea>
+                                <button class="reply_btn">등록</button>
+                              </div>                            
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
                   </div>
-                  <div class="auto_overflow_footer">
-                      <button class="btn_more_body" type="button">
-                          <span class="text">답글 더보기</span>
-                          <span class="ico_arw"></span>
-                      </button>
-                  </div>
-                </div> 
-            </div>
-          </div>
-          </div>
-          {% endfor %}
-        {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
         </div>
       </div>
     </main>
@@ -116,23 +145,60 @@
 
   <script>
     
-    // 댓글 버튼을 누르면, 해당 포스트의 댓글 입력 영역(reply_wrap)을 토글한다!
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.btn_reply').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          const postItem = btn.closest('.post_item');
-          if (!postItem) return;
-          const replyWrap = postItem.querySelector('.reply_wrap');
-          if (!replyWrap) return;
-          // 토글 display
-          if (replyWrap.style.display === 'none' || !replyWrap.style.display) {
-            replyWrap.style.display = 'block';
-          } else {
-            replyWrap.style.display = 'none';
-          }
-        });
-      });
+    // ========== 답글달기 토글 ==========
+    $(document).on('click', '.btn_reply', function () {
+        const $commentItem = $(this).closest('.post_item');
+        $commentItem.find('.reply_wrap').first().toggle();
     });
+    // ========== 답글달기 토글 ==========
+    $(document).on('click', '.btn_reply_reply', function () {
+        const $replyItem = $(this).closest('.reply_item');
+        $replyItem.find('.reply_write_area').first().toggle();
+    });
+
+      // ========== 좋아요 버튼 ==========
+      function togglebtnlike(button) {
+          const postId = button.getAttribute('data-post-id');
+          if (!postId) {
+              alert("post_id가 없습니다!");
+              return;
+          }
+
+          let cToken = $('meta[name="csrf-token"]').attr('content');
+          const icon = button.querySelector('i');
+          if (!icon) {
+              console.warn('아이콘 없음');
+              return;
+          }
+
+          $.ajax({
+              url: '/feedpage/like/',
+              type: 'post',
+              headers: { 'Content-Type': 'application/json', 'X-CSRFToken': cToken },
+              data: JSON.stringify({ post_id: postId }),
+              success: function(data) {
+                // 서버에서 { liked: true/false, like_count: n } 이렇게 return한다면:
+                if (data.liked !== undefined) {
+                    icon.classList.remove('fa-sold', 'fa-regular');
+                    icon.classList.add(data.liked ? 'fa-solid' : 'fa-regular');
+                    button.classList.toggle('active', data.liked);
+                    // 좋아요 수 동기화 (갯수 표시하는 dom이 있다면)
+                    if (typeof data.like_count !== "undefined") {
+                        const countSpan = button.querySelector('.text');
+                        if (countSpan) countSpan.textContent = data.like_count;
+                    }
+                }
+            },
+            error: function() {
+            }
+          });
+
+          // 애니메이션 효과는 성공 후에 처리하는 게 더 자연스러울 수 있습니다.
+          icon.classList.add('fading-out');
+          setTimeout(() => {
+              icon.classList.remove('fading-out');
+          }, 100);
+      }
 
 
 
@@ -159,6 +225,4 @@
   
 {% endblock content %}
 {% block extra_js %}
-  {% comment %} <script src="{% static 'js/chatroomSNS_GOBOOK_updates.js' %}" ></script> {% endcomment %}
-  
 {% endblock %}
