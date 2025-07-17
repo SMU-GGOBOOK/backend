@@ -55,3 +55,4 @@ def chatroom_detail(request, group_id):
         'current_members_count': current_members_count,
     }
     return render(request, 'chatroom_detail.html', context)
+
