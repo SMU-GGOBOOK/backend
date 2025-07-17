@@ -12,7 +12,6 @@ def list(request):
     page = int(request.GET.get('page',1))
     # search
     search = request.GET.get('search','')
-    print('검색 데이터: ',search)
 
     if search == '':   # 일반리스트로 넘어온 경우
         # 게시글 전체 가져오기
@@ -27,11 +26,12 @@ def list(request):
         qs = Notice.objects.filter(
             Q(ntitle__contains=search) | Q(ncontent__contains=search)).order_by('-ntcno')
         
+        
         # 페이지 분기
         paginator = Paginator(qs,10)
         noticeList = paginator.get_page(page)
        # 게시글 10개, 현재페이지 보냄
-        context = {'notice':qs,'list':noticeList,'page':page,'search':1}
+        context = {'notice':qs,'list':noticeList,'page':page,'search':1,'keyword':search}
         return render(request,'cscenter/list.html',context)
 
 def view(request,ntcno):
