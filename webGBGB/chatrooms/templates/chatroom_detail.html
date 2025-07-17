@@ -19,7 +19,7 @@
     .container {
       max-width: 900px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 100px;
     }
 
     #banner-close {
@@ -171,7 +171,6 @@
       {% endfor %}
     {% endif %}
   <div class="container">
-<<<<<<< Updated upstream
 
 
     {% if group %}
@@ -287,50 +286,5 @@
       });
     }
   </script>
-=======
-    <div class="banner">
-      <button id="banner-close" aria-label="닫기">&times;</button>
-      <div class="banner-text">
-        <h1>{{readinggroup.group_name}}</h1>
-        {% comment %} <p>같이 읽고, 같이 나누는 시간</p> {% endcomment %}
-      </div>
-      {% comment %} <div class="profile-upload">
-        <img id="profile-preview" src="https://via.placeholder.com/60/2D7868/ffffff?text=ME" alt="Profile">
-        <label class="upload-label" for="profile-image">프로필 변경</label>
-        <input type="file" id="profile-image" accept="image/*">
-      </div> {% endcomment %}
-    </div>
-
-    <div class="info">
-      <div class="info-row">
-        <span>📅 채팅방 생성 일시</span>
-        <strong>{{readinggroup.created_at|date:"Y-m-d"}}</strong>
-      </div>
-      <div class="info-row">
-        <span>🐢 꼬북태그</span>
-        <div class="tags">
-          {% for tag in tag_list %}
-          <strong1>{{tag}}</strong1>
-          {% endfor %}
-        </div>
-      </div>
-      <div class="info-row">
-        <span>📖 책 제목</span>
-        <strong>『{{readinggroup.book.title}}』 - {{readinggroup.book.author}}</strong>
-      </div>
-      <div class="info-row">
-        <span>👥 인원</span>
-        <strong>{{readinggroup.member.count}}명 참여중 / 최대 {{readinggroup.max_member}}명</strong>
-      </div>
-    </div>
-
-    <div class="description">
-      {{readinggroup.description}}
-    </div>
-
-    <a href='/sns_feed/'><button class="join-btn"> 💬그룹방 참여하기 </button></a>
-  </div>
-
->>>>>>> Stashed changes
 </body>
 </html>
