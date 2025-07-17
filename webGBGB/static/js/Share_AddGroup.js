@@ -73,7 +73,9 @@ document.addEventListener("DOMContentLoaded", function () {
                              data-cover="${book.cover}"
                              data-isbn="${book.isbn}">
                           <div class="modal_book_item">
-                            <img src="${book.cover}" alt="${book.title}" />
+                            <img src="${book.cover}" alt="${book.title}"
+                            onerror="this.onerror=null;this.src='/static/images/defaultimg.png';" />
+                            
                           </div>
                           <div class="modal_book_info">
                             <h3>${book.title}</h3>
@@ -230,7 +232,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <a href="#" id="book_search_trigger">
                 <div class="selected_book_img_js">
                   <div class="tooltip_wrapper">
-                    <img src="${cover}" alt="${title}">
+                    <img src="${cover}" alt="${title}"
+                    onerror="this.onerror=null;this.src='/static/images/defaultimg.png';" />
                     <div class="custom_tooltip">변경<br></div>
                   </div>
                 </div>
@@ -297,7 +300,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 link.classList.add("clicked");
             }
         });
-
         updateHiddenInput();
     }
 
@@ -466,5 +468,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return false;
         }
         // 통과 시 제출
+        alert("그룹 만들기가 완료되었습니다.")
     });
 });

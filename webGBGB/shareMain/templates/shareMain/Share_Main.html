@@ -21,7 +21,7 @@
                 <div class="feed__join_body_item">
                     <div class="join_body_item_book">
                          <a href="/feedpage/sns_feed/{{group.id}}">
-                            <img src="{{ group.book.cover }}" alt="책 이미지"/>
+                            <img src="{{ group.book.cover|default:'/static/images/defaultimg.png' }}" alt="책 이미지" />
                         </a>
                     </div>
                     <div class="join_body_item_groupName">
@@ -119,7 +119,7 @@
                 <div class="feed__preview_book">
                     <!-- img 클릭 시 책 상세페이지로 이동 a태그 -->
                     <a href="/booksearch/detail/{{group.book.book_id}}">
-                        <img src="{{ group.book.cover }}" alt="책 이미지"/>
+                        <img src="{{ group.book.cover|default:'/static/images/defaultimg.png' }}" alt="책 이미지" />
                     </a>
                 </div>
             </div>
