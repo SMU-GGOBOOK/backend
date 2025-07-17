@@ -1024,3 +1024,33 @@ color: #2D7868; /* 숫자 색상 */
     margin-right:10px;
     width:55px;
 }
+
+/* 이미지 모달창 */
+.image-modal { display:none; 
+                position:fixed; 
+                z-index:2000; 
+                top:0; 
+                left:0; 
+                width:100%; 
+                height:100%; 
+                background:rgba(0,0,0,0.8); 
+                overflow:hidden; 
+                cursor:grab; }
+.image-modal-close { position:absolute; 
+                        top:20px; 
+                        right:35px; 
+                        font-size:40px; 
+                        color:#fff; 
+                        cursor:pointer; 
+                        z-index:2001; }
+.image-modal-content { position:absolute; 
+                        top:50%; 
+                        left:50%; 
+                        transform:translate(-50%, -50%) translate(0, 0) scale(1); 
+                        transform-origin:center center; 
+                        transition:transform 0.2s ease; 
+                        max-width:90%; 
+                        max-height:90%; 
+                        object-fit:contain; 
+                        border-radius:10px; }
+

@@ -76,7 +76,13 @@ def search(request):
             pub_date = pub_date_raw[:10] if pub_date_raw else None
 
             isbn_raw = doc.get('isbn', '')
-            isbn = isbn_raw.split()[-1] if isbn_raw else "정보없음"
+            
+            if isbn_raw:
+                split_result = isbn_raw.split()
+                isbn = split_result[-1] if split_result else "정보없음"
+            else:
+                isbn = "정보없음"
+
 
             # 2. title 또는 author에 쿼리 포함되는 경우만 DB에 저장
             if query_lower in title.lower() or query_lower in author.lower():

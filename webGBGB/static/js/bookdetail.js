@@ -835,12 +835,117 @@ document.addEventListener("DOMContentLoaded", () => {
     return '';
   }
 
-  document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll('.btn_view_img').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const url = btn.getAttribute('data-img-url');
-      if (url) window.open(url, '_blank');
-    });
+  // document.addEventListener("DOMContentLoaded", function() {
+  //   document.querySelectorAll('.btn_view_img').forEach(btn => {
+  //     btn.addEventListener('click', function() {
+  //       const url = btn.getAttribute('data-img-url');
+  //       if (url) window.open(url, '_blank');
+  //     });
+  //   });
+  // });
+
+// --- 모달 닫기 함수 추가 ---
+function closeImageModal() {
+  const modal = document.getElementById('image-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('image-modal');
+  const imgEl = document.getElementById('modal-img');
+  const closeBtn = modal.querySelector('.image-modal-close');
+  applyImageOrientation();
+  // --- 이미지 방향에 따라 클래스 붙이기 ---
+  document.querySelectorAll('.btn_view_img img').forEach(img => {
+    const applyClass = () => {
+      const cls = img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait';
+      img.classList.add(cls);
+    };
+    if (img.complete) {
+      applyClass();
+    } else {
+      img.addEventListener('load', applyClass);
+    }
   });
+
+  let scale = 1,
+    isDrag = false,
+    startX = 0,
+    startY = 0,
+    offX = 0,
+    offY = 0;
+
+  // 1) 이미지 클릭 → 모달 열기
+  document.body.addEventListener('click', e => {
+    // .comment_contents 내의 <img>를 클릭했을 때
+    if (e.target.closest('.btn_view_img')) {
+      const btn = e.target.closest('.btn_view_img');
+      const imgUrl = btn.dataset.imgUrl;
+      if (!imgUrl) return;
+
+      scale = 1;
+      offX = 0;
+      offY = 0;
+      imgEl.src = imgUrl;
+      imgEl.style.transform = 'translate(-50%, -50%) translate(0,0) scale(1)';
+      modal.style.display = 'block';
+    }
+  });
+
+  // 3) 닫기 버튼 클릭 → 모달 닫기
+  closeBtn.addEventListener('click', closeImageModal);
+
+  // 4) 휠로 줌 인·아웃
+  modal.addEventListener('wheel', e => {
+    e.preventDefault();
+    scale = e.deltaY < 0 ? Math.min(scale + 0.1, 5) : Math.max(scale - 0.1, 1);
+    imgEl.style.transform = `translate(-50%, -50%) translate(${offX}px,${offY}px) scale(${scale})`;
+  }, {
+    passive: false
+  });
+
+  // 5) 드래그로 이동
+  imgEl.addEventListener('mousedown', e => {
+    e.preventDefault();
+    isDrag = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    imgEl.style.cursor = 'grabbing';
+  });
+  document.addEventListener('mousemove', e => {
+    if (!isDrag) return;
+    const dx = e.clientX - startX,
+      dy = e.clientY - startY;
+    startX = e.clientX;
+    startY = e.clientY;
+    offX += dx;
+    offY += dy;
+    imgEl.style.transform = `translate(-50%, -50%) translate(${offX}px,${offY}px) scale(${scale})`;
+  });
+  document.addEventListener('mouseup', () => {
+    if (isDrag) {
+      isDrag = false;
+      imgEl.style.cursor = 'grab';
+    }
+  });
+  imgEl.style.cursor = 'grab';
 });
+// ── 이미지 방향에 따라 클래스 붙이는 함수 ──
+function applyImageOrientation() {
+  document.querySelectorAll('.post_contents img').forEach(img => {
+    const setOri = () => {
+      // 기존 inline style 제거
+      img.removeAttribute('style');
+      // 방향에 따라 클래스 추가
+      img.classList.remove('landscape', 'portrait');
+      img.classList.add(
+        img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait'
+      );
+    };
+    // 로딩 완료 여부 체크
+    if (img.complete) setOri();
+    else img.addEventListener('load', setOri);
+  });
+}
+
 
