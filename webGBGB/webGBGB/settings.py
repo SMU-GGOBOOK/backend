@@ -37,9 +37,7 @@ INSTALLED_APPS = [
     'shareMain',
     'reply',
     'chart',
-    'chatrooms',
-    'sns_feed',
-    'rest_framework',
+    'bookclub',
 
 ]
 

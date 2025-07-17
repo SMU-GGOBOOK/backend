@@ -16,8 +16,7 @@ urlpatterns = [
     path('shareMain/', include('shareMain.urls')),
     path('reply/', include('reply.urls')),
     path('chart/', include('chart.urls')),
-    path('chatrooms/', include('chatrooms.urls')),
-    path('feedpage/', include('sns_feed.urls')),
+    path('bookclub/', include('bookclub.urls')),
     
 ]
 
