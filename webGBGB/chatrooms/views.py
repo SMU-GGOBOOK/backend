@@ -26,8 +26,7 @@ def chatroom_detail(request, group_id):
         print("group.password : ", group.password)
 
         if group.member.filter(id=member.id).exists():
-            messages.info(request, '이미 참여 중인 그룹입니다.')
-            return redirect(f'/chatrooms/detail/{group.id}/')
+            return redirect(f'/feedpage/sns_feed/{group.id}/')
 
 
         if current_members_count >= group.max_member:

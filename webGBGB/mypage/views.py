@@ -118,7 +118,6 @@ def mygroup(request):
         "my_group_count": my_group_count,
         "user_id":user_id,
         'review_count':review_count,
-        
     }
     
     

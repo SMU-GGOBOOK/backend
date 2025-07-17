@@ -18,27 +18,26 @@ class Post(models.Model):
         return f"Post by {self.member_id.name} in {self.group_id.group_name}"
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
+    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Comment by {self.author.username} on Post {self.post.id}"
 
-class Like(models.Model):
+class PostLike(models.Model):
     """
     사용자가 게시글에 '좋아요'를 누른 것을 기록하는 모델.
     한 사용자가 한 게시글에 중복으로 좋아요를 누를 수 없도록 unique_together 제약을 설정합니다.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='likes')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='postlike')
+    member_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='postlike')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'post') # 한 사용자가 한 게시글에 한 번만 좋아요를 누를 수 있도록
+        unique_together = ('member_id', 'post_id') # 한 사용자가 한 게시글에 한 번만 좋아요를 누를 수 있도록
 
 class PostImage(models.Model):
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')

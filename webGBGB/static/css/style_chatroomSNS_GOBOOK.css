@@ -388,9 +388,6 @@
     .like-count { font-size:14px; 
                   color:#e91e63; 
                   margin-top:8px; }
-    .post-actions { position:absolute; 
-                    top:10px; 
-                    right:10px; }
 
     .comments { margin-top:10px; 
                 padding-left:10px; 
@@ -537,8 +534,9 @@
 
     }
     .post { position: relative; }
-    .reply_wrap { display: none !important; }
     .reply_wrap.active { display: block !important; }
+    .reply_write_area.active { display: block !important; }
+
     .btn_reply .count { display: inline-block; 
                         font-size: 12px; 
                         border-radius: 12px; }
@@ -1004,6 +1002,31 @@
     margin-right: 4px;
     background-size: 20px 20px;
     line-height: 20px;
+}
+.btn_reply_reply .fa-comment-dots {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+    background-size: 20px 20px;
+    line-height: 20px;
+}
+.btn_reply_reply .count {
+    display: inline-block;
+    position: relative;
+    font-size: 13px;
+    line-height: 19px;
+    letter-spacing: -0.01em;
+    vertical-align: top;
+    padding-top: 1px;
+}
+.reply_wrap .reply_list_area .reply_item:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 8px;
+    height: 9px;
+    background: url(/static/images/booksearch/arw_reply@2x.png) 0% 0% no-repeat;
+    background-size: 8px 9px;
 }
 
 .btn_toggle_nested_reply .fa-comment-dots{
