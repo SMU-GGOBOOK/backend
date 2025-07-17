@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'chatrooms',
     'sns_feed',
     'neews',
-    'rest_framework',
+    # 'rest_framework',
 
     # allauth 필수 앱
     'django.contrib.sites', # 중요!
