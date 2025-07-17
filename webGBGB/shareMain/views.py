@@ -174,7 +174,7 @@ def Share_AddGroup(request):
                 defaults={
                     'title': title,
                     'author': author,
-                    # 'cover': cover,
+                    'cover': cover,
                     'publisher': publisher,
                 }
             )
@@ -225,7 +225,7 @@ def Share_Main(request):
     else:
         groups = ReadingGroup.objects.all().order_by('-id')
 
-    # 이 줄 추가
+    # 그룹 개수
     total_group_count = groups.count()
 
     # 페이지네이터 적용
